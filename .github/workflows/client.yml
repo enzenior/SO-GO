@@ -14,6 +14,8 @@ jobs:
     steps:
       - name: Checkout source code.
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.ACCESS_TOKENS }}
         
       - name: Use Node.js
         uses: actions/setup-node@v4
