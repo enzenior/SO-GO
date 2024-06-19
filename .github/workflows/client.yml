@@ -13,9 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source code.
-        uses: actions/checkout@v3
-        with:
-          node-version: '20'
+        uses: actions/checkout@v2
 
       - name: Install dependencies
         run: npm install
@@ -28,7 +26,6 @@ jobs:
       - name: SHOW AWS CLI VERSION
         run: |
           aws --version
-          which aws
           
       - name: Sync Bucket
         env:
