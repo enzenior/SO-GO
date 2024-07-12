@@ -3,6 +3,7 @@ package com.enzinior.sogo.user.dto;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 
@@ -12,13 +13,13 @@ public class UserDto {
     @Setter
     @Builder
     public static class SignUp {
-        @NotBlank
+        @NotNull
         private long userId;
         @NotBlank
         private String nickname;
         @Email
         private String email;
-        @NotBlank
+        @NotNull
         private boolean site;
         @NotBlank
         private String role;

@@ -28,7 +28,7 @@ public class UserController {
 
     // 회원 등록
     @PostMapping("")
-    public ResponseEntity<?> postUser(@RequestBody UserDto.SignUp user) {
+    public ResponseEntity<?> postUser(@RequestBody @Valid UserDto.SignUp user) {
         User postedUser = userService.postUser(userMapper.userSignUpToUser(user));
 
         System.out.println(user.getNickname());
@@ -43,18 +43,21 @@ public class UserController {
     public ResponseEntity<?> findUser(@PathVariable("user-uuid") String uuid) {
         User user = userService.findUser(uuid);
 
+        if(user == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
         return ResponseEntity.ok(userMapper.userToUserResponse(user));
     }
 
     // 닉네임 중복 확인
-    @GetMapping("")
+    @GetMapping("/")
     public ResponseEntity<?> findUserByNickname(@RequestParam("nickname") String nickname) {
         User user = userService.findUserByNickname(nickname);
 
         if(user != null) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("있어요~");
         }
-        return ResponseEntity.noContent().build();
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("없어요~");
     }
 
     // 회원 정보 수정
