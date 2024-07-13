@@ -1,0 +1,37 @@
+package com.enzinior.sogo.notification.dto;
+
+import lombok.*;
+
+@Builder
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+public class NotificationDto {
+
+    @Getter
+    public static class Post {
+        private String userUuid; // private User user;
+        private String content;
+    }
+
+    @Getter
+    @Setter
+    public static class ResponseDefault {
+        private String userUuid;
+        private String content;
+        private boolean isRead;
+        private String notificationUuid;
+    }
+
+    @Getter
+    @Setter
+    public static class ResponseContent {
+        private String userUuid;
+        private String content;
+        private boolean isRead;
+        private String notificationUuid;
+
+        private String reviewImg;
+        private String reviewUuid;
+    }
+}
