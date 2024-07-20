@@ -26,12 +26,17 @@ public class UserController {
 //        return response;
 //    }
 
+    @GetMapping("/jwt-test")
+    public String jwtTest() {
+        return "jwtTest 요청 성공";
+    }
+
     // 회원 등록
     @PostMapping("")
-    public ResponseEntity<?> postUser(@RequestBody @Valid UserDto.SignUp user) {
-        User postedUser = userService.postUser(userMapper.userSignUpToUser(user));
+    public ResponseEntity<?> signUp(@RequestBody @Valid UserDto.SignUp userDto) {
+        User postedUser = userService.signUp(userMapper.userSignUpToUser(userDto));
 
-        System.out.println(user.getNickname());
+        System.out.println(userDto.getNickname());
 
         if(postedUser == null) return ResponseEntity.badRequest().build();
 
@@ -51,13 +56,12 @@ public class UserController {
     // 닉네임 중복 확인
     @GetMapping("/")
     public ResponseEntity<?> findUserByNickname(@RequestParam("nickname") String nickname) {
-        User user = userService.findUserByNickname(nickname);
+        boolean isAvailable = userService.isNicknameAvailable(nickname);
 
-        if(user != null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("있어요~");
+        if(isAvailable) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("없어요~");
         }
-
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("없어요~");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     // 회원 정보 수정
@@ -65,10 +69,19 @@ public class UserController {
     public ResponseEntity<?> patchUser(@PathVariable("user-uuid") String uuid, @Valid
     @RequestBody UserDto.Patch requestBody) {
         requestBody.setUserUuid(uuid);
-        User user = userMapper.userPatchToUser(requestBody);
-        User updatedUser = userService.updateUser(user);
+        User updatedUser = userService.updateUser(requestBody);
+
+//        User user = userMapper.userPatchToUser(requestBody);
+//        User updatedUser = userService.updateUser(user);
 
         return ResponseEntity.ok(updatedUser);
+    }
+
+    @PatchMapping("/ban/{user-uuid}")
+    public ResponseEntity<?> banUser(@PathVariable("user-uuid") String uuid) {
+        userService.banUser(uuid);
+
+        return ResponseEntity.noContent().build();
     }
 
     // 회원 정보 삭제
@@ -78,6 +91,8 @@ public class UserController {
 
         return ResponseEntity.noContent().build();
     }
+
+
 
 //    @GetMapping("{user-uuid}/collections")
 //    public ResponseEntity<?> getBadges(PathVariable("user-uuid") String uuid) {

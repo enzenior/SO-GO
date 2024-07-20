@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name="users")
@@ -43,6 +42,11 @@ public class User {
 
     private String sentence;
 
+    @Column(columnDefinition = "TINYINT default 0")
+    private boolean state;
+
+    private String refreshToken;
+
 
 //    @OneToMany
 //    private List<Review> reviews = new ArrayList<>();
@@ -58,5 +62,33 @@ public class User {
 //    private List<UserBadge> userBadges = new ArrayList<>();
 //    @OneToMany
 //    private List<Report> reports = new ArrayList<>();
+
+    public void changeNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void changeImg(String img) {
+        this.img = img;
+    }
+
+    public void changeSentence(String sentence) {
+        this.sentence = sentence;
+    }
+
+    public void changeEmail(String email) {
+        this.email = email;
+    }
+
+    public void changeId(long id) {
+        this.id = id;
+    }
+
+    public void changeState(boolean state) {
+        this.state = state;
+    }
+
+    public void updateRefreshToken(String updateRefreshToken) {
+        this.refreshToken = updateRefreshToken;
+    }
 
 }

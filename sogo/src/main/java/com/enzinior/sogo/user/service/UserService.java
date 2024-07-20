@@ -2,23 +2,23 @@ package com.enzinior.sogo.user.service;
 
 import com.enzinior.sogo.user.dto.UserDto;
 import com.enzinior.sogo.user.entity.User;
-
-import java.nio.file.attribute.UserPrincipalNotFoundException;
-import java.util.Optional;
+import jakarta.validation.Valid;
 
 public interface UserService {
 
     void logout();
 
-    User postUser(User user);
+    User signUp(User user);
 
     User findUser(String uuid);
 
-    User findUserByNickname(String nickname);
+    boolean isNicknameAvailable(String nickname);
 
-    User updateUser(User user);
+    User updateUser(UserDto.@Valid Patch user);
 
     void deleteUser(String uuid);
+
+    void banUser(String uuid);
 
 //    List<Badge> getBadges(String uuid);
 

@@ -3,22 +3,13 @@ package com.enzinior.sogo.user.service;
 import com.enzinior.sogo.user.dto.UserDto;
 import com.enzinior.sogo.user.entity.User;
 import com.enzinior.sogo.user.repository.UserRepository;
-import lombok.AllArgsConstructor;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.mbeans.MBeanUtils;
 
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.nio.file.attribute.UserPrincipalNotFoundException;
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +21,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User postUser(User user) {
+    public User signUp(User user) {
         return userRepository.save(user);
     }
 
@@ -40,18 +31,18 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User findUserByNickname(String nickname) {
-        return userRepository.findByNickname(nickname);
+    public boolean isNicknameAvailable(String nickname) {
+        return !userRepository.existsByNickname(nickname);
     }
 
     @Override
     @Transactional
-    public User updateUser(User user) {
+    public User updateUser(UserDto.@Valid Patch user) {
         try {
             User findUser = findUserByUuid(user.getUserUuid());
-            findUser.setNickname(user.getNickname());
-            findUser.setImg(user.getImg());
-            findUser.setSentence(user.getSentence());
+            findUser.changeNickname(user.getNickname());
+            findUser.changeImg(user.getImg());
+            findUser.changeSentence(user.getSentence());
             userRepository.save(findUser);
             return findUser;
         } catch (Exception e) {
@@ -63,8 +54,29 @@ public class UserServiceImpl implements UserService{
     @Override
     @Transactional
     public void deleteUser(String userUuid) {
-        User findUser = findUserByUuid(userUuid);
-        userRepository.delete(findUser);
+        User user = findUserByUuid(userUuid);
+        try {
+            User findUser = findUserByUuid(user.getUserUuid());
+            findUser.changeEmail(user.getUserUuid());
+            findUser.changeImg("");
+            findUser.changeId(-user.getId());
+            userRepository.save(findUser);
+        } catch (Exception e) {
+            // 예외 처리
+            throw new RuntimeException("Failed to delete user", e);
+        }
+    }
+
+    @Override
+    public void banUser(String userUuid) {
+        try {
+            User findUser = findUserByUuid(userUuid);
+            findUser.changeState(!findUser.isState());
+            userRepository.save(findUser);
+        } catch (Exception e) {
+            // 예외 처리
+            throw new RuntimeException("Failed to ban user", e);
+        }
     }
 
 //    @Override

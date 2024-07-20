@@ -14,7 +14,7 @@ public class UserDto {
     @Builder
     public static class SignUp {
         @NotNull
-        private long userId;
+        private long id;
         @NotBlank
         private String nickname;
         @Email
