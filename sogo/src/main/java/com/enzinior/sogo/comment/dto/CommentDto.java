@@ -1,19 +1,22 @@
 package com.enzinior.sogo.comment.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
 
-@Builder
-@ToString
+@Getter
 @AllArgsConstructor
-@NoArgsConstructor
 public class CommentDto {
 
     @Getter
     public static class Post {
+        @NotBlank
         private String content;
+        @NotBlank
         private String userUuid;
+        @NotBlank
         private String parentUuid;
+        @NotBlank
         private String reviewUuid;
     }
 

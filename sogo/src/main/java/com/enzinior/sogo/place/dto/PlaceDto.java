@@ -26,6 +26,8 @@ public class PlaceDto {
         private double lng;
     }
 
+    @Getter
+    @Setter
     public static class SimpleResponse{
         private String placeUuid;
         private String placeName;
@@ -35,13 +37,15 @@ public class PlaceDto {
         private String main_img;
     }
 
+    @Getter
+    @Setter
     public static class Response{
         private String placeUuid;
         private String placeName;
         private String placeDescription;
         private double lat;
         private double lng;
-        private List<String> imgList;
+//        private List<String> imgList;
     }
     // summary
     // tag

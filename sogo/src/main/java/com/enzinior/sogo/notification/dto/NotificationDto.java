@@ -1,16 +1,17 @@
 package com.enzinior.sogo.notification.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
-@Builder
-@ToString
+@Getter
 @AllArgsConstructor
-@NoArgsConstructor
 public class NotificationDto {
 
     @Getter
     public static class Post {
+        @NotBlank
         private String userUuid; // private User user;
+        @NotBlank
         private String content;
     }
 

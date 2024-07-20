@@ -19,16 +19,15 @@ public class Notification {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotNull
     @Column(name = "notification_uuid", columnDefinition = "varchar(80)", unique = true)
     private String uuid;
 
-    @NotNull
     @Lob
     private String content;
 
     @ColumnDefault("true")
     private boolean isRead;
+
 
     @JoinColumn(name = "user_id")
     private User user;

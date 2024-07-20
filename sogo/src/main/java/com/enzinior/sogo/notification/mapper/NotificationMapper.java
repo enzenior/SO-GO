@@ -8,7 +8,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
-public class NotificationMapper {
+public interface NotificationMapper {
 
     @Mapping(source = "userUuid", target = "user.uuid")
     Notification notificationPostToNotification(NotificationDto.Post requestBody);
@@ -21,5 +21,6 @@ public class NotificationMapper {
     @Mapping(source = "reviewUuid", target = "review.uuid")
     NotificationDto.ResponseContent notificationReviewToNotificationDto(Notification notification);
 
+    List<NotificationDto.ResponseContent> notificationDtoToNotifications(List<Notification>);
 
 }

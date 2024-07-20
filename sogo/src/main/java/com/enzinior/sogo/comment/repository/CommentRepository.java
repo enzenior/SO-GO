@@ -16,8 +16,4 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 //    int insertComment(CommentDto.Post requestBody);
 
 
-
-
-
-
 }

@@ -9,6 +9,7 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.UUID;
 
 @Entity
@@ -16,6 +17,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Table(name="places")
 public class Place {
+
     @Setter
     @Id
     @Column(name="place_id")
@@ -31,12 +33,10 @@ public class Place {
     private String placeDescription;
 
     @Setter
-    @NotNull
     private String placeTag;
 
     @Setter
-    @NotNull
-    private String placeSummary
+    private String placeSummary;
 
     @ColumnDefault("0")
     @Setter
@@ -46,14 +46,17 @@ public class Place {
     @Setter
     private float score;
 
-    @NotNull
     private double lat;
 
-    @NotNull
     private double lng;
 
-    @NotNull
     @Column(name = "place_uuid", columnDefinition = "varchar(80)", unique = true)
     private String uuid = UUID.randomUUID().toString();
+
+    @OneToMany(mappedBy = "heart")
+    private List<Heart> hearts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "placeImg")
+    private List<PlaceImg> placeImgs = new ArrayList<>();
 
 }

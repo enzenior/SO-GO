@@ -13,9 +13,8 @@ import java.util.List;
 public interface CommentService{
 
     List<Comment> searchComment(String reviewUuid);
-    int createComment(Comment comment);
-    int removeComment(String commentUuid);
-//    int alterComment(String commentUuid);
+    Comment createComment(Comment comment);
+    void removeComment(String commentUuid);
     void hideComment(String commentUuid);
     Comment readComment(String commentUuid);
 

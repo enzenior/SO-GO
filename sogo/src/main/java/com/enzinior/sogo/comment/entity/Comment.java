@@ -13,19 +13,17 @@ import java.util.UUID;
 @Entity
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name="comments")
 public class Comment {
+
     @Id
     @Column(name="comment_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotNull
     @Column(name = "comment_uuid", columnDefinition = "varchar(80)", unique = true)
     private String uuid = UUID.randomUUID().toString();
 
-    @NotNull
     @Lob
     private String content;
 
@@ -35,9 +33,13 @@ public class Comment {
     @ColumnDefault("false")
     private boolean secret;
 
-    @JoinColumn(name = "review_id")
     private String parent;
 
     @JoinColumn(name = "user_id")
+    @OneToOne
     private User user;
+
+    @JoinColumn(name = "review_id")
+    @ManyToOne
+    private Review review;
 }

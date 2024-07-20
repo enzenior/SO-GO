@@ -4,6 +4,7 @@ import com.enzinior.sogo.comment.entity.Comment;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import com.enzinior.sogo.comment.repository.
 
 import java.util.List;
 import java.util.Optional;
@@ -11,6 +12,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
+
     private final CommentsRepository commentsRepository;
 
     @Override
@@ -47,10 +49,9 @@ public class CommentServiceImpl implements CommentService {
         return getComment(commentUuid);
     }
 
-    @Override
-    public Comment getComment(String commentUuid){
-        Optional<Comment> comment = commentsRepository.findByUuid(commentUuid);
-        return comment;
+    private Comment verifiedByUuid(String commentUuid){
+        Optional<Comment> comment = commentsRepository.
+        return comment.get();
     }
 
 }
