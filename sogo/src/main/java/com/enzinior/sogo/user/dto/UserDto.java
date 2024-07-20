@@ -13,8 +13,8 @@ public class UserDto {
     @Setter
     @Builder
     public static class SignUp {
-        @NotNull
-        private long id;
+        @NotBlank
+        private String id;
         @NotBlank
         private String nickname;
         @Email
@@ -23,6 +23,7 @@ public class UserDto {
         private boolean site;
         @NotBlank
         private String role;
+        @Builder.Default
         private int report = 0;
         @NotBlank
         private String userUuid;
@@ -48,7 +49,7 @@ public class UserDto {
     public static class Response {
         private String nickname;
         private String img;
-        private boolean admin;
+        private boolean role;
         private String userUuid;
         private String sentence;
     }
@@ -58,7 +59,7 @@ public class UserDto {
     public static class Cookie {
         private String nickname;
         private String img;
-        private boolean admin;
+        private boolean role;
         private String userUuid;
     }
 

@@ -1,5 +1,7 @@
 package com.enzinior.sogo.user.controller;
 
+import com.enzinior.sogo.exception.BusinessLogicException;
+import com.enzinior.sogo.exception.ExceptionCode;
 import com.enzinior.sogo.user.dto.UserDto;
 import com.enzinior.sogo.user.entity.User;
 import com.enzinior.sogo.user.mapper.UserMapper;
@@ -17,6 +19,7 @@ import java.util.Optional;
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserController {
+
     private final UserService userService;
     private final UserMapper userMapper;
 
@@ -34,13 +37,9 @@ public class UserController {
     // 회원 등록
     @PostMapping("")
     public ResponseEntity<?> signUp(@RequestBody @Valid UserDto.SignUp userDto) {
-        User postedUser = userService.signUp(userMapper.userSignUpToUser(userDto));
+        userService.verifyExistsUser(userMapper.userSignUpToUser(userDto));
 
-        System.out.println(userDto.getNickname());
-
-        if(postedUser == null) return ResponseEntity.badRequest().build();
-
-        return ResponseEntity.ok(postedUser);
+        return ResponseEntity.ok(userService.signUp(userMapper.userSignUpToUser(userDto)));
     }
 
     // 회원정보 조회
@@ -48,19 +47,14 @@ public class UserController {
     public ResponseEntity<?> findUser(@PathVariable("user-uuid") String uuid) {
         User user = userService.findUser(uuid);
 
-        if(user == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-
         return ResponseEntity.ok(userMapper.userToUserResponse(user));
     }
 
     // 닉네임 중복 확인
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<?> findUserByNickname(@RequestParam("nickname") String nickname) {
-        boolean isAvailable = userService.isNicknameAvailable(nickname);
+        userService.isNicknameAvailable(nickname);
 
-        if(isAvailable) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("없어요~");
-        }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
@@ -71,12 +65,10 @@ public class UserController {
         requestBody.setUserUuid(uuid);
         User updatedUser = userService.updateUser(requestBody);
 
-//        User user = userMapper.userPatchToUser(requestBody);
-//        User updatedUser = userService.updateUser(user);
-
-        return ResponseEntity.ok(updatedUser);
+        return ResponseEntity.ok(userMapper.userToUserResponse(updatedUser));
     }
 
+    // 회원 밴
     @PatchMapping("/ban/{user-uuid}")
     public ResponseEntity<?> banUser(@PathVariable("user-uuid") String uuid) {
         userService.banUser(uuid);
@@ -91,13 +83,4 @@ public class UserController {
 
         return ResponseEntity.noContent().build();
     }
-
-
-
-//    @GetMapping("{user-uuid}/collections")
-//    public ResponseEntity<?> getBadges(PathVariable("user-uuid") String uuid) {
-//        List<Badge> badges = userService.getBadges(uuid);
-//
-//        return new ResponseEntity<T>(badges, HttpStatus.OK);
-//    }
 }

@@ -1,11 +1,13 @@
 package com.enzinior.sogo.user.entity;
 
+import com.enzinior.sogo.user.dto.UserDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @NoArgsConstructor
@@ -13,6 +15,7 @@ import lombok.Setter;
 @Entity(name="users")
 @Table(name="users")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userId;
@@ -21,7 +24,7 @@ public class User {
     private String nickname;
 
     @Column(nullable = false)
-    private long id;
+    private String id;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -42,11 +45,28 @@ public class User {
 
     private String sentence;
 
-    @Column(columnDefinition = "TINYINT default 0")
+    @ColumnDefault("false")
     private boolean state;
 
     private String refreshToken;
 
+    public User(UserDto.Patch patch) {
+        this.nickname = patch.getNickname();
+        this.img = patch.getImg();
+        this.userUuid = patch.getUserUuid();
+        this.sentence = patch.getSentence();
+    }
+
+    public User(UserDto.SignUp signUp) {
+        this.nickname = signUp.getNickname();
+        this.id = signUp.getId();
+        this.email = signUp.getEmail();
+        this.site = signUp.isSite();
+        this.role = signUp.getRole();
+        this.report = signUp.getReport();
+        this.userUuid = signUp.getUserUuid();
+        this.sentence = signUp.getSentence();
+    }
 
 //    @OneToMany
 //    private List<Review> reviews = new ArrayList<>();
@@ -79,7 +99,7 @@ public class User {
         this.email = email;
     }
 
-    public void changeId(long id) {
+    public void changeId(String id) {
         this.id = id;
     }
 

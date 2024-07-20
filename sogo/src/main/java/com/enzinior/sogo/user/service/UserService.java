@@ -12,16 +12,14 @@ public interface UserService {
 
     User findUser(String uuid);
 
-    boolean isNicknameAvailable(String nickname);
+    boolean verifyExistsUser(User user);
 
-    User updateUser(UserDto.@Valid Patch user);
+    User updateUser(UserDto.Patch user);
 
     void deleteUser(String uuid);
 
     void banUser(String uuid);
 
-//    List<Badge> getBadges(String uuid);
-
-
+    boolean isNicknameAvailable(String nickname);
 
 }

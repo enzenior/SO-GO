@@ -9,9 +9,13 @@ import org.mapstruct.factory.Mappers;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
-    User userPatchToUser(UserDto.Patch requestBody);
+    default User userPatchToUser(UserDto.Patch requestBody) {
+       return new User(requestBody);
+    }
 
-    User userSignUpToUser(UserDto.SignUp requestBody);
+    default User userSignUpToUser(UserDto.SignUp requestBody) {
+        return new User(requestBody);
+    }
 
     UserDto.Response userToUserResponse(User user);
 }

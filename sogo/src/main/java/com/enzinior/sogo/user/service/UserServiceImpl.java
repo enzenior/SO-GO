@@ -1,9 +1,10 @@
 package com.enzinior.sogo.user.service;
 
+import com.enzinior.sogo.exception.BusinessLogicException;
+import com.enzinior.sogo.exception.ExceptionCode;
 import com.enzinior.sogo.user.dto.UserDto;
 import com.enzinior.sogo.user.entity.User;
 import com.enzinior.sogo.user.repository.UserRepository;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
@@ -14,36 +15,39 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService{
+
     private final UserRepository userRepository;
+
     @Override
     public void logout() {
 
     }
 
     @Override
+    @Transactional
     public User signUp(User user) {
         return userRepository.save(user);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public User findUser(String userUuid) {
         return findUserByUuid(userUuid);
     }
 
     @Override
-    public boolean isNicknameAvailable(String nickname) {
-        return !userRepository.existsByNickname(nickname);
+    public boolean verifyExistsUser(User user) {
+        return (isEmailAvailable(user.getEmail()) && isNicknameAvailable(user.getNickname()));
     }
 
     @Override
     @Transactional
-    public User updateUser(UserDto.@Valid Patch user) {
+    public User updateUser(UserDto.Patch user) {
         try {
             User findUser = findUserByUuid(user.getUserUuid());
             findUser.changeNickname(user.getNickname());
             findUser.changeImg(user.getImg());
             findUser.changeSentence(user.getSentence());
-            userRepository.save(findUser);
             return findUser;
         } catch (Exception e) {
             // 예외 처리
@@ -59,8 +63,7 @@ public class UserServiceImpl implements UserService{
             User findUser = findUserByUuid(user.getUserUuid());
             findUser.changeEmail(user.getUserUuid());
             findUser.changeImg("");
-            findUser.changeId(-user.getId());
-            userRepository.save(findUser);
+            findUser.changeId("-" + user.getId());
         } catch (Exception e) {
             // 예외 처리
             throw new RuntimeException("Failed to delete user", e);
@@ -68,27 +71,39 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    @Transactional
     public void banUser(String userUuid) {
         try {
             User findUser = findUserByUuid(userUuid);
             findUser.changeState(!findUser.isState());
-            userRepository.save(findUser);
         } catch (Exception e) {
             // 예외 처리
             throw new RuntimeException("Failed to ban user", e);
         }
     }
 
-//    @Override
-//    public List<Badge> getBadges(String uuid) {
-//        return ;
-//    }
-
-    public User findUserByUuid(String uuid) {
+    private User findUserByUuid(String uuid) {
         Optional<User> optionalUser = userRepository.findByUserUuid(uuid);
         User findUser = optionalUser
-                .orElseThrow( () -> new NullPointerException());
+                .orElseThrow( () -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
         return findUser;
+    }
+
+    @Override
+    public boolean isNicknameAvailable(String nickname) {
+        if(userRepository.existsByNickname(nickname)) {
+            throw new BusinessLogicException(ExceptionCode.NICKNAME_EXIST);
+        }
+
+        return true;
+    }
+
+    public boolean isEmailAvailable(String email) {
+        if(userRepository.existsByEmail(email)) {
+            throw new BusinessLogicException(ExceptionCode.EMAIL_EXIST);
+        }
+
+        return true;
     }
 
 //    public static void copyNonNullProperties(Object src, Object target) {
