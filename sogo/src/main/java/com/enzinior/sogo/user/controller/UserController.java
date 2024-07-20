@@ -53,7 +53,7 @@ public class UserController {
     // 닉네임 중복 확인
     @GetMapping("")
     public ResponseEntity<?> findUserByNickname(@RequestParam("nickname") String nickname) {
-        userService.isNicknameAvailable(nickname);
+        userService.verifyNicknameAvailable(nickname);
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }

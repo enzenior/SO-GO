@@ -36,8 +36,16 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public boolean verifyExistsUser(User user) {
-        return (isEmailAvailable(user.getEmail()) && isNicknameAvailable(user.getNickname()));
+    @Transactional(readOnly = true)
+    public void verifyExistsUser(User user) {
+        isEmailAvailable(user.getEmail());
+        isNicknameAvailable(user.getNickname());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public void verifyNicknameAvailable(String nickname) {
+        isNicknameAvailable(nickname);
     }
 
     @Override
@@ -82,6 +90,7 @@ public class UserServiceImpl implements UserService{
         }
     }
 
+
     private User findUserByUuid(String uuid) {
         Optional<User> optionalUser = userRepository.findByUserUuid(uuid);
         User findUser = optionalUser
@@ -89,21 +98,16 @@ public class UserServiceImpl implements UserService{
         return findUser;
     }
 
-    @Override
-    public boolean isNicknameAvailable(String nickname) {
+    private void isNicknameAvailable(String nickname) {
         if(userRepository.existsByNickname(nickname)) {
             throw new BusinessLogicException(ExceptionCode.NICKNAME_EXIST);
         }
-
-        return true;
     }
 
-    public boolean isEmailAvailable(String email) {
+    private void isEmailAvailable(String email) {
         if(userRepository.existsByEmail(email)) {
             throw new BusinessLogicException(ExceptionCode.EMAIL_EXIST);
         }
-
-        return true;
     }
 
 //    public static void copyNonNullProperties(Object src, Object target) {

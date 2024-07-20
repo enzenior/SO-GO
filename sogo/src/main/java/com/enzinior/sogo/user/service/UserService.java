@@ -12,7 +12,7 @@ public interface UserService {
 
     User findUser(String uuid);
 
-    boolean verifyExistsUser(User user);
+    void verifyExistsUser(User user);
 
     User updateUser(UserDto.Patch user);
 
@@ -20,6 +20,5 @@ public interface UserService {
 
     void banUser(String uuid);
 
-    boolean isNicknameAvailable(String nickname);
-
+    void verifyNicknameAvailable(String nickname);
 }
