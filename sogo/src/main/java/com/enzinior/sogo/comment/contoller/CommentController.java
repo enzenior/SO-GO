@@ -50,20 +50,23 @@ public class CommentController {
     public ResponseEntity<String> delete(@PathVariable("comment-uuid") String commentUuid) {
         int isComplete = commentService.removeComment(commentUuid);
         if (isComplete>0)
-            return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
-        return new ResponseEntity<String>(FAIL, HttpStatus.NOT_FOUND);
+            return ResponseEntity.ok(isComplete);
+        return ResponseEntity.noContent(); // 여기에
     }
 
     // 댓글 숨김
     @PatchMapping("/{comment-uuid}/blind")
     public ResponseEntity hide(@PathVariable("comment-uuid") String commentUuid){
-        return commentService.hideComment(commentUuid);
+       commentService.hideComment(commentUuid); // 에러가 났을때의 처리를 위해서 원 값과 비교하는 식으로 진행해도 될듯..? 좀만 더 로직 고민해볼게요
+       return ResponseEntity.ok();
     }
 
     // 댓글 상세 조회
     @GetMapping("/{comment-uuid}")
     public ResponseEntity detail(@PathVariable("comment-uuid") String commentUuid){
-        return commentService.readComment(commentUuid);
+        Comment comment = commentService.readComment(commentUuid);
+        CommentDto.Response commenResponse = commentMapper.commentToCommentResponse(comment);
+        return ResponseEntity.ok(commenResponse);
     }
 
 

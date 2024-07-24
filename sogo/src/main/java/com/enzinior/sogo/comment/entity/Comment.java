@@ -19,7 +19,7 @@ public class Comment {
     @Id
     @Column(name="comment_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private long commentId;
 
     @Column(name = "comment_uuid", columnDefinition = "varchar(80)", unique = true)
     private String uuid = UUID.randomUUID().toString();
@@ -35,11 +35,11 @@ public class Comment {
 
     private String parent;
 
-    @JoinColumn(name = "user_id")
-    @OneToOne
+    @JoinColumn(name = "user_userId")
+    @OneToOne(fetch = FetchType.LAZY)
     private User user;
 
-    @JoinColumn(name = "review_id")
-    @ManyToOne
+    @JoinColumn(name = "review_reviewId")
+    @ManyToOne(fetch = FetchType.LAZY)
     private Review review;
 }

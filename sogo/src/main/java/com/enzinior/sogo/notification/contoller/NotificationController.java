@@ -40,7 +40,7 @@ public class NotificationController {
     // 안읽은 알림 갯수 반환 /api/notification/{user-uuid}/yet
     @GetMapping("/{user-uuid}/yet")
     public  ResponseEntity count(@PathVariable("user-uuid") String userUuid){
-        return notificationService.readCntNotification(userUuid);
+        return ResponseEntity.ok(notificationService.readCntNotification(userUuid));
     }
 
 }

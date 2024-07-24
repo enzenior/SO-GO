@@ -17,7 +17,7 @@ public class Notification {
     @Id
     @Column(name="notification_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private long notificationId;
 
     @Column(name = "notification_uuid", columnDefinition = "varchar(80)", unique = true)
     private String uuid;
@@ -25,13 +25,15 @@ public class Notification {
     @Lob
     private String content;
 
-    @ColumnDefault("true")
+    @ColumnDefault("false")
     private boolean isRead;
 
-
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_userId")
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
+
     @JoinColumn(name = "review_id")
+    @ManyToOne(fetch = FetchType.LAZY)
     private Review review;
 
 }

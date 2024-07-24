@@ -14,7 +14,7 @@ public class PlaceImg {
     @Id
     @Column(name = "placeImg_id")
     @GeneratedValue(Strategy = GenerationType.IDENTITY)
-    private long placeImg_id;
+    private long placeImgId;
 
     @Setter
     @Column(name = "img", columnDefinition = "varchar(1024)")

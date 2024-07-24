@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class CommentServiceImpl implements CommentService {
 
     private final CommentsRepository commentsRepository;
@@ -50,7 +51,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     private Comment verifiedByUuid(String commentUuid){
-        Optional<Comment> comment = commentsRepository.
+        Optional<Comment> comment = commentsRepository.findByUuid(commentUuid);
         return comment.get();
     }
 

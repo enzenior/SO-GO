@@ -22,7 +22,7 @@ public class Place {
     @Id
     @Column(name="place_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private long placeId;
 
     @Setter
     @Column(columnDefinition = "varchar(60)")

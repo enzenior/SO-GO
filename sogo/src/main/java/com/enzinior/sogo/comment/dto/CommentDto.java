@@ -14,7 +14,6 @@ public class CommentDto {
         private String content;
         @NotBlank
         private String userUuid;
-        @NotBlank
         private String parentUuid;
         @NotBlank
         private String reviewUuid;
