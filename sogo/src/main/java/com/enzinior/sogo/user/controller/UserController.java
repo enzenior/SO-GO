@@ -29,11 +29,6 @@ public class UserController {
 //        return response;
 //    }
 
-    @GetMapping("/jwt-test")
-    public String jwtTest() {
-        return "jwtTest 요청 성공";
-    }
-
     // 회원 등록
     @PostMapping("")
     public ResponseEntity<?> signUp(@RequestBody @Valid UserDto.SignUp userDto) {
