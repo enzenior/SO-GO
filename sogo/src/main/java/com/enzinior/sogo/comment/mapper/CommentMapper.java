@@ -17,6 +17,6 @@ public interface CommentMapper {
     @Mapping(source = "userImg", target = "user.img")
     CommentDto.Response commentToCommentResponse(Comment comment);
 
-    List<CommentDto.Response> commentsTocomments(List<Comment>);
+    List<CommentDto.Response> commentsTocommentsResponses(List<Comment>);
 
 }
