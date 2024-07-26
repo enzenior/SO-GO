@@ -1,12 +1,15 @@
 package com.enzinior.sogo.review.entity;
 
 import com.enzinior.sogo.audit.Auditable;
+import com.enzinior.sogo.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -44,9 +47,13 @@ public class Review extends Auditable {
     @Column(columnDefinition = "varchar(1024)")
     private String img;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "USER_ID")
-//    private User user;
+    @Setter
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "USER_ID")
+    private User user;
+
+    @OneToMany(mappedBy = "review")
+    private List<Scrap> scraps = new ArrayList<>();
 
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "PLACE_ID")

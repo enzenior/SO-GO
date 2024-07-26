@@ -19,7 +19,7 @@ public class ReviewDto {
         @Positive
         private int score;
         @NotBlank
-        private String memberUuid;
+        private String userUuid;
         @NotBlank
         private String placeUuid;
     }

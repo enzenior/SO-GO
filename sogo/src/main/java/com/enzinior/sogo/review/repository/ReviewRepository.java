@@ -15,7 +15,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     List<Review> findByPlacePlaceUuid(String placeUuid);
     @EntityGraph(attributePaths = {"user"})
     List<Review> findByUserUuid(String userUuid);
-    @Query("SELECT r FROM Review r JOIN Scrap s JOIN User u" +
+    @Query("SELECT distinct r FROM Review r JOIN r.scraps s JOIN s.user u " +
         "WHERE u.userUuid = :userUuid")
     List<Review> findScraped(String userUuid);
 }
