@@ -49,7 +49,8 @@ public class UserDto {
     public static class Response {
         private String nickname;
         private String img;
-        private String role;
+        private boolean role;
+        private String userUuid;
         private String sentence;
     }
 
@@ -58,15 +59,7 @@ public class UserDto {
     public static class Cookie {
         private String nickname;
         private String img;
-        private String role;
-        private String userUuid;
-    }
-
-    @Getter
-    @Builder
-    public static class Auth {
-        private String nickname;
-        private String role;
+        private boolean role;
         private String userUuid;
     }
 

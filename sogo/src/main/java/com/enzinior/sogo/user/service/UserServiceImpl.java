@@ -69,8 +69,7 @@ public class UserServiceImpl implements UserService{
         User user = findUserByUuid(userUuid);
         try {
             User findUser = findUserByUuid(user.getUserUuid());
-            findUser.changeNickname(userUuid);
-            findUser.changeEmail(userUuid);
+            findUser.changeEmail(user.getUserUuid());
             findUser.changeImg("");
             findUser.changeId("-" + user.getId());
         } catch (Exception e) {

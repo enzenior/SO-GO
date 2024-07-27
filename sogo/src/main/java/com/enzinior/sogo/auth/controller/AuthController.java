@@ -1,26 +1,10 @@
 package com.enzinior.sogo.auth.controller;
 
-import com.enzinior.sogo.auth.service.AuthService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@RequestMapping("/api/users")
 @RestController
-@RequestMapping("/api/auth")
-@RequiredArgsConstructor
 public class AuthController {
-
-    private final AuthService authService;
-
-    @PostMapping("/reissue")
-    public ResponseEntity<?> reissue(HttpServletRequest request, HttpServletResponse response) {
-        authService.reissueToken(request, response);
-        return ResponseEntity.ok().build();
-    }
-
+//    @PostMapping
 }
