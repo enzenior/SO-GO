@@ -2,10 +2,7 @@ package com.enzinior.sogo.comment.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.util.UUID;
@@ -13,7 +10,6 @@ import java.util.UUID;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name="comments")
 public class Comment {
 
     @Id
@@ -25,18 +21,21 @@ public class Comment {
     private String uuid = UUID.randomUUID().toString();
 
     @Lob
+    @Setter
     private String content;
 
     @ColumnDefault("0")
+    @Setter
     private int report;
 
     @ColumnDefault("false")
+    @Setter
     private boolean secret;
 
-    private String parent;
+    private String parent; // 상위 댓글이 있다면 표시.
 
     @JoinColumn(name = "user_userId")
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY) // 유저가 여러개의 댓글을 작성할 수 있음
     private User user;
 
     @JoinColumn(name = "review_reviewId")

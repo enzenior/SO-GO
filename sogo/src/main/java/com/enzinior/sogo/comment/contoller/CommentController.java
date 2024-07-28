@@ -28,9 +28,8 @@ public class CommentController {
     // 댓글 전체 조회
     @GetMapping
     public ResponseEntity list(@PathVariable("review-uuid") String reviewUuid) {
-
         List<Comment> Comments = commentService.searchComment(reviewUuid);
-        return ResponseEntity.ok(commentMapper.commentsTocomments(Comments));
+        return ResponseEntity.ok(commentMapper.commentsTocommentsResponses(Comments));
     }
 
     // 댓글 작성
@@ -51,14 +50,13 @@ public class CommentController {
         int isComplete = commentService.removeComment(commentUuid);
         if (isComplete>0)
             return ResponseEntity.ok(isComplete);
-        return ResponseEntity.noContent(); // 여기에
+        return ResponseEntity.noContent();
     }
 
     // 댓글 숨김
     @PatchMapping("/{comment-uuid}")
     public ResponseEntity hide(@PathVariable("comment-uuid") String commentUuid){
-       commentService.hideComment(commentUuid); // 에러가 났을때의 처리를 위해서 원 값과 비교하는 식으로 진행해도 될듯..? 좀만 더 로직 고민해볼게요
-       return ResponseEntity.ok();
+       return ResponseEntity.ok(commentService.hideComment(commentUuid));
     }
 
     // 댓글 상세 조회

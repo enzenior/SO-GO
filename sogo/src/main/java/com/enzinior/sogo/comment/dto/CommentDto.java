@@ -23,6 +23,7 @@ public class CommentDto {
     @Setter
     public static class Response {
         private String commentUuid;
+        private String reviewUuid; // 추가
         private String userNickname;
         private String userImg;
         private String content;
