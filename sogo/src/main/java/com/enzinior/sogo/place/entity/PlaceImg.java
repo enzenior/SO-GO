@@ -8,9 +8,8 @@ import lombok.Setter;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "place_imgs")
 public class PlaceImg {
-    @Setter
+
     @Id
     @Column(name = "placeImg_id")
     @GeneratedValue(Strategy = GenerationType.IDENTITY)

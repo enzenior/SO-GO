@@ -10,9 +10,11 @@ public interface PlaceRepository extends JpaRepository<Place, Long> {
 
     Optional<Place> findByUuid(String placeUuid);
 
-    List<Place> findByName(String word);
+    @Query("SELECT p FROM Place p WHERE p.placeName CONCAT('%',:word, '%') OR p.placeDescription CONCAT('%',:word, '%') ")
+    List<Place> findByWord(String word);
 
-    String findByplaceInfo(Place place);
+    @Query("SELECT p FROM Place p WHERE p.placeName = :name AND p.lng = :lng AND p.lat = p.lat")
+    String findByplaceInfo(String name, double lng, double lat);
 
 
     // 장소 검색 -> query

@@ -15,10 +15,8 @@ import java.util.UUID;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name="places")
 public class Place {
 
-    @Setter
     @Id
     @Column(name="place_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,9 +44,15 @@ public class Place {
     @Setter
     private float score;
 
+    @Setter
     private double lat;
 
+    @Setter
     private double lng;
+
+    @Setter
+    @ColumnDefault("false")
+    private boolean hide;
 
     @Column(name = "place_uuid", columnDefinition = "varchar(80)", unique = true)
     private String uuid = UUID.randomUUID().toString();

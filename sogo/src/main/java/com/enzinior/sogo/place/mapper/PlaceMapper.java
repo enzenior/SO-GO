@@ -9,9 +9,11 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface PlaceMapper {
 
+
     Place placePostToPlace(PlaceDto.Post RequestBody);
     PlaceDto.SimpleResponse placeToSimplePlaceDto(Place place);
-    PlaceDto.Response placeToResponsePlaceDto(Place place);
+    PlaceDto.Response placeToPlaceDtoResponse(Place place);
 
-    List<PlaceDto.Response> placesToPlaceDto(List<Place> places);
+    List<PlaceDto.SimpleResponse> placesToPlaceDtoSimpleResponses(List<Place> places);
+    List<PlaceDto.Response> placesToPlaceDtoResponse(List<Place> places);
 }

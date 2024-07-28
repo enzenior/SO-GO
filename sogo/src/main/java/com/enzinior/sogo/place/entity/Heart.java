@@ -9,9 +9,8 @@ import lombok.Setter;
 @Entity
 @NoArgsConstructor
 @Getter
-@Table(name = "hearts")
 public class Heart {
-    @Setter
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "heart_id")

@@ -19,12 +19,17 @@ public interface PlaceService {
     // 장소 상세페이지
     Place getPlace(String placeUuid);
 
+    // 장소 수정
+    void update(Place place, String placeUuid);
+
+    // 장소 숨김
+    void hide(String placeUuid);
+
+    // 장소 점수 수정
+    void scoreUpdate (String placeUuid, float score);
 
 
     // 장소 찜하기
     // 내가 찜한 장소 조회
-    // 장소 등록
-    // 장소 수정
-    // 장소 삭제
 
 }

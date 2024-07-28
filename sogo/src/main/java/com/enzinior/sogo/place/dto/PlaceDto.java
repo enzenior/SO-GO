@@ -32,8 +32,8 @@ public class PlaceDto {
         private String placeUuid;
         private String placeName;
         private float score;
-        private String tag;
-        private String summary;
+//        private String tag;
+//        private String summary;
         private String main_img;
     }
 
@@ -45,11 +45,12 @@ public class PlaceDto {
         private String placeDescription;
         private double lat;
         private double lng;
-//        private List<String> imgList;
+        private float score;
+        private boolean hide;
+//        private String tag;
+//        private String summary;
+        private List<String> placeImgs;
     }
-    // summary
-    // tag
-
 
 
 }
