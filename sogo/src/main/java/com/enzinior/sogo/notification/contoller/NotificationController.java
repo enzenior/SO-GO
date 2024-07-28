@@ -16,30 +16,35 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @Validated
-@RequestMapping("/api/notifications")
+@RequestMapping("/api/notifications/{user-uuid}")
 public class NotificationController {
     private final NotificationService notificationService;
     private final NotificationMapper notificationMapper;
 
     // 알림 전체 조회 /api/notifications/{user-uuid}
-    @GetMapping("/{user-uuid}")
+    @GetMapping
     public ResponseEntity list(@PathVariable("user-uuid") String userUuid) {
 
-        List<Notification> entitylist = notificationService.searchNotification(userUuid);
-        return ResponseEntity.ok(notificationMapper.notificationDefaultToNotificationDto(entitylist));
+        List<Notification> notificationList = notificationService.searchNotification(userUuid);
+        notificationService.readAllNotification(userUuid);
+        // 생각해보니 알림 조회를 누르자마자 모든 알림은 읽음처리 해야함
+        // 그치만 조회 누르기 전 안읽은 알림들은 표시가 되어야함.
+        // 로직을 위와 같이 짜면 안읽은 알림이 리스트로 먼저 저장된 후 전체 읽음 처리 되나?
+        return ResponseEntity.ok(notificationMapper.notificationsToNotificationResponses(notificationList));
 
     }
 
-    // 알림 읽음 처리 /api/notifications/{user-uuid}
-    @PatchMapping("/{user-uuid}")
-    public ResponseEntity hide(@PathVariable("user-uuid") String userUuid){
-        return notificationService.hideNotification(userUuid);
-    }
+//    // 알림 읽음 처리 /api/notifications/{user-uuid}
+//    @PatchMapping
+//    public ResponseEntity hide(@PathVariable("user-uuid") String userUuid){
+//        notificationService.readAllNotification(userUuid);
+//        return ResponseEntity.ok();
+//    }
 
 
     // 안읽은 알림 갯수 반환 /api/notification/{user-uuid}/yet
-    @GetMapping("/{user-uuid}/yet")
-    public  ResponseEntity count(@PathVariable("user-uuid") String userUuid){
+    @GetMapping("/yet")
+    public ResponseEntity count(@PathVariable("user-uuid") String userUuid){
         return ResponseEntity.ok(notificationService.readCntNotification(userUuid));
     }
 

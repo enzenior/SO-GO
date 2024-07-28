@@ -11,16 +11,10 @@ import org.mapstruct.Mapping;
 public interface NotificationMapper {
 
     @Mapping(source = "userUuid", target = "user.uuid")
-    Notification notificationPostToNotification(NotificationDto.Post requestBody);
-
-    @Mapping(source = "userUuid", target = "user.uuid")
-    NotificationDto.ResponseDefault notificationDefaultToNotificationDto(Notification notification);
-
-    @Mapping(source = "userUuid", target = "user.uuid")
     @Mapping(source = "reviewImg", target = "review.img")
     @Mapping(source = "reviewUuid", target = "review.uuid")
-    NotificationDto.ResponseContent notificationReviewToNotificationDto(Notification notification);
+    NotificationDto.Response notificationToNotificationResponse(Notification notification);
 
-    List<NotificationDto.ResponseContent> notificationDtoToNotifications(List<Notification>);
+    List<NotificationDto.Response> notificationsToNotificationResponses(List<Notification>);
 
 }

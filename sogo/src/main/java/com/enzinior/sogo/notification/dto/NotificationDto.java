@@ -8,25 +8,8 @@ import lombok.*;
 public class NotificationDto {
 
     @Getter
-    public static class Post {
-        @NotBlank
-        private String userUuid; // private User user;
-        @NotBlank
-        private String content;
-    }
-
-    @Getter
     @Setter
-    public static class ResponseDefault {
-        private String userUuid;
-        private String content;
-        private boolean isRead;
-        private String notificationUuid;
-    }
-
-    @Getter
-    @Setter
-    public static class ResponseContent {
+    public static class Response {
         private String userUuid;
         private String content;
         private boolean isRead;

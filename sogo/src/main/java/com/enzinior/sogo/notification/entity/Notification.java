@@ -9,9 +9,7 @@ import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
-@Table(name="notifications")
 public class Notification {
 
     @Id
@@ -23,16 +21,20 @@ public class Notification {
     private String uuid;
 
     @Lob
+    @Setter
     private String content;
 
+    @Setter
     @ColumnDefault("false")
     private boolean isRead;
 
-    @JoinColumn(name = "user_userId")
+    @JoinColumn(name = "user_id")
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
     @JoinColumn(name = "review_id")
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     private Review review;
 
