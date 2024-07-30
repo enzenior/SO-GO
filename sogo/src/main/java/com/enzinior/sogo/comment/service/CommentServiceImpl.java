@@ -42,11 +42,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void hideComment(String commentUuid){
         Comment comment = verifiedByUuid(commentUuid);
-        if(comment.isSecret()){
-            comment.setSecret(false);
-        }else{
-            comment.setSecret(true);
-        }
+        comment.setSecret(!comment.isSecret());
     }
 
     @Override

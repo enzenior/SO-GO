@@ -55,7 +55,7 @@ public class Place {
     private boolean hide;
 
     @Column(name = "place_uuid", columnDefinition = "varchar(80)", unique = true)
-    private String uuid = UUID.randomUUID().toString();
+    private String placeUuid = UUID.randomUUID().toString();
 
     @OneToMany(mappedBy = "heart")
     private List<Heart> hearts = new ArrayList<>();

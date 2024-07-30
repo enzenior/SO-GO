@@ -18,7 +18,7 @@ public class Comment {
     private long commentId;
 
     @Column(name = "comment_uuid", columnDefinition = "varchar(80)", unique = true)
-    private String uuid = UUID.randomUUID().toString();
+    private String commentUuid = UUID.randomUUID().toString();
 
     @Lob
     @Setter

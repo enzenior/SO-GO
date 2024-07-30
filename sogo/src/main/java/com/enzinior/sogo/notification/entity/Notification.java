@@ -18,7 +18,7 @@ public class Notification {
     private long notificationId;
 
     @Column(name = "notification_uuid", columnDefinition = "varchar(80)", unique = true)
-    private String uuid;
+    private String notificationUuid;
 
     @Lob
     @Setter

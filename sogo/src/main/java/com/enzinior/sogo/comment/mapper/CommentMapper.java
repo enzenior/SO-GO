@@ -11,12 +11,12 @@ public interface CommentMapper {
 
     @Mapping(source = "reviewUuid", target = "review.uuid")
     @Mapping(source = "userUuid", target = "user.uuid")
-    @Mapping(source = "parentUuid", target = "comment.uuid")
+    @Mapping(source = "parentUuid", target = "comment.commentUuid")
     Comment commentPostToComment(CommentDto.Post requestBody);
 
     @Mapping(source = "userNickname", target = "review.nickname")
     @Mapping(source = "userImg", target = "user.img")
-    @Mapping(source = "parentUuid", target = "comment.uuid")
+    @Mapping(source = "parentUuid", target = "comment.commentUuid")
     @Mapping(source = "reviewUuid", target = "review.uuid")
     CommentDto.Response commentToCommentResponse(Comment comment);
 

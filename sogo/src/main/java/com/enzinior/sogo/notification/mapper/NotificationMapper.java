@@ -10,9 +10,9 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface NotificationMapper {
 
-    @Mapping(source = "userUuid", target = "user.uuid")
+    @Mapping(source = "userUuid", target = "user.userUuid")
     @Mapping(source = "reviewImg", target = "review.img")
-    @Mapping(source = "reviewUuid", target = "review.uuid")
+    @Mapping(source = "reviewUuid", target = "review.reviewUuid")
     NotificationDto.Response notificationToNotificationResponse(Notification notification);
 
     List<NotificationDto.Response> notificationsToNotificationResponses(List<Notification>);
