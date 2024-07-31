@@ -28,7 +28,7 @@ public class CommentController {
     // 댓글 전체 조회
     @GetMapping
     public ResponseEntity list(@PathVariable("review-uuid") String reviewUuid) {
-        List<Comment> Comments = commentService.searchComment(reviewUuid);
+        List<Comment> Comments = commentService.selectAllComment(reviewUuid);
         return ResponseEntity.ok(commentMapper.commentsTocommentsResponses(Comments));
     }
 

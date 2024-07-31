@@ -7,7 +7,8 @@ import java.util.List;
 
 public interface CommentService{
 
-    List<Comment> searchComment(String reviewUuid);
+    List<List<Comment>> selectAllComment(String reviewUuid);
+
     Comment createComment(Comment comment);
     int removeComment(String commentUuid);
     void hideComment(String commentUuid);

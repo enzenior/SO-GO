@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,11 +18,28 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
 //    private final ReviewRepository reviewRepository;
 
-    @Override
-    @Transactional(readOnly = true)
-    public List<Comment> searchComment(String reviewUuid){
+//    @Override
+//    @Transactional(readOnly = true) // 미완성입니당
+//    public List<List<Comment>> selectAllComment(String reviewUuid){
+//        List<Comment> allCommentList = commentRepository.findParentByReviewUuid(reviewUuid);
+//        List<Comment> cocommentList = commentRepository.findWithoutParentByReviewUuid(reviewUuid);
+//        List<Comment> parentList = commentRepository.findParentByReviewUuid(reviewUuid);
+//        List<List<Comment>> commentList = new ArrayList<>();
+////        for(int i = 0; i<parentList.size(); i++){
+////            commentList.get(i).add(new ArrayList<>());
+////            for(int j = 0; j<cocommentList.size(); j++);
+////                if(cocommentList.get(j).getParent().equals(parentList.get(i).getParent()))
+////                    commentList.add(new Comment(cocommentList.get(j));
+////
+////            }
+////        return commentList;
+//        return commentListList;
+    }
+
+
+
 //        if(reviewRepository.verifiedByUuid(reviewUuid)) // 해당 리뷰가 있는지 확인. 추가 예정
-        return commentRepository.findAllByReviewUuid(reviewUuid);
+        return
     }
 
     @Override
