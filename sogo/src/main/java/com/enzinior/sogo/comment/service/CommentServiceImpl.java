@@ -16,7 +16,7 @@ import java.util.Optional;
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
-//    private final ReviewRepository reviewRepository;
+    private final ReviewRepository reviewRepository;
 
 //    @Override
 //    @Transactional(readOnly = true) // 미완성입니당
@@ -34,13 +34,13 @@ public class CommentServiceImpl implements CommentService {
 ////            }
 ////        return commentList;
 //        return commentListList;
-    }
+//    }
 
 
 
 //        if(reviewRepository.verifiedByUuid(reviewUuid)) // 해당 리뷰가 있는지 확인. 추가 예정
-        return
-    }
+//        return
+//    }
 
     @Override
     public Comment createComment(Comment comment){
