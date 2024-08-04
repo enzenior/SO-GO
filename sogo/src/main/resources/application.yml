@@ -31,7 +31,3 @@ spring:
       org:
         springframework:
           orm: debug
-  social:
-    naverId: lUtg0zogbMmy0SayMxwY
-    naverSecret: Cjw2PLviT3
-    kakaoId: bebf13b3e768b4306e7930e69e7aa30e
