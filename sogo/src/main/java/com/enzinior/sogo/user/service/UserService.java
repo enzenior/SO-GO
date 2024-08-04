@@ -2,7 +2,6 @@ package com.enzinior.sogo.user.service;
 
 import com.enzinior.sogo.user.dto.UserDto;
 import com.enzinior.sogo.user.entity.User;
-import jakarta.validation.Valid;
 
 public interface UserService {
 

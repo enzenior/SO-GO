@@ -2,16 +2,13 @@ package com.enzinior.sogo.user.entity;
 
 import com.enzinior.sogo.user.dto.UserDto;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity(name="users")
 @Table(name="users")
 public class User {
