@@ -18,7 +18,7 @@ import java.util.UUID;
 public class Review extends Auditable {
     @Setter
     @Id
-    @Column(name = "REVIEW_ID")
+    @Column(name = "review_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long reviewId;
 
@@ -49,7 +49,7 @@ public class Review extends Auditable {
 
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_ID")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @OneToMany(mappedBy = "review")
