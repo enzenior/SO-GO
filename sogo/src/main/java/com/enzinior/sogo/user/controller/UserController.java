@@ -1,14 +1,11 @@
 package com.enzinior.sogo.user.controller;
 
-import com.enzinior.sogo.exception.BusinessLogicException;
-import com.enzinior.sogo.exception.ExceptionCode;
 import com.enzinior.sogo.user.dto.UserDto;
 import com.enzinior.sogo.user.entity.User;
 import com.enzinior.sogo.user.mapper.UserMapper;
 import com.enzinior.sogo.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,11 +25,6 @@ public class UserController {
 //        ResponseEntity<?> response = userService.logout();
 //        return response;
 //    }
-
-    @GetMapping("/jwt-test")
-    public String jwtTest() {
-        return "jwtTest 요청 성공";
-    }
 
     // 회원 등록
     @PostMapping("")
