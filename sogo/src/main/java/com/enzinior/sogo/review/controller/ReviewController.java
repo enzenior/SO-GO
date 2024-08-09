@@ -21,6 +21,7 @@ import java.util.List;
 @Validated
 public class ReviewController {
     private final ReviewService reviewService;
+    private final ScrapService scrapService;
     private final ReviewMapper mapper;
 
     @PostMapping
@@ -45,9 +46,9 @@ public class ReviewController {
         return ResponseEntity.noContent().build();
     }
 
-    // 스크랩 코드 추후 추가
     @PostMapping("/{review-uuid}")
     public ResponseEntity scrapReview(@PathVariable("review-uuid") String reviewUuid, @RequestBody String userUuid) {
+        scrapService.createScrap(reviewUuid, userUuid);
         return ResponseEntity.ok().build();
     }
 
