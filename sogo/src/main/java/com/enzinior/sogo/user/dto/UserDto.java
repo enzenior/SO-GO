@@ -1,6 +1,5 @@
 package com.enzinior.sogo.user.dto;
 
-import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -60,6 +59,14 @@ public class UserDto {
         private String nickname;
         private String img;
         private boolean role;
+        private String userUuid;
+    }
+
+    @Getter
+    @Builder
+    public static class Auth {
+        private String nickname;
+        private String role;
         private String userUuid;
     }
 

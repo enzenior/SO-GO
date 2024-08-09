@@ -20,7 +20,7 @@ spring:
     servlet:
       context-path: /
   jwt:
-    secretKey: yourSecretKey
+    secret: hiwearesogoandweareinssafybutwewantescape
     expiration: 360000
     header: Authorization
     refresh-token:
