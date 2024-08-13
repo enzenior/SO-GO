@@ -53,7 +53,7 @@ public class ReviewServiceImpl implements ReviewService{
 
     @Override
     public List<Review> getUserReviews(String userUuid) {
-        return reviewRepository.findByUserUuid(userUuid);
+        return reviewRepository.findByUserUserUuid(userUuid);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class ReviewServiceImpl implements ReviewService{
     }
 
     private Review verifiedByUuid(String uuid) {
-        Optional<Review> optionalReview = reviewRepository.findByUuid(uuid);
+        Optional<Review> optionalReview = reviewRepository.findByReviewUuid(uuid);
         return optionalReview
             .orElseThrow(() -> new RuntimeException("No Review found with uuid " + uuid));
     }
