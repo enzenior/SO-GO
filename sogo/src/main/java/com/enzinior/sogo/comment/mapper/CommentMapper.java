@@ -1,25 +1,36 @@
 package com.enzinior.sogo.comment.mapper;
 
+import java.util.List;
+
 import com.enzinior.sogo.comment.dto.CommentDto;
 import com.enzinior.sogo.comment.entity.Comment;
+import com.enzinior.sogo.review.entity.Review;
+import com.enzinior.sogo.user.entity.User;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
 public interface CommentMapper {
 
-    @Mapping(source = "reviewUuid", target = "review.uuid")
-    @Mapping(source = "userUuid", target = "user.uuid")
-    @Mapping(source = "parentUuid", target = "comment.commentUuid")
-    Comment commentPostToComment(CommentDto.Post requestBody);
+    default Comment commentPostToComment(CommentDto.Post requestBody) {
+        Comment comment = new Comment();
 
-    @Mapping(source = "userNickname", target = "review.nickname")
-    @Mapping(source = "userImg", target = "user.img")
-    @Mapping(source = "parentUuid", target = "comment.commentUuid")
-    @Mapping(source = "reviewUuid", target = "review.uuid")
+        Review review = new Review(requestBody.getReviewUuid());
+        User user = User.builder().userUuid(requestBody.getUserUuid()).build();
+
+        comment.setCommentUuid(requestBody.getParentUuid());
+        comment.setReview(review);
+        comment.setUser(user);
+        return comment;
+    }
+
+    @Mapping(source = "user.nickname", target = "userNickname")
+    @Mapping(source = "user.img", target = "userImg")
+    @Mapping(source = "commentUuid", target = "parentUuid")
+    @Mapping(source = "review.reviewUuid", target = "reviewUuid")
     CommentDto.Response commentToCommentResponse(Comment comment);
 
-    List<CommentDto.Response> commentsTocommentsResponses(List<Comment>);
-
+    // List<CommentDto.Response> commentsToCommentsResponses(List<Comment> comments);
+    List<List<CommentDto.Response>> commentsToCommentsResponses(List<List<Comment>> comments);
 }
