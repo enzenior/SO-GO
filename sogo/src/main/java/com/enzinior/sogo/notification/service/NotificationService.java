@@ -1,6 +1,8 @@
 package com.enzinior.sogo.notification.service;
 
 import com.enzinior.sogo.notification.entity.Notification;
+import com.enzinior.sogo.review.entity.Review;
+import com.enzinior.sogo.user.entity.User;
 
 import java.util.List;
 
@@ -12,10 +14,8 @@ public interface NotificationService {
 
     long readYetCntNotification(String userUuid);
 
-    Notification createNotificationByReview(User user, String content, String reviewUuid);
+    Notification createNotificationByReview(User user, String content, Review review);
 
     Notification createNotification(User user, String content);
-
-
 
 }
