@@ -22,6 +22,7 @@ public interface CommentMapper {
         comment.setCommentUuid(requestBody.getParentUuid());
         comment.setReview(review);
         comment.setUser(user);
+        comment.setContent(requestBody.getContent());
         return comment;
     }
 
@@ -31,6 +32,6 @@ public interface CommentMapper {
     @Mapping(source = "review.reviewUuid", target = "reviewUuid")
     CommentDto.Response commentToCommentResponse(Comment comment);
 
-    // List<CommentDto.Response> commentsToCommentsResponses(List<Comment> comments);
-    List<List<CommentDto.Response>> commentsToCommentsResponses(List<List<Comment>> comments);
+    List<CommentDto.Response> commentsToCommentsResponses(List<Comment> comments);
+    List<List<CommentDto.Response>> commentListToCommentsResponseList(List<List<Comment>> comments);
 }

@@ -30,7 +30,7 @@ public class CommentController {
     @GetMapping
     public ResponseEntity list(@PathVariable("review-uuid") String reviewUuid) {
         List<List<Comment>> Comments = commentService.selectAllComment(reviewUuid);
-        return ResponseEntity.ok(commentMapper.commentsToCommentsResponses(Comments));
+        return ResponseEntity.ok(commentMapper.commentListToCommentsResponseList(Comments));
     }
 
     // 댓글 작성
