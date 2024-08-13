@@ -1,12 +1,15 @@
 package com.enzinior.sogo.place.mapper;
 
 
+import java.util.List;
+
 import com.enzinior.sogo.place.dto.PlaceDto;
 import com.enzinior.sogo.place.entity.Place;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface PlaceMapper {
 
 

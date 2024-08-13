@@ -12,7 +12,7 @@ public class PlaceImg {
 
     @Id
     @Column(name = "placeImg_id")
-    @GeneratedValue(Strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long placeImgId;
 
     @Setter
