@@ -55,10 +55,10 @@ public class Place {
     @Column(name = "place_uuid", columnDefinition = "varchar(80)", unique = true)
     private String placeUuid = UUID.randomUUID().toString();
 
-    @OneToMany(mappedBy = "heart")
+    @OneToMany(mappedBy = "place")
     private List<Heart> hearts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "placeImg")
+    @OneToMany(mappedBy = "place")
     private List<PlaceImg> placeImgs = new ArrayList<>();
 
 }
