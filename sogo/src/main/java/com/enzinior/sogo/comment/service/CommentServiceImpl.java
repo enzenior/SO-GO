@@ -3,7 +3,6 @@ package com.enzinior.sogo.comment.service;
 import com.enzinior.sogo.audit.Auditable;
 import com.enzinior.sogo.comment.entity.Comment;
 import com.enzinior.sogo.comment.repository.CommentRepository;
-import com.enzinior.sogo.review.repository.ReviewRepository;
 import com.enzinior.sogo.review.service.ReviewService;
 
 import lombok.RequiredArgsConstructor;
@@ -14,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -80,7 +78,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     private Comment verifiedByUuid(String commentUuid){
-        Optional<Comment> comment = commentRepository.findByUuid(commentUuid);
+        Optional<Comment> comment = commentRepository.findByCommentUuid(commentUuid);
         return comment
                 .orElseThrow(() -> new RuntimeException("No Comment found with uuid " + commentUuid));
     }
