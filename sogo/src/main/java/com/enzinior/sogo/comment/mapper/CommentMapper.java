@@ -28,7 +28,7 @@ public interface CommentMapper {
 
     @Mapping(source = "user.nickname", target = "userNickname")
     @Mapping(source = "user.img", target = "userImg")
-    @Mapping(source = "commentUuid", target = "parentUuid")
+    @Mapping(source = "parent", target = "parentUuid")
     @Mapping(source = "review.reviewUuid", target = "reviewUuid")
     CommentDto.Response commentToCommentResponse(Comment comment);
 
