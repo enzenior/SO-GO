@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-        Optional<Comment> findByUuid(String commentUuid);
+        Optional<Comment> findByCommentUuid(String commentUuid);
 
         @Query("SELECT c FROM Comment c JOIN FETCH c.review r WHERE r.reviewUuid = :reviewUuid ")
         Optional<List<Comment>> commentByReviewUuid(String reviewUuid);
