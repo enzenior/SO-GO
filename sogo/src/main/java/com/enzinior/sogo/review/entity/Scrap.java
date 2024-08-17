@@ -1,29 +1,24 @@
-package com.enzinior.sogo.place.entity;
+package com.enzinior.sogo.review.entity;
 
 import com.enzinior.sogo.user.entity.User;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@NoArgsConstructor
+@Setter
 @Getter
-public class Heart {
-
+public class Scrap {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "heart_id")
-    private long heartId;
+    private Long scrapId;
 
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "USER_ID")
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
-    @JoinColumn(name = "place_id")
+    @JoinColumn(name = "REVIEW_ID")
     @ManyToOne(fetch = FetchType.LAZY)
-    private Place place;
-
+    private Review review;
 }

@@ -1,12 +1,16 @@
 package com.enzinior.sogo.comment.service;
 
+import com.enzinior.sogo.audit.Auditable;
 import com.enzinior.sogo.comment.entity.Comment;
 import com.enzinior.sogo.comment.repository.CommentRepository;
+import com.enzinior.sogo.review.service.ReviewService;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,25 +20,29 @@ import java.util.Optional;
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
-    private final ReviewRepository reviewRepository;
+    private final ReviewService reviewService;
 
-//    @Override
-//    @Transactional(readOnly = true) // 미완성입니당
-//    public List<List<Comment>> selectAllComment(String reviewUuid){
-//        List<Comment> allCommentList = commentRepository.findParentByReviewUuid(reviewUuid);
-//        List<Comment> cocommentList = commentRepository.findWithoutParentByReviewUuid(reviewUuid);
-//        List<Comment> parentList = commentRepository.findParentByReviewUuid(reviewUuid);
-//        List<List<Comment>> commentList = new ArrayList<>();
-////        for(int i = 0; i<parentList.size(); i++){
-////            commentList.get(i).add(new ArrayList<>());
-////            for(int j = 0; j<cocommentList.size(); j++);
-////                if(cocommentList.get(j).getParent().equals(parentList.get(i).getParent()))
-////                    commentList.add(new Comment(cocommentList.get(j));
-////
-////            }
-////        return commentList;
-//        return commentListList;
-//    }
+   @Override
+   @Transactional(readOnly = true)
+   public List<List<Comment>> selectAllComment(String reviewUuid){
+       reviewService.getReview(reviewUuid);
+       List<Comment> commentList = commentRepository.findWithoutParentByReviewUuid(reviewUuid);
+       List<Comment> childrenList = commentRepository.findParentByReviewUuid(reviewUuid);
+       childrenList.sort(Comparator.comparing(Auditable::getCreatedAt));
+       List<List<Comment>> allCommentList = new ArrayList<>();
+       for (int i = 0; i < commentList.size(); i++) {
+           Comment comment = commentList.get(i);
+           allCommentList.add(List.of(comment));
+           List<Comment> list = childrenList.stream()
+               .filter(c -> c.getParent().equals(comment.getCommentUuid()))
+               .toList();
+           for (Comment c : list) {
+               allCommentList.get(i).add(c);
+           }
+       }
+
+       return allCommentList;
+   }
 
 
 
@@ -49,12 +57,12 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public int removeComment(String commentUuid){
-//        if(verifiedByUuid(commentUuid)!=null){ // 삭제시 차피 값이 없으면 오류코드 출력할테니 따로 처리 안해도 되는가
+       if(verifiedByUuid(commentUuid)!=null){ // 삭제시 차피 값이 없으면 오류코드 출력할테니 따로 처리 안해도 되는가
             commentRepository.delete(verifiedByUuid(commentUuid));
-//            return 1;
-//        }else{
-//            return 0;
-//        }
+           return 1;
+       }else{
+           return 0;
+       }
     }
 
     @Override
@@ -69,9 +77,8 @@ public class CommentServiceImpl implements CommentService {
         return verifiedByUuid(commentUuid);
     }
 
-    @Transactional(readOnly = true)
     private Comment verifiedByUuid(String commentUuid){
-        Optional<Comment> comment = commentsRepository.findByUuid(commentUuid);
+        Optional<Comment> comment = commentRepository.findByCommentUuid(commentUuid);
         return comment
                 .orElseThrow(() -> new RuntimeException("No Comment found with uuid " + commentUuid));
     }

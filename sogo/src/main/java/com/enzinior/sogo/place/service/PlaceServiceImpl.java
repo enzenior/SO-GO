@@ -1,6 +1,5 @@
 package com.enzinior.sogo.place.service;
 
-import com.enzinior.sogo.comment.entity.Comment;
 import com.enzinior.sogo.place.repository.PlaceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,8 +25,8 @@ public class PlaceServiceImpl implements PlaceService{
     @Override
     @Transactional(readOnly = true)
     public String searchWhenCreateReview(Place place) {
-        Place findplace = placeRepository.findByplaceInfo(place.getPlaceName(), place.getLng(), place.getLat());
-        return findplace.getUuid();
+        Place findplace = placeRepository.findByPlaceInfo(place.getPlaceName(), place.getLng(), place.getLat());
+        return findplace.getPlaceUuid();
     }
 
     @Override
@@ -67,19 +66,13 @@ public class PlaceServiceImpl implements PlaceService{
     }
 
     private Place verifiedByUuid(String placeUuid){
-        Optional<Place> place = placeRepository.findByUuid(placeUuid);
-        return place
+        Optional<Place> optionalPlace = placeRepository.findByPlaceUuid(placeUuid);
+        return optionalPlace
                 .orElseThrow(() -> new RuntimeException("No Place found with uuid " + placeUuid));
 
     }
 
     // 장소 찜하기
     // 내가 찜한 장소 조회
-
-    private Place verifiedByUuid(String uuid) {
-        Optional<Place> optionalPlace = placeRepository.findByUuid(uuid);
-        return optionalPlace
-                .orElseThrow(() -> new RuntimeException("No Place found with uuid " + uuid));
-    }
 
 }

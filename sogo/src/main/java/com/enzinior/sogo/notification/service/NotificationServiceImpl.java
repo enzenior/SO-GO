@@ -2,6 +2,9 @@ package com.enzinior.sogo.notification.service;
 
 import com.enzinior.sogo.notification.entity.Notification;
 import com.enzinior.sogo.notification.repository.NotificationRepository;
+import com.enzinior.sogo.review.entity.Review;
+import com.enzinior.sogo.user.entity.User;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

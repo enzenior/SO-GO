@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import com.enzinior.sogo.place.service.PlaceService;
 import com.enzinior.sogo.place.mapper.PlaceMapper;
 import com.enzinior.sogo.place.entity.Place;
+import com.enzinior.sogo.utils.UriCreator;
 
 import java.net.URI;
 import java.util.List;
@@ -52,7 +53,7 @@ public class PlaceController{
         Place place = placeMapper.placePostToPlace(requestBody);
         Place createPlace = placeService.createPlace(place);
 
-        URI location = UriCreator.createUri("/places", createPlace.getPlaceId();
+        URI location = UriCreator.createUri("/places", createPlace.getPlaceId());
         return ResponseEntity.created(location).build();
     }
 
@@ -67,13 +68,14 @@ public class PlaceController{
     public ResponseEntity updatePlace(@Valid @RequestBody PlaceDto.Post requestBody, @PathVariable("place-uuid") String placeUuid){
         Place place = placeMapper.placePostToPlace(requestBody);
         placeService.update(place, placeUuid);
-        return ResponseEntity.ok();
+        return ResponseEntity.ok().build();
     }
 
     // 장소 숨김 /{place-uuid}  // 삭제가 있는가? 숨김 아닌가?
     @PatchMapping("/{place-uuid}/hide")
     public ResponseEntity hidePlace(@PathVariable("place-uuid") String placeUuid){
-        return ResponseEntity.ok(placeService.hide(placeUuid));
+        placeService.hide(placeUuid);
+        return ResponseEntity.ok().build();
     }
 
     // 이 아래는 찜하기라 좀 다름

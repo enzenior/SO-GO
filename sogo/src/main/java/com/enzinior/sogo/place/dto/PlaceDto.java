@@ -49,7 +49,7 @@ public class PlaceDto {
         private boolean hide;
 //        private String tag;
 //        private String summary;
-        private List<String> placeImgs;
+        private List<PlaceImg> placeImgs;
     }
 
 
