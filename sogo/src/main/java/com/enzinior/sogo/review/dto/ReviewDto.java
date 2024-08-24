@@ -40,6 +40,8 @@ public class ReviewDto {
         private String content;
     }
 
+    @Setter
+    @Getter
     @AllArgsConstructor
     public static class Response {
         private String userImg;

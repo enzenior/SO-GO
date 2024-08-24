@@ -57,6 +57,7 @@ public class Review extends Auditable {
     @OneToMany(mappedBy = "review")
     private List<Scrap> scraps = new ArrayList<>();
 
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "place_id")
     private Place place;

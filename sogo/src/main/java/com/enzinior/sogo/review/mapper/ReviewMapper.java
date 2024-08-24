@@ -11,6 +11,7 @@ import java.util.List;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ReviewMapper {
     @Mapping(source = "userUuid", target = "user.userUuid")
+    @Mapping(source = "placeUuid", target = "place.placeUuid")
     Review reviewPostToReview(ReviewDto.Post requestBody);
     Review reviewPatchToReview(ReviewDto.Patch requestBody);
 
