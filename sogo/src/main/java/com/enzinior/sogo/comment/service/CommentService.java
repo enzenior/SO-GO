@@ -14,5 +14,4 @@ public interface CommentService{
     void hideComment(String commentUuid);
     Comment readComment(String commentUuid);
 
-
 }

@@ -32,6 +32,7 @@ public interface CommentMapper {
     @Mapping(source = "review.reviewUuid", target = "reviewUuid")
     CommentDto.Response commentToCommentResponse(Comment comment);
 
-    List<CommentDto.Response> commentsToCommentsResponses(List<Comment> comments);
     List<List<CommentDto.Response>> commentListToCommentsResponseList(List<List<Comment>> comments);
+
+    List<CommentDto.Response> commentsToCommentsResponses(List<Comment> commentList);
 }

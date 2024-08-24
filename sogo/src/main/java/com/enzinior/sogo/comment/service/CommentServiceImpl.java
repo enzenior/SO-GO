@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,30 +27,27 @@ public class CommentServiceImpl implements CommentService {
    @Override
    @Transactional(readOnly = true)
    public List<List<Comment>> selectAllComment(String reviewUuid){
-       reviewService.getReview(reviewUuid);
-       List<Comment> commentList = commentRepository.findWithoutParentByReviewUuid(reviewUuid);
-       List<Comment> childrenList = commentRepository.findParentByReviewUuid(reviewUuid);
-       childrenList.sort(Comparator.comparing(Auditable::getCreatedAt));
-       List<List<Comment>> allCommentList = new ArrayList<>();
-       for (int i = 0; i < commentList.size(); i++) {
-           Comment comment = commentList.get(i);
-           allCommentList.add(List.of(comment));
-           List<Comment> list = childrenList.stream()
-               .filter(c -> c.getParent().equals(comment.getCommentUuid()))
-               .toList();
-           for (Comment c : list) {
-               allCommentList.get(i).add(c);
+       List<Comment> Comments = commentRepository.commentByReviewUuid(reviewUuid)
+           .orElseThrow();
+       List<List<Comment>> commentlist = new ArrayList<>();
+       HashMap<String, Integer> parentMap = new HashMap<>();
+       int idx = 0;
+       for(Comment comment : Comments) {
+           if(comment.getParent()==null){
+               parentMap.put(comment.getCommentUuid(), idx);
+               idx++;
+               commentlist.add(new ArrayList<>());
+               commentlist.get(idx-1).add(comment);
+           }else{
+               commentlist.get(parentMap.get(comment.getParent())).add(comment);
            }
+
        }
 
-       return allCommentList;
+       Collections.reverse(commentlist); // 부모댓글은 최신 댓글이 위쪽으로, 자식 댓글은 아래쪽으로.
+
+       return commentlist;
    }
-
-
-
-//        if(reviewRepository.verifiedByUuid(reviewUuid)) // 해당 리뷰가 있는지 확인. 추가 예정
-//        return
-//    }
 
     @Override
     public Comment createComment(Comment comment){
@@ -83,10 +82,5 @@ public class CommentServiceImpl implements CommentService {
                 .orElseThrow(() -> new RuntimeException("No Comment found with uuid " + commentUuid));
     }
 
-    //    @Transactional
-//    @Override
-//    public int alterComment(String commentUuid){
-//        return commentsRepository.updateComment(comment);
-//    }
 
 }
