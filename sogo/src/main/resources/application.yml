@@ -20,14 +20,23 @@ spring:
     servlet:
       context-path: /
   jwt:
-    secret: yourSecretKey
+    secret: hiwearesogoandweareinssafybutwewantescape
     expiration: 360000
     header: Authorization
     refresh-token:
-      expiration: 604800000
+      expiration: 64800000
       header: Authorization-refresh
-logging:
-  level:
-    org:
-      springframework:
-        orm: debug
+  logging:
+    level:
+      org:
+        springframework:
+          orm: debug
+  social:
+    naverId: asdf
+    naverSecret: asdf
+    kakaoId: asdf
+openai:
+  api:
+    key: asdf
+    url: da
+  model: asd
