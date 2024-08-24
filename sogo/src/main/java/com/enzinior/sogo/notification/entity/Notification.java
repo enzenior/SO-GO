@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
+import org.mapstruct.Builder;
 
 import com.enzinior.sogo.review.entity.Review;
 import com.enzinior.sogo.user.entity.User;
@@ -40,5 +41,20 @@ public class Notification {
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     private Review review;
+
+    public void updateIsRead(boolean isRead) {
+        this.isRead = isRead;
+    }
+
+    public void createNotification(User user, String content, Review review) {
+        this.user = user;
+        this.content = content;
+        this.review = review;
+    }
+
+    public void createNotification(User user, String content) {
+        this.user = user;
+        this.content = content;
+    }
 
 }
