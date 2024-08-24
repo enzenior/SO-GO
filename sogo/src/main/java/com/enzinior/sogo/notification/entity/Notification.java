@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
+import com.enzinior.sogo.review.entity.Review;
+import com.enzinior.sogo.user.entity.User;
+
 @Entity
 @Getter
 @NoArgsConstructor

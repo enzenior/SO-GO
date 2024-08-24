@@ -1,5 +1,7 @@
 package com.enzinior.sogo.notification.mapper;
 
+import java.util.List;
+
 import com.enzinior.sogo.comment.dto.CommentDto;
 import com.enzinior.sogo.comment.entity.Comment;
 import com.enzinior.sogo.notification.dto.NotificationDto;
@@ -10,11 +12,11 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface NotificationMapper {
 
-    @Mapping(source = "userUuid", target = "user.userUuid")
-    @Mapping(source = "reviewImg", target = "review.img")
-    @Mapping(source = "reviewUuid", target = "review.reviewUuid")
+    @Mapping(source = "user.userUuid", target = "userUuid")
+    @Mapping(source = "review.img", target = "reviewImg")
+    @Mapping(source = "review.reviewUuid", target = "reviewUuid")
     NotificationDto.Response notificationToNotificationResponse(Notification notification);
 
-    List<NotificationDto.Response> notificationsToNotificationResponses(List<Notification>);
+    List<NotificationDto.Response> notificationsToNotificationResponses(List<Notification> notifications);
 
 }

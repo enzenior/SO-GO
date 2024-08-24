@@ -1,6 +1,7 @@
 package com.enzinior.sogo.review.entity;
 
 import com.enzinior.sogo.audit.Auditable;
+import com.enzinior.sogo.place.entity.Place;
 import com.enzinior.sogo.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -18,7 +19,7 @@ import java.util.UUID;
 public class Review extends Auditable {
     @Setter
     @Id
-    @Column(name = "REVIEW_ID")
+    @Column(name = "review_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long reviewId;
 
@@ -36,6 +37,7 @@ public class Review extends Auditable {
     private int score;
     private boolean secret;
 
+    @Setter
     @Column(columnDefinition = "varchar(80)", unique = true)
     private String reviewUuid = UUID.randomUUID().toString();
 
@@ -49,13 +51,17 @@ public class Review extends Auditable {
 
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_ID")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @OneToMany(mappedBy = "review")
     private List<Scrap> scraps = new ArrayList<>();
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "PLACE_ID")
-//    private Place place;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "place_id")
+    private Place place;
+
+    public Review(String reviewUuid) {
+        this.reviewUuid = reviewUuid;
+    }
 }

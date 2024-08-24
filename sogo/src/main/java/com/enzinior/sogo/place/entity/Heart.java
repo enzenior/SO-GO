@@ -1,5 +1,7 @@
 package com.enzinior.sogo.place.entity;
 
+import com.enzinior.sogo.user.entity.User;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
