@@ -20,12 +20,12 @@ spring:
     servlet:
       context-path: /
   jwt:
-    secret: yourSecretKey
+    secret: hiwearesogoweareinsaffybutwewantescape
     expiration: 360000
     header: Authorization
     refresh-token:
       expiration: 604800000
-      header: Authorization-refresh
+      header: refresh
 logging:
   level:
     org:
