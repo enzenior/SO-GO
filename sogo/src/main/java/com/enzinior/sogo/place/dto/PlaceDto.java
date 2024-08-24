@@ -1,14 +1,10 @@
 package com.enzinior.sogo.place.dto;
 
-import com.enzinior.sogo.place.entity.Heart;
-import com.enzinior.sogo.place.entity.PlaceImg;
 import java.util.List;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
-
-import java.time.chrono.HijrahEra;
 
 @Getter
 @AllArgsConstructor
@@ -32,9 +28,9 @@ public class PlaceDto {
         private String placeUuid;
         private String placeName;
         private float score;
-//        private String tag;
-//        private String summary;
-        private String main_img;
+        private String tag;
+        private String summary;
+        private String main_img; // 그냥 리스트 반환? 혹은 따로 저장?
     }
 
     @Getter
@@ -46,10 +42,12 @@ public class PlaceDto {
         private double lat;
         private double lng;
         private float score;
+        private long heartCnt;
+        private boolean userHeart;
         private boolean hide;
-//        private String tag;
-//        private String summary;
-        private List<PlaceImg> placeImgs;
+        private String tag;
+        private String summary;
+        private List<String> placeImgs;
     }
 
 

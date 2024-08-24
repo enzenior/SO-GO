@@ -28,8 +28,9 @@ public interface PlaceService {
     // 장소 점수 수정
     void scoreUpdate (String placeUuid, float score);
 
+    // 장소 찜하기/찜풀기
+    boolean updateHeart (String placeUuid, String userUuid);
 
-    // 장소 찜하기
     // 내가 찜한 장소 조회
-
+    List<Place> getMyPlaces(String userUuid);
 }

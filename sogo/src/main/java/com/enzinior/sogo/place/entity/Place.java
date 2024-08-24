@@ -29,14 +29,14 @@ public class Place {
     private String placeDescription;
 
     @Setter
-    private String placeTag;
+    private String tag;
 
     @Setter
-    private String placeSummary;
+    private String summary;
 
     @ColumnDefault("0")
     @Setter
-    private int heart;
+    private int heartCnt;
 
     @ColumnDefault("0")
     @Setter
@@ -52,13 +52,15 @@ public class Place {
     @ColumnDefault("false")
     private boolean hide;
 
+    @Setter
+    @Convert(converter = ImagesConverter.class)
+    private List<String> placeImgs;
+
     @Column(name = "place_uuid", columnDefinition = "varchar(80)", unique = true)
     private String placeUuid = UUID.randomUUID().toString();
 
-    @OneToMany(mappedBy = "place")
-    private List<Heart> hearts = new ArrayList<>();
-
-    @OneToMany(mappedBy = "place")
-    private List<PlaceImg> placeImgs = new ArrayList<>();
+    // 생각해보니 hearts에 대한 리스트 값이 필요가 없다.
+    // @OneToMany(mappedBy = "place")
+    // private List<Heart> hearts = new ArrayList<>();
 
 }
