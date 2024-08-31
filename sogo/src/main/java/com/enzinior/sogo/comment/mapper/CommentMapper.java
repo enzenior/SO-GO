@@ -13,18 +13,23 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface CommentMapper {
 
-    default Comment commentPostToComment(CommentDto.Post requestBody) {
-        Comment comment = new Comment();
+    // default Comment commentPostToComment(CommentDto.Post requestBody) {
+    //     Comment comment = new Comment();
+    //
+    //     Review review = new Review(requestBody.getReviewUuid());
+    //     User user = User.builder().userUuid(requestBody.getUserUuid()).build();
+    //
+    //     comment.setCommentUuid(requestBody.getParentUuid());
+    //     comment.setReview(review);
+    //     comment.setUser(user);
+    //     comment.setContent(requestBody.getContent());
+    //     return comment;
+    // }
 
-        Review review = new Review(requestBody.getReviewUuid());
-        User user = User.builder().userUuid(requestBody.getUserUuid()).build();
+    @Mapping(source = "userUuid", target = "user.userUuid")
+    @Mapping(source = "reviewUuid", target = "review.reviewUuid")
+    Comment commentPostToComment(CommentDto.Post requestBody);
 
-        comment.setCommentUuid(requestBody.getParentUuid());
-        comment.setReview(review);
-        comment.setUser(user);
-        comment.setContent(requestBody.getContent());
-        return comment;
-    }
 
     @Mapping(source = "user.nickname", target = "userNickname")
     @Mapping(source = "user.img", target = "userImg")

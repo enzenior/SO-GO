@@ -27,14 +27,12 @@ public class CommentController {
     private final NotificationService notificationService;
     private final CommentMapper commentMapper;
 
-
     // 댓글 전체 조회
     @GetMapping
     @Operation(summary = "댓글 전체 조회")
     public ResponseEntity<?> list(@PathVariable("review-uuid") String reviewUuid) {
         List<List<Comment>> Comments = commentService.selectAllComment(reviewUuid);
         List<List<CommentDto.Response>> commentDtos = commentMapper.commentListToCommentsResponseList(Comments);
-
         return ResponseEntity.ok(commentDtos);
     }
 
