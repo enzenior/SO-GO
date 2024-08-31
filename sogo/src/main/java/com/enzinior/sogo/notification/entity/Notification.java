@@ -1,5 +1,7 @@
 package com.enzinior.sogo.notification.entity;
 
+import java.util.UUID;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -22,7 +24,7 @@ public class Notification {
     private long notificationId;
 
     @Column(name = "notification_uuid", columnDefinition = "varchar(80)", unique = true)
-    private String notificationUuid;
+    private String notificationUuid = UUID.randomUUID().toString();
 
     @Lob
     @Setter

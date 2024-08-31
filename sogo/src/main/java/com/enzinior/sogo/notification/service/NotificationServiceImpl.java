@@ -36,9 +36,9 @@ public class NotificationServiceImpl implements NotificationService {
     // 읽음처리
     @Override
     public void readAllNotification(String userUuid) {
-        if(userRepository.findByUserUuid(userUuid).isEmpty()){
-            throw new BusinessLogicException(ExceptionCode.USER_NOT_FOUND);
-        }
+
+        User user = userRepository.findByUserUuid(userUuid)
+            .orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
 
         List<Notification> notificationList = notificationRepository.findAllByIsRead(userUuid);
         for(Notification n : notificationList){
@@ -66,6 +66,5 @@ public class NotificationServiceImpl implements NotificationService {
         notification.createNotification(user, content);
         return notificationRepository.save(notification);
     }
-
 
 }

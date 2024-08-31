@@ -4,6 +4,10 @@ import com.enzinior.sogo.notification.dto.NotificationDto;
 import com.enzinior.sogo.notification.entity.Notification;
 import com.enzinior.sogo.notification.service.NotificationService;
 import com.enzinior.sogo.notification.mapper.NotificationMapper;
+import com.enzinior.sogo.review.entity.Review;
+import com.enzinior.sogo.review.repository.ReviewRepository;
+import com.enzinior.sogo.user.entity.User;
+import com.enzinior.sogo.user.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.Getter;
@@ -23,6 +27,8 @@ import java.util.stream.Collectors;
 public class NotificationController {
     private final NotificationService notificationService;
     private final NotificationMapper notificationMapper;
+    private final UserService userService;
+    private final ReviewRepository reviewRepository;
 
     // 알림 전체 조회 /api/notifications/{user-uuid}
     @GetMapping
@@ -47,5 +53,21 @@ public class NotificationController {
         long cnt = notificationService.readYetCntNotification(userUuid);
         return ResponseEntity.ok(cnt);
     }
+
+    @PostMapping("/1")
+    @Operation(summary = "알림 생성 1")
+    public void create1 (@PathVariable("user-uuid") String userUuid){
+
+        User user = userService.findUser(userUuid);
+        notificationService.createNotification(user, "이건 테스트 1");
+
+        Review review = new Review();
+        review.setUser(user);
+        review.setReviewUuid("a011cb1b-29fd-45b5-afb8-00ea0f1ab654");
+        reviewRepository.save(review);
+
+        notificationService.createNotificationByReview(user, "test2", review);
+    }
+
 
 }
