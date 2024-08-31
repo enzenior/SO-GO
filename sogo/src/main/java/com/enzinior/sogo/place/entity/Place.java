@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -53,11 +51,15 @@ public class Place {
     private boolean hide;
 
     @Setter
-    @Convert(converter = ImagesConverter.class)
-    private List<String> placeImgs;
+    private String placeImgs;
 
+    @Setter
     @Column(name = "place_uuid", columnDefinition = "varchar(80)", unique = true)
     private String placeUuid = UUID.randomUUID().toString();
+
+    // @Setter
+    // @Convert(converter = ImagesConverter.class)
+    // private List<String> placeImgs;
 
     // 생각해보니 hearts에 대한 리스트 값이 필요가 없다.
     // @OneToMany(mappedBy = "place")

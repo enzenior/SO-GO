@@ -25,7 +25,7 @@ import java.util.Optional;
 public class PlaceServiceImpl implements PlaceService{
 
     private final PlaceRepository placeRepository;
-    private final SummaryService summaryService;
+    // private final SummaryService summaryService;
     private final UserRepository userRepository;
     private final HeartRepository heartRepository;
 
@@ -48,10 +48,10 @@ public class PlaceServiceImpl implements PlaceService{
     @Override
     public Place createPlace(Place place) {
         String description = place.getPlaceDescription();
-        String summary = summaryService.generateSummary(description);
-        String[] summaryArray = summary.split("\n");
-        place.setSummary(summaryArray[0]);
-        place.setTag(summaryArray[1]);
+        // String summary = summaryService.generateSummary(description);
+        // String[] summaryArray = summary.split("\n");
+        place.setSummary("요약"); //summaryArray[0]
+        place.setTag("#태그,#태그2"); //summaryArray[1]
         return placeRepository.save(place);
     }
 
@@ -125,9 +125,5 @@ public class PlaceServiceImpl implements PlaceService{
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.PLACE_NOT_FOUND));
 
     }
-
-
-    // 장소 찜하기
-    // 내가 찜한 장소 조회
 
 }

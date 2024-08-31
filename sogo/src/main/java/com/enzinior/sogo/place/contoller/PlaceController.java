@@ -42,8 +42,9 @@ public class PlaceController{
         return ResponseEntity.ok(simpleResponses);
     }
 
+    //리뷰 생성시 장소 uuid 검색
     @PostMapping("/search")
-    @Operation(summary = "리뷰 생성시 장소 uuid 검색")
+    @Operation(summary = "리뷰 생성시 장소 uuid 검색") // service
     public ResponseEntity whenCreateReview(@Valid @RequestBody PlaceDto.Post requestBody){
         Place place = placeMapper.placePostToPlace(requestBody);
         String result = placeService.searchWhenCreateReview(place);
@@ -60,8 +61,17 @@ public class PlaceController{
         URI location = UriCreator.createUri("/places", createPlace.getPlaceId());
         return ResponseEntity.created(location).build();
     }
+    /*
+    {
+    "placeName": "역삼역",
+    "placeDescription": "역삼역이다",
+    "lat": 24.3,
+    "lng": 254.3
+    }
+    */
 
-    // 장소 상세 페이지 /{place-uuid}
+
+    // 장소 상세 페이지
     @GetMapping("/{place-uuid}")
     @Operation(summary = "장소 상세페이지")
     public ResponseEntity getPlaceDetail(@PathVariable("place-uuid") String placeUuid){
@@ -83,7 +93,7 @@ public class PlaceController{
         return ResponseEntity.ok().build();
     }
 
-    // 장소 숨김 /{place-uuid}  // 삭제가 있는가? 숨김 아닌가?
+    // 장소 숨김 // 삭제가 있는가? 숨김 아닌가?
     @PatchMapping("/{place-uuid}/hide")
     @Operation(summary = "장소 숨김")
     public ResponseEntity hidePlace(@PathVariable("place-uuid") String placeUuid){
@@ -92,11 +102,10 @@ public class PlaceController{
     }
 
     // 이 아래는 찜하기라 좀 다름
-    // 장소 찜하기 /hearts
-    @PatchMapping("/hearts")
-    @Operation(summary = "장소 찜하기")
-    public ResponseEntity heartplace(@PathVariable("place-uuid") String placeUuid){
-        String userUuid = "";
+    // 장소 찜하기
+    @PatchMapping("/{place-uuid}/hearts")
+    @Operation(summary = "장소 찜하기")//여기 에러임
+    public ResponseEntity heartplace(@PathVariable("place-uuid") String placeUuid, @RequestBody String userUuid){
         boolean heart = placeService.updateHeart(placeUuid, userUuid);
         return ResponseEntity.ok(heart);
     }

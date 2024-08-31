@@ -30,7 +30,7 @@ public class PlaceDto {
         private float score;
         private String tag;
         private String summary;
-        private String main_img; // 그냥 리스트 반환? 혹은 따로 저장?
+        private String placeImgs; // 그냥 리스트 반환? 혹은 따로 저장?
     }
 
     @Getter
@@ -47,7 +47,8 @@ public class PlaceDto {
         private boolean hide;
         private String tag;
         private String summary;
-        private List<String> placeImgs;
+        private String placeImgs;
+        // private List<String> placeImgs;
     }
 
 
