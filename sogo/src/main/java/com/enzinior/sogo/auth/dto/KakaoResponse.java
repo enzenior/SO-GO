@@ -25,17 +25,18 @@ public class KakaoResponse implements OAuth2Response {
     @Override
     public String getEmail() {
         Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
-        return  kakaoAccount.get("email").toString();
+        return kakaoAccount.get("email").toString();
     }
 
     @Override
     public String getName() {
         Map<String, Object> properties = (Map<String, Object>) attributes.get("properties");
-        return  properties.get("nickname").toString();
+        return properties.get("nickname").toString();
     }
 
     @Override
     public String getNickname() {
-        return "곰돌이";
+        Map<String, Object> properties = (Map<String, Object>) attributes.get("properties");
+        return properties.get("nickname").toString();
     }
 }

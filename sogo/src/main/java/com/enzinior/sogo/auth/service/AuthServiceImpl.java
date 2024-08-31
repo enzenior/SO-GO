@@ -56,7 +56,7 @@ public class AuthServiceImpl implements AuthService {
         }
 
         String username = jwtUtil.getUserUuid(refresh);
-        String newAccess = jwtUtil.createJwt("access", username, 600000L);
+        String newAccess = jwtUtil.createJwt("access", username, "USER", 6000000L);
 
         response.setHeader("Authorization", "Bearer " + newAccess);
 

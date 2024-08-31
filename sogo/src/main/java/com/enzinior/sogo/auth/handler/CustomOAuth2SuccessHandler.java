@@ -11,13 +11,17 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 
 @Component
 @RequiredArgsConstructor
@@ -27,14 +31,21 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
+    @Value("${spring.jwt.refresh-token.expiration}")
+    private long refreshTokenExpiration;
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-
         // OAuth2User
         OAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
 
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
+        GrantedAuthority auth = iterator.next();
+        String role = auth.getAuthority();
+
         String userUuid = customUserDetails.getName();
-        String refresh = jwtUtil.createJwt("refresh", userUuid, 86400000L);
+        String refresh = jwtUtil.createJwt("refresh", userUuid, role, refreshTokenExpiration);
 
         addRefreshEntity(userUuid, refresh, 864000L);
 
