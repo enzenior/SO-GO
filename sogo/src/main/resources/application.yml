@@ -26,6 +26,10 @@ spring:
     refresh-token:
       expiration: 604800000
       header: refresh
+  social:
+    naverId: ${naverId}
+    naverSecret: ${naverSecret}
+    kakaoId: ${kakaoId}
 logging:
   level:
     org:
