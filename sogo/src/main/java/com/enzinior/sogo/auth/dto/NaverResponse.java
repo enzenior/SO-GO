@@ -32,6 +32,6 @@ public class NaverResponse implements OAuth2Response {
 
     @Override
     public String getNickname() {
-        return attributes.get("name").toString();
+        return "네이버곰";
     }
 }
