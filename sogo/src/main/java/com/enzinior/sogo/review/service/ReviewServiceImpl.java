@@ -1,5 +1,6 @@
 package com.enzinior.sogo.review.service;
 
+import com.enzinior.sogo.notification.service.NotificationService;
 import com.enzinior.sogo.place.entity.Place;
 import com.enzinior.sogo.place.service.PlaceService;
 import com.enzinior.sogo.review.entity.Review;
@@ -21,6 +22,7 @@ public class ReviewServiceImpl implements ReviewService{
     private final ReviewRepository reviewRepository;
     private final UserService userService;
     private final PlaceService placeService;
+    private final NotificationService notificationService;
     private final CustomBeanUtils<Review> beanUtils;
 
     @Transactional
@@ -83,6 +85,29 @@ public class ReviewServiceImpl implements ReviewService{
     @Override
     public List<Review> getScrapReviews(String userUuid) {
         return reviewRepository.findScraped(userUuid);
+    }
+
+    @Transactional
+    @Override
+    public Review hideReview(String reviewUuid) {
+        Review review = verifiedByUuid(reviewUuid);
+        review.setSecret(!review.getSecret());
+        return review;
+    }
+
+    @Transactional
+    @Override
+    public void updateMaxCnt(User user, Review review, Integer count) {
+        if (review.getMaxCnt() < count) {
+            review.setMaxCnt(review.getMaxCnt() + 1);
+            int maxCnt = review.getMaxCnt();
+
+            if (maxCnt % 100 == 0) {
+                StringBuilder content = new StringBuilder();
+                content.append("🎉  ").append(user.getNickname()).append("님의 글이 스크랩 ").append(maxCnt).append("개를 돌파했습니다!");
+                notificationService.createNotificationByReview(user, content.toString(), review);
+            }
+        }
     }
 
     private Review verifiedByUuid(String uuid) {

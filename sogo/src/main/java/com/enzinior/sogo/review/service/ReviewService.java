@@ -2,6 +2,7 @@ package com.enzinior.sogo.review.service;
 
 import com.enzinior.sogo.review.dto.ReviewDto;
 import com.enzinior.sogo.review.entity.Review;
+import com.enzinior.sogo.user.entity.User;
 
 import java.util.List;
 
@@ -16,4 +17,7 @@ public interface ReviewService {
     List<Review> getUserReviews(String userUuid);
 
     List<Review> getScrapReviews(String userUuid);
+
+    Review hideReview(String reviewUuid);
+    void updateMaxCnt(User user, Review review, Integer count);
 }

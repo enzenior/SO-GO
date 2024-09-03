@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
+    @EntityGraph(attributePaths = {"place", "user"})
     Optional<Review> findByReviewUuid(String uuid);
 
     @EntityGraph(attributePaths = {"place", "user"})

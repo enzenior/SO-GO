@@ -8,15 +8,17 @@ import com.enzinior.sogo.user.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ScrapServiceImpl implements ScrapService {
     private final ScrapRepository scrapRepository;
     private final ReviewService reviewService;
-   private final UserService userService;
+    private final UserService userService;
 
     @Override
     public void createScrap(String reviewUuid, String userUuid) {
@@ -28,8 +30,11 @@ public class ScrapServiceImpl implements ScrapService {
             scrap.setReview(review);
             scrap.setUser(user);
             scrapRepository.save(scrap);
+
+            Integer count = scrapRepository.countByReviewReviewId(review.getReviewId());
+            reviewService.updateMaxCnt(user, review, count);
         } else {
-           scrapRepository.deleteById(optionalScrap.get().getScrapId());
+            scrapRepository.deleteById(optionalScrap.get().getScrapId());
         }
     }
 
