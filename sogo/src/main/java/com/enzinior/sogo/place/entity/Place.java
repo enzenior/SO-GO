@@ -52,6 +52,7 @@ public class Place {
     @ColumnDefault("false")
     private boolean hide;
 
+    @Setter
     @Column(name = "place_uuid", columnDefinition = "varchar(80)", unique = true)
     private String placeUuid = UUID.randomUUID().toString();
 
