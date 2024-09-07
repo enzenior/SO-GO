@@ -57,6 +57,11 @@ public class Place {
     @Column(name = "place_uuid", columnDefinition = "varchar(80)", unique = true)
     private String placeUuid = UUID.randomUUID().toString();
 
+    @Setter
+    @Column(name = "type")
+    @ColumnDefault("4")
+    private int type;
+
     // @Setter
     // @Convert(converter = ImagesConverter.class)
     // private List<String> placeImgs;

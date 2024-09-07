@@ -50,7 +50,7 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
         addRefreshEntity(userUuid, refresh, 864000L);
 
         response.addCookie(createCookie("refresh", refresh));
-        response.sendRedirect("http://localhost:8080/main");
+        response.sendRedirect("http://localhost:3000/");
     }
 
     private void addRefreshEntity(String userUuid, String refresh, Long expiredMs) {
