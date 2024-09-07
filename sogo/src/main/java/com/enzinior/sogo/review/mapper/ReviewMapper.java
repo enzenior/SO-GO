@@ -11,14 +11,15 @@ import java.util.List;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ReviewMapper {
     @Mapping(source = "userUuid", target = "user.userUuid")
+    @Mapping(source = "placeUuid", target = "place.placeUuid")
     Review reviewPostToReview(ReviewDto.Post requestBody);
     Review reviewPatchToReview(ReviewDto.Patch requestBody);
 
     @Mapping(source = "user.img", target = "userImg")
     @Mapping(source = "user.nickname", target = "userNickname")
     @Mapping(source = "user.userUuid", target = "userUuid")
-//    @Mapping(source = "place.uuid", target = "placeUuid")
-//    @Mapping(source = "place.img", target = "placeImg")
+    @Mapping(source = "place.placeUuid", target = "placeUuid")
+    @Mapping(source = "img", target = "placeImg")
     ReviewDto.Response reviewToReviewDto(Review review);
 
     List<ReviewDto.Response> reviewsToReviewDtos(List<Review> reviews);

@@ -11,11 +11,11 @@ public class ReportDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Post {
-        private int reportType;
+        private int reportType; // 0 : review, 1 : comment, 2 : place
         private String content;
-        private long targetId;
+        private long targetId; // id
         private boolean processed = Boolean.FALSE;
-        private String userUuid;
+        private String userUuid; // 신고자
     }
 
     @Getter

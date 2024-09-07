@@ -1,6 +1,7 @@
 package com.enzinior.sogo.comment.contoller;
 
 import com.enzinior.sogo.comment.dto.CommentDto;
+import com.enzinior.sogo.place.dto.PlaceDto;
 import com.enzinior.sogo.utils.UriCreator;
 import com.enzinior.sogo.comment.entity.Comment;
 import com.enzinior.sogo.comment.mapper.CommentMapper;
@@ -75,18 +76,11 @@ public class CommentController {
         CommentDto.Response commenResponse = commentMapper.commentToCommentResponse(comment);
         return ResponseEntity.ok(commenResponse);
     }
-
-
-    // 댓글 신고
-//    @PostMapping("/{review-uuid}/comments/{comment-uuid}")
-//    public ResponseEntity<String> write(@PathVariable("comment-uuid") String commentUUID) {
-//        int isComplete = commentService.alterComment(commentUUID);
-//        // 관리자한테 알림 전송
-//        int sends = reportService.sendreport(commentUUID);
-//        if(sends>0){
-//            return new ResponseEntity<String>(SUCCESS, HttpStatus.CREATED);
-//        }
-//        return new ResponseEntity<String>(FAIL, HttpStatus.NOT_FOUND);
-//    }
+    // 댓글 신고 /{place-uuid} // 어떻게 할건지 미정, 신고 도메인에서 처리 예정
+    @PostMapping("/{comment-uuid}")
+    @Operation(summary = "댓글 신고하기")
+    public ResponseEntity reportComment(@PathVariable("comment-uuid") String commentUuid, @Valid @RequestBody CommentDto.reportPost requestBody){
+        return ResponseEntity.ok(commentService.reportComment(commentUuid, requestBody.getUserUuid(), requestBody.getContent()));
+    }
 
 }

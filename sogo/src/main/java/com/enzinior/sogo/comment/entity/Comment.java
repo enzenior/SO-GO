@@ -36,6 +36,7 @@ public class Comment extends Auditable {
     @Setter
     private boolean secret;
 
+    @Setter
     private String parent; // 상위 댓글이 있다면 표시.
 
     @Setter

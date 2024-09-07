@@ -17,6 +17,8 @@ import com.enzinior.sogo.place.repository.HeartRepository;
 import com.enzinior.sogo.place.service.PlaceService;
 import com.enzinior.sogo.place.mapper.PlaceMapper;
 import com.enzinior.sogo.place.entity.Place;
+import com.enzinior.sogo.user.entity.User;
+import com.enzinior.sogo.user.service.UserService;
 import com.enzinior.sogo.utils.UriCreator;
 
 import java.net.URI;
@@ -31,6 +33,7 @@ public class PlaceController{
 
     private final PlaceService placeService;
     private final PlaceMapper placeMapper;
+    private final UserService userService;
     private final HeartRepository heartRepository;
 
     // 장소 검색
@@ -74,10 +77,10 @@ public class PlaceController{
     // 장소 상세 페이지
     @GetMapping("/{place-uuid}")
     @Operation(summary = "장소 상세페이지")
-    public ResponseEntity getPlaceDetail(@PathVariable("place-uuid") String placeUuid){
-        String userUuid = ""; // 여기는 바꿀 예정
+    public ResponseEntity getPlaceDetail(@PathVariable("place-uuid") String placeUuid, @Valid @RequestBody PlaceDto.detailDto requestBody){
+        String userUuid = requestBody.getUserUuid(); // 여기는 바꿀 예정
         PlaceDto.Response placeRes = placeMapper.placeToPlaceDtoResponse(placeService.getPlace(placeUuid));
-        Heart heart = heartRepository.findHeartByPlaceAndUser(placeUuid, userUuid).orElse(null);
+        Heart heart = placeService.findHeart(placeUuid, userUuid);
         if(heart != null){
             placeRes.setUserHeart(true);
         }
@@ -103,9 +106,9 @@ public class PlaceController{
 
     // 이 아래는 찜하기라 좀 다름
     // 장소 찜하기
-    @PatchMapping("/{place-uuid}/hearts")
-    @Operation(summary = "장소 찜하기")//여기 에러임
-    public ResponseEntity heartplace(@PathVariable("place-uuid") String placeUuid, @RequestBody String userUuid){
+    @PatchMapping("/{place-uuid}/hearts/{user-uuid}")
+    @Operation(summary = "장소 찜하기")
+    public ResponseEntity heartplace(@PathVariable("place-uuid") String placeUuid, @PathVariable("user-uuid") String userUuid){
         boolean heart = placeService.updateHeart(placeUuid, userUuid);
         return ResponseEntity.ok(heart);
     }
@@ -118,8 +121,12 @@ public class PlaceController{
         return ResponseEntity.ok(simpleResponses);
     }
 
-    //    // 장소 수정 신고 /{place-uuid} // 어떻게 할건지 미정, 신고 도메인에서 처리 예정
-    //    @PostMapping
+    // 장소 수정 신고 /{place-uuid} // 어떻게 할건지 미정, 신고 도메인에서 처리 예정
+    @PostMapping("/{place-uuid}")
+    @Operation(summary = "장소 신고하기")
+    public ResponseEntity reportPlace(@PathVariable("place-uuid") String placeUuid, @Valid @RequestBody PlaceDto.reportPost requestBody){
+        return ResponseEntity.ok(placeService.reportPlace(placeUuid, requestBody.getUserUuid(), requestBody.getContent()));
+    }
 
 
 }

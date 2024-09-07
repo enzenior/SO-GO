@@ -28,6 +28,7 @@ public interface CommentMapper {
 
     @Mapping(source = "userUuid", target = "user.userUuid")
     @Mapping(source = "reviewUuid", target = "review.reviewUuid")
+    @Mapping(source = "parentUuid", target = "parent")
     Comment commentPostToComment(CommentDto.Post requestBody);
 
 

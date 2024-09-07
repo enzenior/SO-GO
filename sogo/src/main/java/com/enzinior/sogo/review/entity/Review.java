@@ -1,5 +1,4 @@
 package com.enzinior.sogo.review.entity;
-
 import com.enzinior.sogo.audit.Auditable;
 import com.enzinior.sogo.place.entity.Place;
 import com.enzinior.sogo.user.entity.User;
@@ -21,21 +20,23 @@ public class Review extends Auditable {
     @Id
     @Column(name = "review_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long reviewId;
+    private Long reviewId;
 
     @Setter
     @ColumnDefault("0")
-    private int report;
+    private Integer report;
     @Setter
     @ColumnDefault("0")
-    private int scrap;
+    private Integer scrap;
     @Setter
     @ColumnDefault("0")
-    private int maxCnt;
+    private Integer maxCnt;
     @Setter
     @ColumnDefault("0")
-    private int score;
-    private boolean secret;
+    private Integer score;
+    @Setter
+    @ColumnDefault("false")
+    private Boolean secret;
 
     @Setter
     @Column(columnDefinition = "varchar(80)", unique = true)
@@ -57,9 +58,10 @@ public class Review extends Auditable {
     @OneToMany(mappedBy = "review")
     private List<Scrap> scraps = new ArrayList<>();
 
-   @ManyToOne(fetch = FetchType.LAZY)
-   @JoinColumn(name = "place_id")
-   private Place place;
+    @Setter
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "place_id")
+    private Place place;
 
     public Review(String reviewUuid) {
         this.reviewUuid = reviewUuid;

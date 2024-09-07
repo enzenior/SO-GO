@@ -10,8 +10,11 @@ import com.enzinior.sogo.place.repository.PlaceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.enzinior.sogo.place.entity.Place;
+import com.enzinior.sogo.report.entity.Report;
+import com.enzinior.sogo.report.service.ReportService;
 import com.enzinior.sogo.user.entity.User;
 import com.enzinior.sogo.user.repository.UserRepository;
+import com.enzinior.sogo.user.service.UserService;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,8 +29,9 @@ public class PlaceServiceImpl implements PlaceService{
 
     private final PlaceRepository placeRepository;
     // private final SummaryService summaryService;
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final HeartRepository heartRepository;
+    private final ReportService reportService;
 
     @Override
     @Transactional(readOnly = true)
@@ -90,9 +94,8 @@ public class PlaceServiceImpl implements PlaceService{
     @Override
     public boolean updateHeart(String placeUuid, String userUuid) {
         Place place = verifiedByUuid(placeUuid);
-        User user = userRepository.findByUserUuid(userUuid)
-            .orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
-        Heart heart = heartRepository.findHeartByPlaceAndUser(placeUuid, userUuid).get();
+        User user = userService.findUser(userUuid);
+        Heart heart = findHeart(placeUuid, userUuid);
         boolean result = false;
         if(heart == null){
             heart = new Heart();
@@ -112,18 +115,36 @@ public class PlaceServiceImpl implements PlaceService{
     }
 
     @Override
+    public Heart findHeart(String placeUuid, String userUuid) {
+        Optional<Heart> optionalHeart = heartRepository.findHeartByPlaceAndUser(placeUuid, userUuid);
+        return optionalHeart
+            .orElse(null);
+    }
+
+    @Override
     public List<Place> getMyPlaces(String userUuid) {
-        User user = userRepository.findByUserUuid(userUuid)
-            .orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
+        User user = userService.findUser(userUuid);
         List<Place> places = heartRepository.findPlacesByUser(userUuid);
         return places;
+    }
+
+    @Override
+    public Report reportPlace(String placeUuid, String userUuid, String content) {
+        User user = userService.findUser(userUuid);
+        Place place = verifiedByUuid(placeUuid);
+        Report report = new Report();
+        report.setUser(user);
+        report.setTargetId(place.getPlaceId());
+        report.setReportType(2);
+        report.setContent(content);
+
+        return reportService.postReport(report);
     }
 
     private Place verifiedByUuid(String placeUuid){
         Optional<Place> optionalPlace = placeRepository.findByPlaceUuid(placeUuid);
         return optionalPlace
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.PLACE_NOT_FOUND));
-
     }
 
 }

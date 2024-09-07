@@ -10,6 +10,7 @@ import com.enzinior.sogo.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -20,6 +21,7 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@Profile("server")
 public class SecurityConfig {
 
     private final JwtUtil jwtUtil;
@@ -30,6 +32,9 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            .headers().frameOptions().sameOrigin();
+
         http
                 .csrf((auth) -> auth.disable())
                 .formLogin((form) -> form.disable())
@@ -50,8 +55,8 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/login", "/api/auth/**").permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers("/login", "/api/auth/**", "/h2/**").permitAll()
+                        .anyRequest().permitAll()//.authenticated()
                 );
 
         http

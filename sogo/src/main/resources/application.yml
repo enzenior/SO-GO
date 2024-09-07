@@ -1,6 +1,8 @@
 spring:
   application:
     name: sogo
+  profiles:
+    active: server
   h2:
     console:
       enabled: true
@@ -19,6 +21,7 @@ spring:
   server:
     servlet:
       context-path: /
+
   jwt:
     secret: hiwearesogoandweareinssafybutwewantescape
     expiration: 360000
@@ -26,17 +29,23 @@ spring:
     refresh-token:
       expiration: 64800000
       header: Authorization-refresh
-  logging:
-    level:
-      org:
-        springframework:
-          orm: debug
   social:
-    naverId: asdf
-    naverSecret: asdf
-    kakaoId: asdf
+    naverId: lUtg0zogbMmy0SayMxwY
+    naverSecret: Cjw2PLviT3
+    kakaoId: 4042932660cdc026a47eb06cf897d02d
+
+logging:
+  level:
+    org:
+      springframework:
+        orm: debug
 openai:
   api:
     key: asdf
     url: da
   model: asd
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    display-request-duration: true

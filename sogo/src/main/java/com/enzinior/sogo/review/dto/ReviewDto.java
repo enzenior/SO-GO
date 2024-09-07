@@ -34,12 +34,14 @@ public class ReviewDto {
         private String reviewUuid;
     }
 
+    @Getter
     public static class Report {
         private String userUuid;
         private String reviewUuid;
         private String content;
     }
 
+    @Getter
     @AllArgsConstructor
     public static class Response {
         private String userImg;

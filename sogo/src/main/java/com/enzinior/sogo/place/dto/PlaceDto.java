@@ -23,6 +23,19 @@ public class PlaceDto {
     }
 
     @Getter
+    public static class reportPost {
+        @NotBlank
+        private String userUuid;
+        @NotBlank
+        private String content;
+    }
+
+    @Getter
+    public static class detailDto {
+        private String userUuid;
+    }
+
+    @Getter
     @Setter
     public static class SimpleResponse{
         private String placeUuid;
