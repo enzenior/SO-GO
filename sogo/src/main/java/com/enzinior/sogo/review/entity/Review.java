@@ -37,7 +37,7 @@ public class Review extends Auditable {
     private Integer score;
     @Setter
     @ColumnDefault("false")
-    private Boolean secret;
+    private Boolean secret = false;
 
     @Setter
     @Column(columnDefinition = "varchar(80)", unique = true)

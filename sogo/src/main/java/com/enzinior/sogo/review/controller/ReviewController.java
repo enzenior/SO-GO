@@ -34,6 +34,12 @@ public class ReviewController {
         return ResponseEntity.created(location).build();
     }
 
+    @PostMapping("/hide/{review-uuid}")
+    public ResponseEntity hideReview(@PathVariable("review-uuid") String reviewUuid) {
+        Review review = reviewService.hideReview(reviewUuid);
+        return ResponseEntity.ok(review);
+    }
+
     @PatchMapping("/{review-uuid}")
     public ResponseEntity patchReview(@Valid @RequestBody ReviewDto.Patch requestBody, @PathVariable("review-uuid") String reviewUuid) {
         requestBody.setReviewUuid(reviewUuid);
