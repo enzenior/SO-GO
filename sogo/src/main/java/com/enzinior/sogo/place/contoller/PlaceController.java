@@ -64,15 +64,6 @@ public class PlaceController{
         URI location = UriCreator.createUri("/places", createPlace.getPlaceId());
         return ResponseEntity.created(location).build();
     }
-    /*
-    {
-    "placeName": "역삼역",
-    "placeDescription": "역삼역이다",
-    "lat": 24.3,
-    "lng": 254.3
-    }
-    */
-
 
     // 장소 상세 페이지
     @GetMapping("/{place-uuid}")
@@ -127,7 +118,5 @@ public class PlaceController{
     public ResponseEntity reportPlace(@PathVariable("place-uuid") String placeUuid, @Valid @RequestBody PlaceDto.reportPost requestBody){
         return ResponseEntity.ok(placeService.reportPlace(placeUuid, requestBody.getUserUuid(), requestBody.getContent()));
     }
-
-
 }
 
