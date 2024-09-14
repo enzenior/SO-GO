@@ -20,16 +20,16 @@ spring:
     servlet:
       context-path: /
   jwt:
-    secret: hiwearesogoweareinsaffybutwewantescape
+    secret: ${JWT_SECRET}
     expiration: 360000
     header: Authorization
     refresh-token:
       expiration: 604800000
       header: refresh
   social:
-    naverId: ${naverId}
-    naverSecret: ${naverSecret}
-    kakaoId: ${kakaoId}
+    naverId: ${NAVER_ID}
+    naverSecret: ${NAVER_SECRET}
+    kakaoId: ${KAKAO_ID}
 logging:
   level:
     org:
