@@ -19,8 +19,12 @@ public class Place {
     private long placeId;
 
     @Setter
-    @Column(columnDefinition = "varchar(60)")
+    @Column(columnDefinition = "varchar(60)", nullable = false)
     private String placeName;
+
+    @Setter
+    @Column(columnDefinition = "varchar(200)", nullable = false)
+    private String address;
 
     @Setter
     @Lob
@@ -41,9 +45,11 @@ public class Place {
     private float score;
 
     @Setter
+    @Column(nullable = false)
     private double lat;
 
     @Setter
+    @Column(nullable = false)
     private double lng;
 
     @Setter
@@ -62,12 +68,19 @@ public class Place {
     @ColumnDefault("4")
     private int type;
 
-    // @Setter
-    // @Convert(converter = ImagesConverter.class)
-    // private List<String> placeImgs;
+    @Setter
+    private String number;
 
-    // 생각해보니 hearts에 대한 리스트 값이 필요가 없다.
-    // @OneToMany(mappedBy = "place")
-    // private List<Heart> hearts = new ArrayList<>();
+    @Setter
+    private String time;
+
+    @Setter
+    private String website;
+
+    @Setter
+    private String contentId;
+
+    @Setter
+    private String contentTypeId; // 12, 14, 32, 39
 
 }

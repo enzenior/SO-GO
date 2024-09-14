@@ -15,7 +15,7 @@ public class PlaceDto {
         @NotBlank
         private String placeName;
         @NotBlank
-        private String placeDescription;
+        private String address;
         @Positive
         private double lat;
         @Positive
@@ -43,7 +43,7 @@ public class PlaceDto {
         private float score;
         private String tag;
         private String summary;
-        private String placeImgs; // 그냥 리스트 반환? 혹은 따로 저장?
+        private String placeImg; // 그냥 리스트 반환? 혹은 따로 저장?
         private double lat;
         private double lng;
     }
@@ -53,7 +53,7 @@ public class PlaceDto {
     public static class Response{
         private String placeUuid;
         private String placeName;
-        private String placeDescription;
+        private String address;
         private double lat;
         private double lng;
         private float score;
@@ -63,7 +63,6 @@ public class PlaceDto {
         private String tag;
         private String summary;
         private String placeImgs;
-        // private List<String> placeImgs;
     }
 
 

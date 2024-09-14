@@ -28,7 +28,7 @@ import java.util.Optional;
 public class PlaceServiceImpl implements PlaceService{
 
     private final PlaceRepository placeRepository;
-    // private final SummaryService summaryService;
+    private final SummaryService summaryService;
     private final UserService userService;
     private final HeartRepository heartRepository;
     private final ReportService reportService;
@@ -51,11 +51,11 @@ public class PlaceServiceImpl implements PlaceService{
 
     @Override
     public Place createPlace(Place place) {
-        String description = place.getPlaceDescription();
-        // String summary = summaryService.generateSummary(description);
-        // String[] summaryArray = summary.split("\n");
-        place.setSummary("요약"); //summaryArray[0]
-        place.setTag("#태그,#태그2"); //summaryArray[1]
+        String description = "장소 이름 : "+ place.getPlaceName() + "\n" + "장소 상세 주소" + place.getAddress();
+        String summary = summaryService.generateSummary(description);
+        String[] summaryArray = summary.split("\n");
+        place.setSummary(summaryArray[0]); //
+        place.setTag(summaryArray[1]); //
         return placeRepository.save(place);
     }
 
