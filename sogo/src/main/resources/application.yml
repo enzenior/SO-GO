@@ -21,6 +21,7 @@ spring:
   server:
     servlet:
       context-path: /
+    port: 8081
   jwt:
     secret: ${JWT_SECRET}
     expiration: 360000
