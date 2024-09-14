@@ -8,6 +8,7 @@ public enum ExceptionCode {
     REVIEW_NOT_FOUND(404, "Review Not Found"),
     PLACE_NOT_FOUND(404, "Place Not Found"),
     COMMENT_NOT_FOUND(404, "Comment Not Found"),
+    REPORT_NOT_FOUND(404, "Report Not Found"),
 
     // 유저 관련
     NICKNAME_EXIST(409, "Nickname Already Exists"),
