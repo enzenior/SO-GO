@@ -10,6 +10,6 @@ public class OpenAIResponse {
 
 	@Data
 	public static class Choice {
-		private String text;
+		private Message message;
 	}
 }

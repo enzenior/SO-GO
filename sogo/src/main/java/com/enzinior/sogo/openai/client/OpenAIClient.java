@@ -11,6 +11,8 @@ import com.enzinior.sogo.openai.dto.OpenAIResponse;
 @FeignClient(name = "openAiClient", url = "https://api.openai.com/v1")
 public interface OpenAIClient {
 
-	@PostMapping("/completions")
+	@PostMapping(value = "/chat/completions", produces = "application/json")
 	OpenAIResponse generateSummary(@RequestHeader("Authorization") String token, @RequestBody OpenAIRequest request);
+
+
 }
