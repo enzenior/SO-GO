@@ -1,4 +1,6 @@
 spring:
+  config:
+    import: optional:file:.env[.properties]
   application:
     name: sogo
   h2:
@@ -35,3 +37,7 @@ logging:
     org:
       springframework:
         orm: debug
+openai:
+  api:
+    key: ${OPENAI_KEY}
+  model: ${OPENAI_MODEL}
