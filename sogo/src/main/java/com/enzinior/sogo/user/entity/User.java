@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -46,6 +49,13 @@ public class User {
     private boolean state;
 
     private String refreshToken;
+
+    @ElementCollection
+    @CollectionTable(name = "MAPS",
+        joinColumns = @JoinColumn(name = "user_id"))
+    @MapKeyColumn(name = "city")
+    @Column(name = "count")
+    private Map<String, Integer> maps = new HashMap<>();
 
     public User(UserDto.Patch patch) {
         this.nickname = patch.getNickname();
