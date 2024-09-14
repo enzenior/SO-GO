@@ -30,7 +30,7 @@ spring:
   social:
     naverId: ${NAVER_ID}
     naverSecret: ${NAVER_SECRET}
-    kakaoId: ${KAKAO_ID}
+    kakaoId: 4042932660cdc026a47eb06cf897d02d
 logging:
   level:
     org:
