@@ -21,11 +21,10 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-@Profile("server")
 public class SecurityConfig {
 
     private final JwtUtil jwtUtil;
-    private final RefreshTokenRepository refreshTokenRepository;;
+    private final RefreshTokenRepository refreshTokenRepository;
     private final CustomOAuth2UserService customOAuth2UserService;
     private final CustomClientRegistrationRepo customClientRegistrationRepo;
     private final CustomOAuth2SuccessHandler customOAuth2SuccessHandler;

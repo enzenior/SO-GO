@@ -1,4 +1,5 @@
 package com.enzinior.sogo.review.entity;
+
 import com.enzinior.sogo.audit.Auditable;
 import com.enzinior.sogo.place.entity.Place;
 import com.enzinior.sogo.user.entity.User;
@@ -36,7 +37,7 @@ public class Review extends Auditable {
     private Integer score;
     @Setter
     @ColumnDefault("false")
-    private Boolean secret;
+    private Boolean secret = false;
 
     @Setter
     @Column(columnDefinition = "varchar(80)", unique = true)

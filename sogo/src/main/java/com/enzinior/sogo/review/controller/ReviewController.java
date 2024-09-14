@@ -1,6 +1,7 @@
 package com.enzinior.sogo.review.controller;
 
 import com.enzinior.sogo.review.dto.ReviewDto;
+import com.enzinior.sogo.review.dto.ScrapDto;
 import com.enzinior.sogo.review.entity.Review;
 import com.enzinior.sogo.review.mapper.ReviewMapper;
 import com.enzinior.sogo.review.service.ReviewService;
@@ -33,8 +34,15 @@ public class ReviewController {
         return ResponseEntity.created(location).build();
     }
 
+    @PostMapping("/hide/{review-uuid}")
+    public ResponseEntity hideReview(@PathVariable("review-uuid") String reviewUuid) {
+        Review review = reviewService.hideReview(reviewUuid);
+        return ResponseEntity.ok(review);
+    }
+
     @PatchMapping("/{review-uuid}")
     public ResponseEntity patchReview(@Valid @RequestBody ReviewDto.Patch requestBody, @PathVariable("review-uuid") String reviewUuid) {
+        requestBody.setReviewUuid(reviewUuid);
         Review review = mapper.reviewPatchToReview(requestBody);
         Review updatedReview = reviewService.updateReview(review);
         return ResponseEntity.ok(mapper.reviewToReviewDto(updatedReview));
@@ -47,8 +55,8 @@ public class ReviewController {
     }
 
     @PostMapping("/{review-uuid}")
-    public ResponseEntity scrapReview(@PathVariable("review-uuid") String reviewUuid, @RequestBody String userUuid) {
-        scrapService.createScrap(reviewUuid, userUuid);
+    public ResponseEntity scrapReview(@PathVariable("review-uuid") String reviewUuid, @RequestBody ScrapDto requestBody) {
+        scrapService.createScrap(reviewUuid, requestBody.getUserUuid());
         return ResponseEntity.ok().build();
     }
 
@@ -58,7 +66,7 @@ public class ReviewController {
         return ResponseEntity.ok(mapper.reviewsToReviewDtos(reviews));
     }
 
-    @GetMapping("/{place-uuid}")
+    @GetMapping("/place/{place-uuid}")
     public ResponseEntity getPlaceReviews(@PathVariable("place-uuid") String placeUuid) {
         List<Review> reviews = reviewService.getPlaceReviews(placeUuid);
         return ResponseEntity.ok(mapper.reviewsToReviewDtos(reviews));

@@ -34,13 +34,13 @@ public class ReviewDto {
         private String reviewUuid;
     }
 
-    @Getter
     public static class Report {
         private String userUuid;
         private String reviewUuid;
         private String content;
     }
 
+    @Setter
     @Getter
     @AllArgsConstructor
     public static class Response {
@@ -55,7 +55,6 @@ public class ReviewDto {
         private String content;
         private String img;
         private String placeUuid;
-        private String placeImg;
         private LocalDateTime createdAt;
     }
 

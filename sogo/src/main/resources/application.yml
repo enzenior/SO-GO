@@ -1,8 +1,8 @@
 spring:
+  config:
+    import: optional:file:.env[.properties]
   application:
     name: sogo
-  profiles:
-    active: server
   h2:
     console:
       enabled: true
@@ -21,19 +21,17 @@ spring:
   server:
     servlet:
       context-path: /
-
   jwt:
-    secret: hiwearesogoandweareinssafybutwewantescape
+    secret: ${JWT_SECRET}
     expiration: 360000
     header: Authorization
     refresh-token:
-      expiration: 64800000
-      header: Authorization-refresh
+      expiration: 604800000
+      header: refresh
   social:
-    naverId: lUtg0zogbMmy0SayMxwY
-    naverSecret: Cjw2PLviT3
-    kakaoId: 4042932660cdc026a47eb06cf897d02d
-
+    naverId: ${NAVER_ID}
+    naverSecret: ${NAVER_SECRET}
+    kakaoId: ${KAKAO_ID}
 logging:
   level:
     org:
@@ -41,11 +39,5 @@ logging:
         orm: debug
 openai:
   api:
-    key: asdf
-    url: da
-  model: asd
-
-springdoc:
-  swagger-ui:
-    path: /swagger-ui.html
-    display-request-duration: true
+    key: ${OPENAI_KEY}
+  model: ${OPENAI_MODEL}

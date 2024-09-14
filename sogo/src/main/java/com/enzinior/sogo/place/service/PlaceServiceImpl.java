@@ -54,8 +54,8 @@ public class PlaceServiceImpl implements PlaceService{
         String description = "장소 이름 : "+ place.getPlaceName() + "\n" + "장소 상세 주소" + place.getAddress();
         String summary = summaryService.generateSummary(description);
         String[] summaryArray = summary.split("\n");
-        place.setSummary(summaryArray[0]); //
-        place.setTag(summaryArray[1]); //
+        place.setSummary(summaryArray[0].trim()); //
+        place.setTag(summaryArray[1].trim()); //
         return placeRepository.save(place);
     }
 
