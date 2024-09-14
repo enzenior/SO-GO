@@ -2,10 +2,12 @@ package com.enzinior.sogo.report.service;
 
 import com.enzinior.sogo.exception.BusinessLogicException;
 import com.enzinior.sogo.exception.ExceptionCode;
+import com.enzinior.sogo.notification.service.NotificationService;
 import com.enzinior.sogo.report.entity.Report;
 import com.enzinior.sogo.report.repository.ReportRepository;
 import com.enzinior.sogo.user.entity.User;
 import com.enzinior.sogo.user.repository.UserRepository;
+import com.enzinior.sogo.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,8 +19,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ReportServiceImpl implements ReportService {
 
+    private final NotificationService notificationService;
+    private final UserService userService;
     private final ReportRepository reportRepository;
-    private final UserRepository userRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -35,8 +38,7 @@ public class ReportServiceImpl implements ReportService {
     @Override
     @Transactional
     public Report postReport(Report report) {
-        User user = userRepository.findByUserUuid(report.getUser().getUserUuid())
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
+        User user = userService.findUser(report.getUser().getUserUuid());
 
         report.setUser(user);
         return reportRepository.save(report);
@@ -47,6 +49,9 @@ public class ReportServiceImpl implements ReportService {
     public Report completeReport(Long reportId) {
         Report report = findReportById(reportId);
         report.changeProcessed();
+
+        String comment = "신고 처리가 완료되었습니다.";
+        notificationService.createNotification(report.getUser(), comment);
 
         return report;
     }
