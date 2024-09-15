@@ -30,12 +30,17 @@ spring:
   social:
     naverId: ${NAVER_ID}
     naverSecret: ${NAVER_SECRET}
-    kakaoId: 4042932660cdc026a47eb06cf897d02d
+    kakaoId: ${KAKAO_ID}
 logging:
   level:
-    org:
-      springframework:
-        orm: debug
+    root: INFO
+  file:
+    name: /home/ubuntu/deploy/app.log
+    # 선택 사항: 최대 크기 및 백업 설정
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      max-history: 30
 openai:
   api:
     key: ${OPENAI_KEY}
