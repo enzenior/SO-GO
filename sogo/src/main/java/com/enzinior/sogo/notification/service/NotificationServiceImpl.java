@@ -1,18 +1,17 @@
 package com.enzinior.sogo.notification.service;
 
-import com.enzinior.sogo.exception.BusinessLogicException;
-import com.enzinior.sogo.exception.ExceptionCode;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.enzinior.sogo.notification.entity.Notification;
 import com.enzinior.sogo.notification.repository.NotificationRepository;
 import com.enzinior.sogo.review.entity.Review;
 import com.enzinior.sogo.user.entity.User;
-import com.enzinior.sogo.user.repository.UserRepository;
+import com.enzinior.sogo.user.service.UserService;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -20,16 +19,14 @@ import java.util.List;
 public class NotificationServiceImpl implements NotificationService {
 
     private final NotificationRepository notificationRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
 
     // 알림 전체 조회
     @Override
     @Transactional(readOnly = true)
     public List<Notification> searchNotification(String userUuid){
-        if(userRepository.findByUserUuid(userUuid).isEmpty()){
-            throw new BusinessLogicException(ExceptionCode.USER_NOT_FOUND);
-        }
+        User user = userService.findUser(userUuid);
         return notificationRepository.findAllByUserUuid(userUuid);
     }
 
@@ -37,8 +34,7 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public void readAllNotification(String userUuid) {
 
-        User user = userRepository.findByUserUuid(userUuid)
-            .orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
+        User user = userService.findUser(userUuid);
 
         List<Notification> notificationList = notificationRepository.findAllByIsRead(userUuid);
         for(Notification n : notificationList){

@@ -1,12 +1,18 @@
 package com.enzinior.sogo.place.entity;
 
-import jakarta.persistence.*;
+import java.util.UUID;
+
+import org.hibernate.annotations.ColumnDefault;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
-
-import java.util.UUID;
 
 @Entity
 @Getter
@@ -23,7 +29,7 @@ public class Place {
     private String placeName;
 
     @Setter
-    @Column(columnDefinition = "varchar(200)", nullable = false)
+    @Column(columnDefinition = "varchar(1024)", nullable = false)
     private String address;
 
     @Setter

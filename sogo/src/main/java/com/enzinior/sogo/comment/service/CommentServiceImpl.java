@@ -1,5 +1,13 @@
 package com.enzinior.sogo.comment.service;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.enzinior.sogo.comment.entity.Comment;
 import com.enzinior.sogo.comment.repository.CommentRepository;
@@ -13,14 +21,6 @@ import com.enzinior.sogo.user.entity.User;
 import com.enzinior.sogo.user.service.UserService;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -35,8 +35,10 @@ public class CommentServiceImpl implements CommentService {
    @Override
    @Transactional(readOnly = true)
    public List<List<Comment>> selectAllComment(String reviewUuid){
-       List<Comment> Comments = commentRepository.commentByReviewUuid(reviewUuid)
-           .orElseThrow(() -> new BusinessLogicException(ExceptionCode.REVIEW_NOT_FOUND));
+
+       Review review = reviewService.getReview(reviewUuid);
+
+       List<Comment> Comments = verifiedByReviewUuid(reviewUuid);
        List<List<Comment>> commentlist = new ArrayList<>();
        HashMap<String, Integer> parentMap = new HashMap<>();
        int idx = 0;
@@ -49,9 +51,7 @@ public class CommentServiceImpl implements CommentService {
            }else{
                commentlist.get(parentMap.get(comment.getParent())).add(comment);
            }
-
        }
-
        Collections.reverse(commentlist); // 부모댓글은 최신 댓글이 위쪽으로, 자식 댓글은 아래쪽으로.
 
        return commentlist;
@@ -108,4 +108,14 @@ public class CommentServiceImpl implements CommentService {
         return comment
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));
     }
+
+    private List<Comment> verifiedByReviewUuid(String reviewUuid){
+        List<Comment> Comments = commentRepository.commentByReviewUuid(reviewUuid)
+            .orElse(null);
+        return Comments;
+    }
+
+
+
+
 }

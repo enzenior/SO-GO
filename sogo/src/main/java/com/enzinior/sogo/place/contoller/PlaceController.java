@@ -1,29 +1,29 @@
 package com.enzinior.sogo.place.contoller;
 
-import com.enzinior.sogo.notification.entity.Notification;
+import java.net.URI;
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.enzinior.sogo.place.dto.PlaceDto;
+import com.enzinior.sogo.place.entity.Heart;
+import com.enzinior.sogo.place.entity.Place;
+import com.enzinior.sogo.place.mapper.PlaceMapper;
+import com.enzinior.sogo.place.service.PlaceService;
+import com.enzinior.sogo.utils.UriCreator;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-
-import com.enzinior.sogo.place.entity.Heart;
-import com.enzinior.sogo.place.repository.HeartRepository;
-import com.enzinior.sogo.place.service.PlaceService;
-import com.enzinior.sogo.place.mapper.PlaceMapper;
-import com.enzinior.sogo.place.entity.Place;
-import com.enzinior.sogo.user.entity.User;
-import com.enzinior.sogo.user.service.UserService;
-import com.enzinior.sogo.utils.UriCreator;
-
-import java.net.URI;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,8 +33,6 @@ public class PlaceController{
 
     private final PlaceService placeService;
     private final PlaceMapper placeMapper;
-    private final UserService userService;
-    private final HeartRepository heartRepository;
 
     // 장소 검색
     @GetMapping
@@ -68,7 +66,7 @@ public class PlaceController{
     // 장소 상세 페이지
     @GetMapping("/{place-uuid}")
     @Operation(summary = "장소 상세페이지")
-    public ResponseEntity getPlaceDetail(@PathVariable("place-uuid") String placeUuid, @Valid @RequestBody PlaceDto.detailDto requestBody){
+    public ResponseEntity getPlaceDetail(@PathVariable("place-uuid") String placeUuid, @Valid @RequestBody PlaceDto.DetailDto requestBody){
         String userUuid = requestBody.getUserUuid(); // 여기는 바꿀 예정
         PlaceDto.Response placeRes = placeMapper.placeToPlaceDtoResponse(placeService.getPlace(placeUuid));
         Heart heart = placeService.findHeart(placeUuid, userUuid);
@@ -115,7 +113,7 @@ public class PlaceController{
     // 장소 수정 신고 /{place-uuid} // 어떻게 할건지 미정, 신고 도메인에서 처리 예정
     @PostMapping("/{place-uuid}")
     @Operation(summary = "장소 신고하기")
-    public ResponseEntity reportPlace(@PathVariable("place-uuid") String placeUuid, @Valid @RequestBody PlaceDto.reportPost requestBody){
+    public ResponseEntity reportPlace(@PathVariable("place-uuid") String placeUuid, @Valid @RequestBody PlaceDto.ReportPost requestBody){
         return ResponseEntity.ok(placeService.reportPlace(placeUuid, requestBody.getUserUuid(), requestBody.getContent()));
     }
 }

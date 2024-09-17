@@ -1,26 +1,24 @@
 package com.enzinior.sogo.place.service;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.enzinior.sogo.exception.BusinessLogicException;
 import com.enzinior.sogo.exception.ExceptionCode;
 import com.enzinior.sogo.openai.service.SummaryService;
-import com.enzinior.sogo.place.dto.PlaceDto;
 import com.enzinior.sogo.place.entity.Heart;
+import com.enzinior.sogo.place.entity.Place;
 import com.enzinior.sogo.place.repository.HeartRepository;
 import com.enzinior.sogo.place.repository.PlaceRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import com.enzinior.sogo.place.entity.Place;
 import com.enzinior.sogo.report.entity.Report;
 import com.enzinior.sogo.report.service.ReportService;
 import com.enzinior.sogo.user.entity.User;
-import com.enzinior.sogo.user.repository.UserRepository;
 import com.enzinior.sogo.user.service.UserService;
 
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -54,8 +52,8 @@ public class PlaceServiceImpl implements PlaceService{
         String description = "장소 이름 : "+ place.getPlaceName() + "\n" + "장소 상세 주소" + place.getAddress();
         String summary = summaryService.generateSummary(description);
         String[] summaryArray = summary.split("\n");
-        place.setSummary(summaryArray[0].trim()); //
-        place.setTag(summaryArray[1].trim()); //
+        place.setSummary(summaryArray[0].trim());
+        place.setTag(summaryArray[1].trim());
         return placeRepository.save(place);
     }
 

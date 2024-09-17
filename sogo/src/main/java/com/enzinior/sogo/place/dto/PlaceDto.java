@@ -1,10 +1,10 @@
 package com.enzinior.sogo.place.dto;
 
-import java.util.List;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @AllArgsConstructor
@@ -23,7 +23,7 @@ public class PlaceDto {
     }
 
     @Getter
-    public static class reportPost {
+    public static class ReportPost {
         @NotBlank
         private String userUuid;
         @NotBlank
@@ -31,7 +31,7 @@ public class PlaceDto {
     }
 
     @Getter
-    public static class detailDto {
+    public static class DetailDto {
         private String userUuid;
     }
 

@@ -76,7 +76,7 @@ public class CommentController {
         CommentDto.Response commenResponse = commentMapper.commentToCommentResponse(comment);
         return ResponseEntity.ok(commenResponse);
     }
-    // 댓글 신고 /{place-uuid} // 어떻게 할건지 미정, 신고 도메인에서 처리 예정
+    // 댓글 신고 /{place-uuid}
     @PostMapping("/{comment-uuid}")
     @Operation(summary = "댓글 신고하기")
     public ResponseEntity reportComment(@PathVariable("comment-uuid") String commentUuid, @Valid @RequestBody CommentDto.reportPost requestBody){
