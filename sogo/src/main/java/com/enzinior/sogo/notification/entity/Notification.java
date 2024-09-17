@@ -1,11 +1,14 @@
 package com.enzinior.sogo.notification.entity;
 
+import java.util.UUID;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
+import org.mapstruct.Builder;
 
 import com.enzinior.sogo.review.entity.Review;
 import com.enzinior.sogo.user.entity.User;
@@ -21,7 +24,7 @@ public class Notification {
     private long notificationId;
 
     @Column(name = "notification_uuid", columnDefinition = "varchar(80)", unique = true)
-    private String notificationUuid;
+    private String notificationUuid = UUID.randomUUID().toString();
 
     @Lob
     @Setter
@@ -40,5 +43,20 @@ public class Notification {
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     private Review review;
+
+    public void updateIsRead(boolean isRead) {
+        this.isRead = isRead;
+    }
+
+    public void createNotification(User user, String content, Review review) {
+        this.user = user;
+        this.content = content;
+        this.review = review;
+    }
+
+    public void createNotification(User user, String content) {
+        this.user = user;
+        this.content = content;
+    }
 
 }

@@ -1,6 +1,7 @@
 package com.enzinior.sogo.comment.service;
 
 import com.enzinior.sogo.comment.entity.Comment;
+import com.enzinior.sogo.report.entity.Report;
 
 import java.util.List;
 
@@ -13,6 +14,6 @@ public interface CommentService{
     int removeComment(String commentUuid);
     void hideComment(String commentUuid);
     Comment readComment(String commentUuid);
-
+    Report reportComment(String commentUuid, String userUuid, String content);
 
 }

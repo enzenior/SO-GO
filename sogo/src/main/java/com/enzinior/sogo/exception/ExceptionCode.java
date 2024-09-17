@@ -9,6 +9,7 @@ public enum ExceptionCode {
     PLACE_NOT_FOUND(404, "Place Not Found"),
     COMMENT_NOT_FOUND(404, "Comment Not Found"),
     REPORT_NOT_FOUND(404, "Report Not Found"),
+    HEART_NOT_FOUND(404, "Heart Not Found"),
 
     // 유저 관련
     NICKNAME_EXIST(409, "Nickname Already Exists"),

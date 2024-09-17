@@ -1,18 +1,26 @@
 package com.enzinior.sogo.comment.service;
 
-import com.enzinior.sogo.audit.Auditable;
-import com.enzinior.sogo.comment.entity.Comment;
-import com.enzinior.sogo.comment.repository.CommentRepository;
-import com.enzinior.sogo.review.service.ReviewService;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import com.enzinior.sogo.comment.entity.Comment;
+import com.enzinior.sogo.comment.repository.CommentRepository;
+import com.enzinior.sogo.exception.BusinessLogicException;
+import com.enzinior.sogo.exception.ExceptionCode;
+import com.enzinior.sogo.report.entity.Report;
+import com.enzinior.sogo.report.service.ReportService;
+import com.enzinior.sogo.review.entity.Review;
+import com.enzinior.sogo.review.service.ReviewService;
+import com.enzinior.sogo.user.entity.User;
+import com.enzinior.sogo.user.service.UserService;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -20,38 +28,41 @@ import java.util.Optional;
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
+    private final UserService userService;
     private final ReviewService reviewService;
+    private final ReportService reportService;
 
    @Override
    @Transactional(readOnly = true)
    public List<List<Comment>> selectAllComment(String reviewUuid){
-       reviewService.getReview(reviewUuid);
-       List<Comment> commentList = commentRepository.findWithoutParentByReviewUuid(reviewUuid);
-       List<Comment> childrenList = commentRepository.findParentByReviewUuid(reviewUuid);
-       childrenList.sort(Comparator.comparing(Auditable::getCreatedAt));
-       List<List<Comment>> allCommentList = new ArrayList<>();
-       for (int i = 0; i < commentList.size(); i++) {
-           Comment comment = commentList.get(i);
-           allCommentList.add(List.of(comment));
-           List<Comment> list = childrenList.stream()
-               .filter(c -> c.getParent().equals(comment.getCommentUuid()))
-               .toList();
-           for (Comment c : list) {
-               allCommentList.get(i).add(c);
+
+       Review review = reviewService.getReview(reviewUuid);
+
+       List<Comment> Comments = verifiedByReviewUuid(reviewUuid);
+       List<List<Comment>> commentlist = new ArrayList<>();
+       HashMap<String, Integer> parentMap = new HashMap<>();
+       int idx = 0;
+       for(Comment comment : Comments) {
+           if(comment.getParent()==null){
+               parentMap.put(comment.getCommentUuid(), idx);
+               idx++;
+               commentlist.add(new ArrayList<>());
+               commentlist.get(idx-1).add(comment);
+           }else{
+               commentlist.get(parentMap.get(comment.getParent())).add(comment);
            }
        }
+       Collections.reverse(commentlist); // 부모댓글은 최신 댓글이 위쪽으로, 자식 댓글은 아래쪽으로.
 
-       return allCommentList;
+       return commentlist;
    }
-
-
-
-//        if(reviewRepository.verifiedByUuid(reviewUuid)) // 해당 리뷰가 있는지 확인. 추가 예정
-//        return
-//    }
 
     @Override
     public Comment createComment(Comment comment){
+        User user = userService.findUser(comment.getUser().getUserUuid());
+        Review review = reviewService.getReview(comment.getReview().getReviewUuid());
+        comment.setUser(user);
+        comment.setReview(review);
         return commentRepository.save(comment);
     }
 
@@ -77,16 +88,34 @@ public class CommentServiceImpl implements CommentService {
         return verifiedByUuid(commentUuid);
     }
 
+    @Override
+    public Report reportComment(String commentUuid, String userUuid, String content) {
+        User user = userService.findUser(userUuid);
+        Comment comment = verifiedByUuid(commentUuid);
+        Report report = new Report();
+        report.setUser(user);
+        report.setTargetId(comment.getCommentId());
+        report.setReportType(1);
+        report.setContent(content);
+
+        return reportService.postReport(report);
+    }
+
+    // 댓글 달았을 때 notification 호출
+
     private Comment verifiedByUuid(String commentUuid){
         Optional<Comment> comment = commentRepository.findByCommentUuid(commentUuid);
         return comment
-                .orElseThrow(() -> new RuntimeException("No Comment found with uuid " + commentUuid));
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));
     }
 
-    //    @Transactional
-//    @Override
-//    public int alterComment(String commentUuid){
-//        return commentsRepository.updateComment(comment);
-//    }
+    private List<Comment> verifiedByReviewUuid(String reviewUuid){
+        List<Comment> Comments = commentRepository.commentByReviewUuid(reviewUuid)
+            .orElse(null);
+        return Comments;
+    }
+
+
+
 
 }

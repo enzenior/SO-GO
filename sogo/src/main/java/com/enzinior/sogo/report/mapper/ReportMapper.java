@@ -18,4 +18,5 @@ public interface ReportMapper {
     ReportDto.Response reportToReportResponse(Report report);
 
     List<ReportDto.Response> reportsToReportDtos(List<Report> reports);
+
 }

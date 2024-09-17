@@ -10,7 +10,9 @@ import com.enzinior.sogo.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 import org.springframework.http.HttpMethod;
+
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -26,7 +28,7 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 public class SecurityConfig {
 
     private final JwtUtil jwtUtil;
-    private final RefreshTokenRepository refreshTokenRepository;;
+    private final RefreshTokenRepository refreshTokenRepository;
     private final CustomOAuth2UserService customOAuth2UserService;
     private final CustomClientRegistrationRepo customClientRegistrationRepo;
     private final CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
@@ -34,9 +36,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable);
+
 
         http
                 .headers(headers -> headers
@@ -59,6 +63,7 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests((auth) -> auth
+
                         .requestMatchers("/login", "/logout", "/api/auth/**", "/h2/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/users").permitAll()
                         .requestMatchers("/api/users/**").authenticated()
@@ -76,6 +81,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/reports/**").authenticated()
                         .requestMatchers("/api/reports/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
+
                 );
 
         http

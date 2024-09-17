@@ -1,8 +1,10 @@
 package com.enzinior.sogo.report.dto;
 
 import com.enzinior.sogo.user.entity.User;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+
 import lombok.*;
 
 public class ReportDto {
@@ -13,6 +15,7 @@ public class ReportDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Post {
+
         @NotNull
         private Integer reportType;
         @NotBlank
@@ -23,6 +26,7 @@ public class ReportDto {
         private Boolean processed;
         @NotBlank
         private String userUuid;
+
     }
 
     @Getter
@@ -39,6 +43,5 @@ public class ReportDto {
         private String userNickname;
         private String userUuid;
     }
-
 
 }

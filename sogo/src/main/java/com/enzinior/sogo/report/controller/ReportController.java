@@ -4,6 +4,7 @@ import com.enzinior.sogo.report.dto.ReportDto;
 import com.enzinior.sogo.report.entity.Report;
 import com.enzinior.sogo.report.mapper.ReportMapper;
 import com.enzinior.sogo.report.service.ReportService;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +38,9 @@ public class ReportController {
     // 신고하기
     @PostMapping("")
     public ResponseEntity<?> addReport(@RequestBody ReportDto.Post reportDto) {
+
         Report result = reportService.postReport(reportMapper.reportPostToReport(reportDto));
+
 
         return ResponseEntity.ok().build();
     }
