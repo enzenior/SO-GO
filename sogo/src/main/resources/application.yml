@@ -21,6 +21,7 @@ spring:
   server:
     servlet:
       context-path: /
+    port: 8080
   jwt:
     secret: ${JWT_SECRET}
     expiration: 360000
@@ -34,10 +35,16 @@ spring:
     kakaoId: ${KAKAO_ID}
 logging:
   level:
-    org:
-      springframework:
-        orm: debug
+    root: INFO
+  file:
+    name: /home/ubuntu/deploy/app.log
+    # 선택 사항: 최대 크기 및 백업 설정
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      max-history: 30
 openai:
   api:
     key: ${OPENAI_KEY}
   model: ${OPENAI_MODEL}
+

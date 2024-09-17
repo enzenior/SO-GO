@@ -28,6 +28,7 @@ public class Report {
     @ColumnDefault("false")
     private boolean processed;
 
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
@@ -37,3 +38,4 @@ public class Report {
     }
 
 }
+
