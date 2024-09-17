@@ -7,7 +7,7 @@ import com.enzinior.sogo.exception.BusinessLogicException;
 import com.enzinior.sogo.exception.ExceptionCode;
 import com.enzinior.sogo.jwt.JwtUtil;
 import com.enzinior.sogo.user.entity.User;
-import com.enzinior.sogo.user.repository.UserRepository;
+import com.enzinior.sogo.user.service.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,7 +35,7 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
     @Value("${client.url}")
     private String clientUrl;
     private final JwtUtil jwtUtil;
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final RefreshTokenRepository refreshTokenRepository;
 
     @Override
@@ -53,8 +53,7 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
         String userUuid = customUserDetails.getName();
         String refresh = jwtUtil.createJwt("refresh", userUuid, role, Long.parseLong(expiration));
 
-        User user = userRepository.findByUserUuid(userUuid)
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
+        User user = userService.findUser(userUuid);
 
         String expiredTime = new Date(System.currentTimeMillis() + Long.parseLong(expiration)).toString();
 
@@ -71,7 +70,7 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
         Cookie cookie = new Cookie(key, value);
 
         cookie.setMaxAge(60 * 60 * 60);
-        cookie.setSecure(true);
+//        cookie.setSecure(true);
         cookie.setPath("/");
 //        cookie.setHttpOnly(true);
 
