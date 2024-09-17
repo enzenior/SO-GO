@@ -10,8 +10,11 @@ import com.enzinior.sogo.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -31,12 +34,17 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf((auth) -> auth.disable())
-                .formLogin((form) -> form.disable())
-                .httpBasic((basic) -> basic.disable());
+                .csrf(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable);
 
         http
-                .addFilterBefore(new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+                .headers(headers -> headers
+                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
+                );
+
+        http
+                .addFilterAt(new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
         http
                 .addFilterBefore(new CustomLogoutFilter(jwtUtil, refreshTokenRepository), LogoutFilter.class);
@@ -46,11 +54,27 @@ public class SecurityConfig {
                         .clientRegistrationRepository(customClientRegistrationRepo.clientRegistrationRepository())
                         .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig
                                 .userService(customOAuth2UserService))
+                        .authorizationEndpoint(endPoint -> endPoint.baseUri("/api/login"))
                         .successHandler(customOAuth2SuccessHandler));
 
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/login", "/api/auth/**").permitAll()
+                        .requestMatchers("/login", "/logout", "/api/auth/**", "/h2/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/users").permitAll()
+                        .requestMatchers("/api/users/**").authenticated()
+                        .requestMatchers("/api/reviews/my-reviews/*").authenticated()
+                        .requestMatchers("/api/reviews/scraps/*").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/reviews/**").permitAll()
+                        .requestMatchers("/api/reviews/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/places/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/places/search").permitAll()
+                        .requestMatchers("/api/places/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/*/comments/**").permitAll()
+                        .requestMatchers(HttpMethod.PATCH, "api/*/comments/**").hasRole("ADMIN")
+                        .requestMatchers("/api/*/comments/**").authenticated()
+                        .requestMatchers("/api/notifications/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/reports/**").authenticated()
+                        .requestMatchers("/api/reports/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 );
 
