@@ -24,10 +24,10 @@ spring:
     port: 8080
   jwt:
     secret: ${JWT_SECRET}
-    expiration: 360000
+    expiration: ${ACCESS_EXPIRATION}
     header: Authorization
     refresh-token:
-      expiration: 604800000
+      expiration: ${REFRESH_EXPIRATION}
       header: refresh
   social:
     naverId: ${NAVER_ID}
@@ -47,4 +47,6 @@ openai:
   api:
     key: ${OPENAI_KEY}
   model: ${OPENAI_MODEL}
+client:
+  url: localhost:3000
 
