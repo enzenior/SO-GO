@@ -24,7 +24,13 @@ public class RefreshToken {
     private String expiration;
 
     @OneToOne
-    @JoinColumn(name = "user_uuid")
+    @JoinColumn(name = "user_uuid", referencedColumnName = "userUuid")
     private User user;
+
+    public RefreshToken(String refreshToken, String expiration, User user) {
+        this.refreshToken = refreshToken;
+        this.expiration = expiration;
+        this.user = user;
+    }
 
 }

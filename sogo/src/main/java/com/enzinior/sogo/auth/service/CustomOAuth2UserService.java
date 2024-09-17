@@ -71,8 +71,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         }
 
         else {
-            userRepository.save(existUser);
-
             UserDto.Auth auth = UserDto.Auth.builder()
                     .nickname(existUser.getNickname())
                     .role(existUser.getRole())

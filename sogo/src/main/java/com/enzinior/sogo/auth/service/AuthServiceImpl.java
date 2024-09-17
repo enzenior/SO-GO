@@ -9,12 +9,15 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
+    @Value("${spring.jwt.expiration}")
+    private String expiration;
     private final JwtUtil jwtUtil;
     private final RefreshTokenRepository refreshTokenRepository;
 
@@ -56,7 +59,7 @@ public class AuthServiceImpl implements AuthService {
         }
 
         String username = jwtUtil.getUserUuid(refresh);
-        String newAccess = jwtUtil.createJwt("access", username, 600000L);
+        String newAccess = jwtUtil.createJwt("access", username, role, Long.parseLong(expiration));
 
         response.setHeader("Authorization", "Bearer " + newAccess);
 
