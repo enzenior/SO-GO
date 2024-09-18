@@ -89,4 +89,7 @@ public class Place {
     @Setter
     private String contentTypeId; // 12, 14, 32, 39
 
+    @Setter
+    private String placeComfort;
+
 }

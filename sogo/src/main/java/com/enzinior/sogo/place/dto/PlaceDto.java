@@ -63,6 +63,10 @@ public class PlaceDto {
         private String tag;
         private String summary;
         private String placeImgs;
+        private String number;
+        private String time;
+        private String website;
+        private String placeComfort;
     }
 
 
