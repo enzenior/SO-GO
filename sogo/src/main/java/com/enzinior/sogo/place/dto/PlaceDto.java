@@ -1,14 +1,10 @@
 package com.enzinior.sogo.place.dto;
 
-import com.enzinior.sogo.place.entity.Heart;
-import com.enzinior.sogo.place.entity.PlaceImg;
-import java.util.List;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
-import lombok.*;
-
-import java.time.chrono.HijrahEra;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @AllArgsConstructor
@@ -19,11 +15,24 @@ public class PlaceDto {
         @NotBlank
         private String placeName;
         @NotBlank
-        private String placeDescription;
+        private String address;
         @Positive
         private double lat;
         @Positive
         private double lng;
+    }
+
+    @Getter
+    public static class ReportPost {
+        @NotBlank
+        private String userUuid;
+        @NotBlank
+        private String content;
+    }
+
+    @Getter
+    public static class DetailDto {
+        private String userUuid;
     }
 
     @Getter
@@ -32,9 +41,11 @@ public class PlaceDto {
         private String placeUuid;
         private String placeName;
         private float score;
-//        private String tag;
-//        private String summary;
-        private String main_img;
+        private String tag;
+        private String summary;
+        private String placeImg; // 그냥 리스트 반환? 혹은 따로 저장?
+        private double lat;
+        private double lng;
     }
 
     @Getter
@@ -42,14 +53,20 @@ public class PlaceDto {
     public static class Response{
         private String placeUuid;
         private String placeName;
-        private String placeDescription;
+        private String address;
         private double lat;
         private double lng;
         private float score;
+        private long heartCnt;
+        private boolean userHeart;
         private boolean hide;
-//        private String tag;
-//        private String summary;
-        private List<PlaceImg> placeImgs;
+        private String tag;
+        private String summary;
+        private String placeImgs;
+        private String number;
+        private String time;
+        private String website;
+        private String placeComfort;
     }
 
 

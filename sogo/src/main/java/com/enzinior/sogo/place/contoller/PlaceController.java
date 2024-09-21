@@ -1,21 +1,29 @@
 package com.enzinior.sogo.place.contoller;
 
-import com.enzinior.sogo.notification.entity.Notification;
-import com.enzinior.sogo.place.dto.PlaceDto;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-import com.enzinior.sogo.place.service.PlaceService;
-import com.enzinior.sogo.place.mapper.PlaceMapper;
-import com.enzinior.sogo.place.entity.Place;
-import com.enzinior.sogo.utils.UriCreator;
-
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.enzinior.sogo.place.dto.PlaceDto;
+import com.enzinior.sogo.place.entity.Heart;
+import com.enzinior.sogo.place.entity.Place;
+import com.enzinior.sogo.place.mapper.PlaceMapper;
+import com.enzinior.sogo.place.service.PlaceService;
+import com.enzinior.sogo.utils.UriCreator;
+
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,28 +36,26 @@ public class PlaceController{
 
     // 장소 검색
     @GetMapping
+    @Operation(summary = "장소 검색") // 기본적으로 간단한 정보들을 가져갈 때
     public ResponseEntity search(@Valid @RequestParam String word){
         List<Place> placeList = placeService.searchByCon(word);
-        return ResponseEntity.ok(placeMapper.placesToPlaceDtoSimpleResponses(placeList));
-
+        List<PlaceDto.SimpleResponse> simpleResponses = placeMapper.placesToPlaceDtoSimpleResponses(placeList);
+        return ResponseEntity.ok(simpleResponses);
     }
 
-    // 리뷰 등록시 장소 검색 /search  || kakao map이 어떤 정보를 주는지 알아야함..
-    // 요청이 왔는데 장소 이름만 다르고 위도 경도가 같을 경우에는 어떤 값을 다시 줄건지?
+    //리뷰 생성시 장소 uuid 검색
     @PostMapping("/search")
+    @Operation(summary = "리뷰 생성시 장소 uuid 검색") // service
     public ResponseEntity whenCreateReview(@Valid @RequestBody PlaceDto.Post requestBody){
         Place place = placeMapper.placePostToPlace(requestBody);
         String result = placeService.searchWhenCreateReview(place);
-        if(result==null) {
-            postPlace(requestBody); // 장소 등록 controller 호출, uri 생성 때문
-            result = placeService.searchWhenCreateReview(place);
-        }
         return ResponseEntity.ok(result);
     }
 
     // 장소 등록
     @PostMapping
-    public ResponseEntity postPlace(@Valid @RequestBody PlaceDto.Post requestBody){
+    @Operation(summary = "장소 등록")
+    public ResponseEntity postPlace(@Valid @RequestBody PlaceDto.Post requestBody) {
         Place place = placeMapper.placePostToPlace(requestBody);
         Place createPlace = placeService.createPlace(place);
 
@@ -57,37 +63,58 @@ public class PlaceController{
         return ResponseEntity.created(location).build();
     }
 
-    // 장소 상세 페이지 /{place-uuid}
+    // 장소 상세 페이지
     @GetMapping("/{place-uuid}")
-    public ResponseEntity getPlaceDetail(@PathVariable("place-uuid") String placeUuid){
-        return ResponseEntity.ok(placeMapper.placeToPlaceDtoResponse(placeService.getPlace(placeUuid)));
+    @Operation(summary = "장소 상세페이지")
+    public ResponseEntity getPlaceDetail(@PathVariable("place-uuid") String placeUuid, @Valid @RequestBody PlaceDto.DetailDto requestBody){
+        String userUuid = requestBody.getUserUuid(); // 여기는 바꿀 예정
+        PlaceDto.Response placeRes = placeMapper.placeToPlaceDtoResponse(placeService.getPlace(placeUuid));
+        Heart heart = placeService.findHeart(placeUuid, userUuid);
+        if(heart != null){
+            placeRes.setUserHeart(true);
+        }
+        return ResponseEntity.ok(placeRes);
     }
 
     // 장소 수정  //
     @PatchMapping("/{place-uuid}")
+    @Operation(summary = "장소 수정")
     public ResponseEntity updatePlace(@Valid @RequestBody PlaceDto.Post requestBody, @PathVariable("place-uuid") String placeUuid){
         Place place = placeMapper.placePostToPlace(requestBody);
         placeService.update(place, placeUuid);
         return ResponseEntity.ok().build();
     }
 
-    // 장소 숨김 /{place-uuid}  // 삭제가 있는가? 숨김 아닌가?
+    // 장소 숨김 // 삭제가 있는가? 숨김 아닌가?
     @PatchMapping("/{place-uuid}/hide")
+    @Operation(summary = "장소 숨김")
     public ResponseEntity hidePlace(@PathVariable("place-uuid") String placeUuid){
         placeService.hide(placeUuid);
         return ResponseEntity.ok().build();
     }
 
     // 이 아래는 찜하기라 좀 다름
-    // 장소 찜하기 /hearts
+    // 장소 찜하기
+    @PatchMapping("/{place-uuid}/hearts/{user-uuid}")
+    @Operation(summary = "장소 찜하기")
+    public ResponseEntity heartplace(@PathVariable("place-uuid") String placeUuid, @PathVariable("user-uuid") String userUuid){
+        boolean heart = placeService.updateHeart(placeUuid, userUuid);
+        return ResponseEntity.ok(heart);
+    }
 
-    // 내가 찜한 장소 조회 /my-places/{user-uuid}
+    @GetMapping("/my-places/{user-uuid}")
+    @Operation(summary = "찜한 장소 보기")
+    public ResponseEntity getMyPlaces(@PathVariable("user-uuid") String userUuid){
+        List<Place> placeList = placeService.getMyPlaces(userUuid);
+        List<PlaceDto.SimpleResponse> simpleResponses = placeMapper.placesToPlaceDtoSimpleResponses(placeList);
+        return ResponseEntity.ok(simpleResponses);
+    }
 
-//    // 장소 수정 신고 /{place-uuid} // 어떻게 할건지 미정, 신고 도메인에서 처리 예정
-//    @PostMapping
-
-    // 장소 점수 등록() -> 서비스에만 추가! // 점수 계산해서 주면 db에 갱신
-
-
+    // 장소 수정 신고 /{place-uuid} // 어떻게 할건지 미정, 신고 도메인에서 처리 예정
+    @PostMapping("/{place-uuid}")
+    @Operation(summary = "장소 신고하기")
+    public ResponseEntity reportPlace(@PathVariable("place-uuid") String placeUuid, @Valid @RequestBody PlaceDto.ReportPost requestBody){
+        return ResponseEntity.ok(placeService.reportPlace(placeUuid, requestBody.getUserUuid(), requestBody.getContent()));
+    }
 }
 

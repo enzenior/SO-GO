@@ -18,10 +18,12 @@ public class Heart {
     @Column(name = "heart_id")
     private long heartId;
 
+    @Setter
     @JoinColumn(name = "user_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
+    @Setter
     @JoinColumn(name = "place_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private Place place;

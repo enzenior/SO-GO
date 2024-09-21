@@ -20,6 +20,14 @@ public class CommentDto {
     }
 
     @Getter
+    public static class reportPost {
+        @NotBlank
+        private String userUuid;
+        @NotBlank
+        private String content;
+    }
+
+    @Getter
     @Setter
     public static class Response {
         private String commentUuid;
@@ -28,6 +36,8 @@ public class CommentDto {
         private String userImg;
         private String content;
         private String parentUuid;
+        private boolean secret;
+        private int report;
 
     }
 

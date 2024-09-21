@@ -1,11 +1,14 @@
 package com.enzinior.sogo.comment.contoller;
 
 import com.enzinior.sogo.comment.dto.CommentDto;
+import com.enzinior.sogo.place.dto.PlaceDto;
 import com.enzinior.sogo.utils.UriCreator;
 import com.enzinior.sogo.comment.entity.Comment;
 import com.enzinior.sogo.comment.mapper.CommentMapper;
 import com.enzinior.sogo.comment.service.CommentService;
 import com.enzinior.sogo.notification.service.NotificationService;
+
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,16 +28,18 @@ public class CommentController {
     private final NotificationService notificationService;
     private final CommentMapper commentMapper;
 
-
     // 댓글 전체 조회
     @GetMapping
-    public ResponseEntity list(@PathVariable("review-uuid") String reviewUuid) {
+    @Operation(summary = "댓글 전체 조회")
+    public ResponseEntity<?> list(@PathVariable("review-uuid") String reviewUuid) {
         List<List<Comment>> Comments = commentService.selectAllComment(reviewUuid);
-        return ResponseEntity.ok(commentMapper.commentListToCommentsResponseList(Comments));
+        List<List<CommentDto.Response>> commentDtos = commentMapper.commentListToCommentsResponseList(Comments);
+        return ResponseEntity.ok(commentDtos);
     }
 
     // 댓글 작성
     @PostMapping
+    @Operation(summary = "댓글 작성")
     public ResponseEntity writeComment (@Valid @RequestBody CommentDto.Post requestBody) {
 
         Comment comment = commentMapper.commentPostToComment(requestBody);
@@ -47,6 +52,7 @@ public class CommentController {
 
     // 댓글 삭제
     @DeleteMapping("/{comment-uuid}")
+    @Operation(summary = "댓글 삭제")
     public ResponseEntity<String> delete(@PathVariable("comment-uuid") String commentUuid) {
         int isComplete = commentService.removeComment(commentUuid);
         if (isComplete>0)
@@ -56,6 +62,7 @@ public class CommentController {
 
     // 댓글 숨김
     @PatchMapping("/{comment-uuid}")
+    @Operation(summary = "댓글 숨김")
     public ResponseEntity hide(@PathVariable("comment-uuid") String commentUuid){
         commentService.hideComment(commentUuid);
         return ResponseEntity.ok().build();
@@ -63,23 +70,17 @@ public class CommentController {
 
     // 댓글 상세 조회
     @GetMapping("/{comment-uuid}")
+    @Operation(summary = "댓글 상세 조회 for admin")
     public ResponseEntity detail(@PathVariable("comment-uuid") String commentUuid){
         Comment comment = commentService.readComment(commentUuid);
         CommentDto.Response commenResponse = commentMapper.commentToCommentResponse(comment);
         return ResponseEntity.ok(commenResponse);
     }
-
-
-    // 댓글 신고
-//    @PostMapping("/{review-uuid}/comments/{comment-uuid}")
-//    public ResponseEntity<String> write(@PathVariable("comment-uuid") String commentUUID) {
-//        int isComplete = commentService.alterComment(commentUUID);
-//        // 관리자한테 알림 전송
-//        int sends = reportService.sendreport(commentUUID);
-//        if(sends>0){
-//            return new ResponseEntity<String>(SUCCESS, HttpStatus.CREATED);
-//        }
-//        return new ResponseEntity<String>(FAIL, HttpStatus.NOT_FOUND);
-//    }
+    // 댓글 신고 /{place-uuid}
+    @PostMapping("/{comment-uuid}")
+    @Operation(summary = "댓글 신고하기")
+    public ResponseEntity reportComment(@PathVariable("comment-uuid") String commentUuid, @Valid @RequestBody CommentDto.reportPost requestBody){
+        return ResponseEntity.ok(commentService.reportComment(commentUuid, requestBody.getUserUuid(), requestBody.getContent()));
+    }
 
 }
