@@ -44,12 +44,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String id = oAuth2Response.getProviderId();
         boolean site = "kakao".equals(oAuth2Response.getProvider()) ? true : false;
 
-        User existUser = userRepository.findById(id);
+        User existUser = userRepository.findBySocialId(id);
 
         String userUuid = UUID.randomUUID().toString();
         if(existUser == null) {
             User user = User.builder()
-                    .id(id)
+                    .socialId(id)
                     .nickname(oAuth2Response.getNickname())
                     .email(oAuth2Response.getEmail())
                     .site(site)
