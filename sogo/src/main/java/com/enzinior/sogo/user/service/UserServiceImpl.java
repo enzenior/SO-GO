@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService{
             findUser.changeNickname(userUuid);
             findUser.changeEmail(userUuid);
             findUser.changeImg("");
-            findUser.changeId("-" + user.getId());
+            findUser.changeId("-" + user.getSocialId());
         } catch (Exception e) {
             // 예외 처리
             throw new RuntimeException("Failed to delete user", e);

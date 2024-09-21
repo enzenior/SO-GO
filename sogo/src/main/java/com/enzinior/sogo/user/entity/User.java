@@ -21,7 +21,7 @@ public class User {
     private String nickname;
 
     @Column(nullable = false)
-    private String id;
+    private String socialId;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -56,7 +56,7 @@ public class User {
 
     public User(UserDto.SignUp signUp) {
         this.nickname = signUp.getNickname();
-        this.id = signUp.getId();
+        this.socialId = signUp.getId();
         this.email = signUp.getEmail();
         this.site = signUp.isSite();
         this.role = signUp.getRole();
@@ -97,7 +97,7 @@ public class User {
     }
 
     public void changeId(String id) {
-        this.id = id;
+        this.socialId = id;
     }
 
     public void changeState(boolean state) {
