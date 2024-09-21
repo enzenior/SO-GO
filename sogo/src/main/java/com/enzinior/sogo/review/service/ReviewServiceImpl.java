@@ -3,6 +3,9 @@ package com.enzinior.sogo.review.service;
 import com.enzinior.sogo.notification.service.NotificationService;
 import com.enzinior.sogo.place.entity.Place;
 import com.enzinior.sogo.place.service.PlaceService;
+import com.enzinior.sogo.report.entity.Report;
+import com.enzinior.sogo.report.service.ReportService;
+import com.enzinior.sogo.review.dto.ReviewDto;
 import com.enzinior.sogo.review.entity.Review;
 import com.enzinior.sogo.review.repository.ReviewRepository;
 import com.enzinior.sogo.user.entity.User;
@@ -24,15 +27,17 @@ public class ReviewServiceImpl implements ReviewService{
     private final PlaceService placeService;
     private final NotificationService notificationService;
     private final CustomBeanUtils<Review> beanUtils;
+    private final ReportService reportService;
 
     @Transactional
     @Override
-    public Review createReview(Review review) {
+    public Review createReview(Review review, String address) {
         String placeUuid = review.getPlace().getPlaceUuid();
         Place place = placeService.getPlace(placeUuid);
         updatePlaceScore(review.getScore(), placeUuid, place);
 
         User user = userService.findUser(review.getUser().getUserUuid());
+        userService.updateMaps(user, address);
         review.setUser(user);
         review.setPlace(place);
         return reviewRepository.save(review);
@@ -72,10 +77,18 @@ public class ReviewServiceImpl implements ReviewService{
         reviewRepository.delete(verifiedByUuid(reviewUuid));
     }
 
-//    @Override
-//    public Report createReport(ReviewDto.Report requestBody) {
-//        return null;
-//    }
+    @Transactional
+    @Override
+    public Report createReport(ReviewDto.Report requestBody) {
+        Review review = verifiedByUuid(requestBody.getReviewUuid());
+        User user = userService.findUser(requestBody.getUserUuid());
+        Report report = new Report();
+        report.setContent(requestBody.getContent());
+        report.setTargetId(review.getReviewId());
+        report.setUser(user);
+        report.setReportType(0);
+        return reportService.postReport(report);
+    }
 
     @Override
     public List<Review> getUserReviews(String userUuid) {
@@ -109,6 +122,8 @@ public class ReviewServiceImpl implements ReviewService{
             }
         }
     }
+
+
 
     private Review verifiedByUuid(String uuid) {
         Optional<Review> optionalReview = reviewRepository.findByReviewUuid(uuid);

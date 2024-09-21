@@ -50,6 +50,12 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
+    // 회원 지도 조회
+    @GetMapping("/{user-uuid}/maps")
+    public ResponseEntity<?> findUserMaps(@PathVariable("user-uuid") String uuid) {
+        return ResponseEntity.ok(userService.getMaps(uuid));
+    }
+
     // 회원 정보 수정
     @PatchMapping("/{user-uuid}")
     public ResponseEntity<?> patchUser(@PathVariable("user-uuid") String uuid, @Valid

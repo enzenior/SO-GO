@@ -1,5 +1,6 @@
 package com.enzinior.sogo.review.controller;
 
+import com.enzinior.sogo.report.entity.Report;
 import com.enzinior.sogo.review.dto.ReviewDto;
 import com.enzinior.sogo.review.dto.ScrapDto;
 import com.enzinior.sogo.review.entity.Review;
@@ -28,7 +29,7 @@ public class ReviewController {
     @PostMapping
     public ResponseEntity postReview(@Valid @RequestBody ReviewDto.Post requestBody) {
         Review review = mapper.reviewPostToReview(requestBody);
-        Review createdReview = reviewService.createReview(review);
+        Review createdReview = reviewService.createReview(review, requestBody.getAddress());
 
         URI location = UriCreator.createUri("/reviews", createdReview.getReviewId());
         return ResponseEntity.created(location).build();
@@ -77,11 +78,12 @@ public class ReviewController {
         return ResponseEntity.ok(mapper.reviewToReviewDto(reviewService.getReview(reviewUuid)));
     }
 
-    // Report 코드 받은 후 작성
-//    @PostMapping("/reports")
-//    public ResponseEntity postReport(@Valid @RequestBody ReviewDto.Report requestBody) {
-//        Report report = reviewService.createReport(requestBody);
-//    }
+    // Report 신고
+    @PostMapping("/reports")
+    public ResponseEntity postReport(@Valid @RequestBody ReviewDto.Report requestBody) {
+        Report report = reviewService.createReport(requestBody);
+        return ResponseEntity.ok(report);
+    }
 
     @GetMapping("/my-reviews/{user-uuid}")
     public ResponseEntity getUserReviews(@PathVariable("user-uuid") String userUuid) {

@@ -22,6 +22,8 @@ public class ReviewDto {
         private String userUuid;
         @NotBlank
         private String placeUuid;
+        @NotBlank
+        private String address;
     }
 
     @Setter
@@ -34,6 +36,8 @@ public class ReviewDto {
         private String reviewUuid;
     }
 
+    @Setter
+    @Getter
     public static class Report {
         private String userUuid;
         private String reviewUuid;
