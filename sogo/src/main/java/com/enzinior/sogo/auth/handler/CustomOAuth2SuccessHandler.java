@@ -73,6 +73,7 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
         cookie.setSecure(false);
         cookie.setPath("/");
         cookie.setAttribute("SameSite", "Lax");
+        cookie.setDomain("localhost");
 //        cookie.setHttpOnly(true);
 
         return cookie;
