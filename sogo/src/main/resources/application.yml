@@ -46,5 +46,5 @@ openai:
     key: ${OPENAI_KEY}
   model: ${OPENAI_MODEL}
 client:
-  url: localhost:3000
+  url: d2gmw61nx1xl7d.cloudfront.net
 
