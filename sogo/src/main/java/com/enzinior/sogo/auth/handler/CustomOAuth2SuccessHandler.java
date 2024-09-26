@@ -71,7 +71,7 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
     private ResponseCookie createCookie(String key, String value) {
         return ResponseCookie.from(key, value)
-                .domain("d2gmw61nx1xl7d.cloudfront.net")
+                .domain(null)
                 .sameSite("None")
                 .secure(true)
                 .httpOnly(true)
