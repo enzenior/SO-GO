@@ -21,6 +21,7 @@ import java.util.UUID;
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
+    private final NicknameService nicknameService;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -50,7 +51,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         if(existUser == null) {
             User user = User.builder()
                     .socialId(id)
-                    .nickname(oAuth2Response.getNickname())
+                    .nickname(nicknameService.createNickname())
                     .email(oAuth2Response.getEmail())
                     .site(site)
                     .role("ROLE_USER")
