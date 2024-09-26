@@ -63,7 +63,7 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
         refreshTokenRepository.save(refreshToken);
 
         response.addCookie(createCookie("refresh", refresh));
-        response.sendRedirect("http://" + clientUrl + "/loading");
+        response.sendRedirect("https://" + clientUrl + "/loading");
     }
 
     private Cookie createCookie(String key, String value) {
@@ -73,7 +73,7 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
         cookie.setSecure(true);
         cookie.setPath("/");
         cookie.setAttribute("SameSite", "None");
-//        cookie.setHttpOnly(true);
+        cookie.setHttpOnly(true);
 
         return cookie;
     }
