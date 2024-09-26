@@ -14,6 +14,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
@@ -62,19 +65,18 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
         refreshTokenRepository.save(refreshToken);
 
-        response.addCookie(createCookie("refresh", refresh));
+        response.setHeader(HttpHeaders.SET_COOKIE, createCookie("refresh", refresh).toString());
         response.sendRedirect("https://" + clientUrl + "/loading");
     }
 
-    private Cookie createCookie(String key, String value) {
-        Cookie cookie = new Cookie(key, value);
-
-        cookie.setMaxAge(60 * 60 * 60);
-        cookie.setSecure(true);
-        cookie.setPath("/");
-        cookie.setAttribute("SameSite", "None");
-        cookie.setHttpOnly(true);
-
-        return cookie;
+    private ResponseCookie createCookie(String key, String value) {
+        return ResponseCookie.from(key, value)
+                .domain("d2gmw61nx1xl7d.cloudfront.net")
+                .sameSite("None")
+                .secure(true)
+                .httpOnly(true)
+                .path("/")
+                .maxAge(Duration.ofHours(1))
+                .build();
     }
 }
