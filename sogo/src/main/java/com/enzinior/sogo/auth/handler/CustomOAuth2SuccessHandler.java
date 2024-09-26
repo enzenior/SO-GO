@@ -68,6 +68,7 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
         ResponseCookie cookie = createCookie("refresh", refresh);
         response.setHeader(HttpHeaders.SET_COOKIE, cookie.toString());
         System.out.println("Created Cookie: " + cookie.toString());
+        System.out.println(response);
         response.sendRedirect("https://" + clientUrl + "/loading");
     }
 
