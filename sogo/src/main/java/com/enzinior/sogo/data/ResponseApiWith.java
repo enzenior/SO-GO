@@ -1,6 +1,7 @@
 package com.enzinior.sogo.data;
 
 import java.util.List;
+import java.util.Optional;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -28,7 +29,7 @@ public class ResponseApiWith {
 	@Getter
 	@Setter
 	public static class BodyWithDTO {
-		private ItemWith items;
+		private Optional<ItemWith> items;
 		private int numOfRows;
 		private int pageNo;
 		private int totalCount;
