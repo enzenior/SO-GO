@@ -67,6 +67,6 @@ public class SummaryService {
 		if (response != null && !response.getChoices().isEmpty()) {
 			return response.getChoices().get(0).getMessage().getContent();
 		}
-		return "장소요약\n#태그1,#태그2";
+		return "요약정보없음\n#x,#x";
 	}
 }

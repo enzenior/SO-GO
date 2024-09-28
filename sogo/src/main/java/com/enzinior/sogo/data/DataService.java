@@ -53,11 +53,11 @@ public class DataService {
 						} else {
 							type = 1;
 						}
-						Response response = dataClient.findDefaultInfo(MobileOS, MobileApp, serviceKey,
+						ResponseApi response = dataClient.findDefaultInfo(MobileOS, MobileApp, serviceKey,
 							contentType[j], "json", String.valueOf(idx), String.valueOf(i), 1, numOfRows);
-						List<Response.ItemDTO> list = response.getResponse().getBody().getItems().getItem();
+						List<ResponseApi.ItemDTO> list = response.getResponse().getBody().getItems().getItem();
 						int cnt = 0;
-						for (Response.ItemDTO itemDTO : list) {
+						for (ResponseApi.ItemDTO itemDTO : list) {
 							Place place = new Place();
 							place.setAddress(itemDTO.getAddr1() + " " + itemDTO.getAddr2());
 							place.setPlaceName(itemDTO.getTitle());
@@ -73,78 +73,75 @@ public class DataService {
 								"장소 이름 : " + place.getPlaceName() + "\n" + "장소 상세 주소" + place.getAddress();
 							String summary = summaryService.generateSummary(description);
 							String[] summaryArray = summary.split("\n");
-							if(summaryArray.length > 1) {
+							if (summaryArray.length > 1) {
 								place.setSummary(summaryArray[0].trim());
 								place.setTag(summaryArray[1].trim());
-							}else if(summaryArray.length > 0) {
-								place.setSummary(summaryArray[0].trim());
-								place.setTag(summaryArray[0].trim());
-							}else{
-								place.setSummary("요약");
-								place.setTag("#태그1,#태그2");
+							} else{
+								place.setSummary("요약정보없음");
+								place.setTag("#x,#x");
 							}
 
-							// ResponseInfo responseInfo = dataClient.findIntroInfo(MobileOS, MobileApp, serviceKey,
-							// 	contentType[j], itemDTO.getContentid(), "json");
-							// if (responseInfo.getResponse().getBody().getItems() != null) {
-							// 	List<ResponseInfo.ItemInfoDTO> listInfo = responseInfo.getResponse().getBody().getItems().getItem();
-							// 	if (j == 0) {
-							// 		for (ResponseInfo.ItemInfoDTO itemInfoDTO : listInfo) {
-							// 			place.setTime(itemInfoDTO.getUsetime());
-							// 			place.setDate(itemInfoDTO.getRestdate());
-							// 			if (itemInfoDTO.getParking() != null) {
-							// 				place.setParking(true);
-							// 			}
-							// 			if (itemInfoDTO.getChkpet() != null) {
-							// 				place.setPet(true);
-							// 			}
-							// 		}
-							// 	} else if (j == 1) {
-							// 		for (ResponseInfo.ItemInfoDTO itemInfoDTO : listInfo) {
-							// 			place.setTime(itemInfoDTO.getUsetimeculture());
-							// 			place.setDate(itemInfoDTO.getRestdateculture());
-							// 			if (itemInfoDTO.getParkingculture() != null) {
-							// 				place.setParking(true);
-							// 			}
-							// 			if (itemInfoDTO.getChkpetculture() != null) {
-							// 				place.setPet(true);
-							// 			}
-							// 		}
-							// 	} else if (j == 2) {
-							// 		for (ResponseInfo.ItemInfoDTO itemInfoDTO : listInfo) {
-							// 			if (itemInfoDTO.getParkinglodging() != null) {
-							// 				place.setParking(true);
-							// 			}
-							// 			place.setWebsite(itemInfoDTO.getReservationurl());
-							// 		}
-							// 	} else {
-							// 		for (ResponseInfo.ItemInfoDTO itemInfoDTO : listInfo) {
-							// 			place.setTime(itemInfoDTO.getOpentimefood());
-							// 			place.setDate(itemInfoDTO.getRestdatefood());
-							// 			if (itemInfoDTO.getParkingfood() != null) {
-							// 				place.setParking(true);
-							// 			}
-							// 		}
-							// 	}
-							// }
+							ResponseApiInfo responseApiInfo = dataClient.findIntroInfo(MobileOS, MobileApp, serviceKey,
+								contentType[j], itemDTO.getContentid(), "json");
+							if (responseApiInfo.getResponse().getBody().getItems() != null) {
+								List<ResponseApiInfo.ItemInfoDTO> listInfo = responseApiInfo.getResponse().getBody().getItems().getItem();
+								if (j == 0) {
+									for (ResponseApiInfo.ItemInfoDTO itemInfoDTO : listInfo) {
+										place.setTime(itemInfoDTO.getUsetime());
+										place.setDate(itemInfoDTO.getRestdate());
+										if (itemInfoDTO.getParking() != null) {
+											place.setParking(true);
+										}
+										if (itemInfoDTO.getChkpet() != null) {
+											place.setPet(true);
+										}
+									}
+								} else if (j == 1) {
+									for (ResponseApiInfo.ItemInfoDTO itemInfoDTO : listInfo) {
+										place.setTime(itemInfoDTO.getUsetimeculture());
+										place.setDate(itemInfoDTO.getRestdateculture());
+										if (itemInfoDTO.getParkingculture() != null) {
+											place.setParking(true);
+										}
+										if (itemInfoDTO.getChkpetculture() != null) {
+											place.setPet(true);
+										}
+									}
+								} else if (j == 2) {
+									for (ResponseApiInfo.ItemInfoDTO itemInfoDTO : listInfo) {
+										if (itemInfoDTO.getParkinglodging() != null) {
+											place.setParking(true);
+										}
+										place.setWebsite(itemInfoDTO.getReservationurl());
+									}
+								} else {
+									for (ResponseApiInfo.ItemInfoDTO itemInfoDTO : listInfo) {
+										place.setTime(itemInfoDTO.getOpentimefood());
+										place.setDate(itemInfoDTO.getRestdatefood());
+										if (itemInfoDTO.getParkingfood() != null) {
+											place.setParking(true);
+										}
+									}
+								}
+							}
 
-							// ResponseWith responseWith = dataClient.findWithInfo(MobileOS, MobileApp, serviceKey,
-							// 	itemDTO.getContentid(), "json");
-							// if (responseWith.getResponse().getBody().getItems() != null) {
-							// 	List<ItemWithDTO> listInfo = responseWith.getResponse().getBody().getItems().getItem();
-							//
-							// 	for (ItemWithDTO itemWithDTO : listInfo) {
-							// 		if (itemWithDTO.getParking() != null) {
-							// 			place.setParking(true);
-							// 		}
-							// 		if (itemWithDTO.getWheelchair() != null) {
-							// 			place.setWheelchair(true);
-							// 		}
-							// 		if (itemWithDTO.getElevator() != null) {
-							// 			place.setElevator(true);
-							// 		}
-							// 	}
-							// }
+							ResponseApiWith responseWith = dataClient.findWithInfo(MobileOS, MobileApp, serviceKey,
+								itemDTO.getContentid(), "json");
+							if (responseWith.getResponse().getBody().getItems() != null) {
+								List<ResponseApiWith.ItemWithDTO> listInfo = responseWith.getResponse().getBody().getItems().getItem();
+
+								for (ResponseApiWith.ItemWithDTO itemWithDTO : listInfo) {
+									if (itemWithDTO.getParking() != null) {
+										place.setParking(true);
+									}
+									if (itemWithDTO.getWheelchair() != null) {
+										place.setWheelchair(true);
+									}
+									if (itemWithDTO.getElevator() != null) {
+										place.setElevator(true);
+									}
+								}
+							}
 
 							placeRepository.save(place);
 							System.out.println(cnt+"저장함");

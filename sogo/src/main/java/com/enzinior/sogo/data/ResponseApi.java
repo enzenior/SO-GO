@@ -7,7 +7,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Response {
+public class ResponseApi {
+
 	private ResponseDTO response;
 
 	@Getter

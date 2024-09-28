@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ResponseWith {
+public class ResponseApiWith {
 	private ResponseWithDTO response;
 
 	@Getter
@@ -17,7 +17,6 @@ public class ResponseWith {
 
 	}
 
-
 	@Setter
 	@Getter
 	public static class HeaderWithDTO {
@@ -25,7 +24,6 @@ public class ResponseWith {
 		private String resultMsg;
 
 	}
-
 
 	@Getter
 	@Setter
@@ -36,13 +34,11 @@ public class ResponseWith {
 		private int totalCount;
 	}
 
-
 	@Getter
 	@Setter
 	public static class ItemWith{
 		private List<ItemWithDTO> item;
 	}
-
 
 	@Getter
 	@Setter

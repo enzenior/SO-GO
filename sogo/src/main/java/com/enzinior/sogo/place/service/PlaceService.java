@@ -1,11 +1,10 @@
 package com.enzinior.sogo.place.service;
 
-import com.enzinior.sogo.place.dto.PlaceDto;
+import java.util.List;
+
 import com.enzinior.sogo.place.entity.Heart;
 import com.enzinior.sogo.place.entity.Place;
 import com.enzinior.sogo.report.entity.Report;
-
-import java.util.List;
 
 public interface PlaceService {
 
@@ -13,7 +12,7 @@ public interface PlaceService {
     List<Place> searchByCon(String word);
 
     // 리뷰 등록시 장소 검색
-    String searchWhenCreateReview(Place place);
+    Place searchWhenCreateReview(Place place);
 
     // 장소 등록
     Place createPlace(Place place);
