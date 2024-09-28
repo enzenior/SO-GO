@@ -19,10 +19,12 @@ import com.enzinior.sogo.user.entity.User;
 import com.enzinior.sogo.user.service.UserService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class PlaceServiceImpl implements PlaceService{
 
     private final PlaceRepository placeRepository;
@@ -39,12 +41,12 @@ public class PlaceServiceImpl implements PlaceService{
 
     @Override
     @Transactional(readOnly = true)
-    public String searchWhenCreateReview(Place place) {
+    public Place searchWhenCreateReview(Place place) {
         Place findplace = placeRepository.findByPlaceInfo(place.getPlaceName(), place.getLng(), place.getLat());
         if(findplace==null){
             findplace = createPlace(place);
         }
-        return findplace.getPlaceUuid();
+        return findplace;
     }
 
     @Override
@@ -52,8 +54,14 @@ public class PlaceServiceImpl implements PlaceService{
         String description = "장소 이름 : "+ place.getPlaceName() + "\n" + "장소 상세 주소" + place.getAddress();
         String summary = summaryService.generateSummary(description);
         String[] summaryArray = summary.split("\n");
-        place.setSummary(summaryArray[0].trim());
-        place.setTag(summaryArray[1].trim());
+        if (summaryArray.length > 1) {
+            place.setSummary(summaryArray[0].trim());
+            place.setTag(summaryArray[1].trim());
+        } else{
+            place.setSummary("요약정보없음");
+            place.setTag("#x,#x");
+        }
+        place.setType(4);
         return placeRepository.save(place);
     }
 

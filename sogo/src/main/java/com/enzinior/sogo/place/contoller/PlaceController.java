@@ -24,10 +24,12 @@ import com.enzinior.sogo.utils.UriCreator;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequiredArgsConstructor
 @Validated
+@Slf4j
 @RequestMapping("/api/places")
 public class PlaceController{
 
@@ -48,8 +50,8 @@ public class PlaceController{
     @Operation(summary = "리뷰 생성시 장소 uuid 검색") // service
     public ResponseEntity whenCreateReview(@Valid @RequestBody PlaceDto.Post requestBody){
         Place place = placeMapper.placePostToPlace(requestBody);
-        String result = placeService.searchWhenCreateReview(place);
-        return ResponseEntity.ok(result);
+        PlaceDto.ReviewUuidDto reviewPlaceUuid = placeMapper.placeToReviewUuidDto(placeService.searchWhenCreateReview(place));
+        return ResponseEntity.ok(reviewPlaceUuid);
     }
 
     // 장소 등록
