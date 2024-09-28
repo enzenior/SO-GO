@@ -49,5 +49,5 @@ data:
   openapi:
     key: ${DATA_KEY}
 client:
-  url: so-go.kr
+  url: www.so-go.kr
 
