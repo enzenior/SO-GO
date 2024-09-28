@@ -27,8 +27,6 @@ public class DataService {
 	private String serviceKey;
 	private int numOfRows = 20;
 
-
-
 	public void dataSaving() {
 
 		int[] areaCode = new int[40];
@@ -125,23 +123,24 @@ public class DataService {
 								}
 							}
 
-							ResponseApiWith responseWith = dataClient.findWithInfo(MobileOS, MobileApp, serviceKey,
-								itemDTO.getContentid(), "json");
-							if (responseWith.getResponse().getBody().getItems() != null) {
-								List<ResponseApiWith.ItemWithDTO> listInfo = responseWith.getResponse().getBody().getItems().getItem();
-
-								for (ResponseApiWith.ItemWithDTO itemWithDTO : listInfo) {
-									if (itemWithDTO.getParking() != null) {
-										place.setParking(true);
-									}
-									if (itemWithDTO.getWheelchair() != null) {
-										place.setWheelchair(true);
-									}
-									if (itemWithDTO.getElevator() != null) {
-										place.setElevator(true);
-									}
-								}
-							}
+							// ResponseApiWith responseWith = dataClient.findWithInfo(MobileOS, MobileApp, serviceKey,
+							// 	itemDTO.getContentid(), "json");
+							//
+							// if (responseWith.getResponse().getBody().getItems().isPresent()) {
+							// 	List<ResponseApiWith.ItemWithDTO> listWith = responseWith.getResponse().getBody().getItems().get().getItem();
+							//
+							// 	for (ResponseApiWith.ItemWithDTO itemWithDTO : listWith) {
+							// 		if (itemWithDTO.getParking() != null) {
+							// 			place.setParking(true);
+							// 		}
+							// 		if (itemWithDTO.getWheelchair() != null) {
+							// 			place.setWheelchair(true);
+							// 		}
+							// 		if (itemWithDTO.getElevator() != null) {
+							// 			place.setElevator(true);
+							// 		}
+							// 	}
+							// }
 
 							placeRepository.save(place);
 							System.out.println(cnt+"저장함");

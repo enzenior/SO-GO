@@ -70,7 +70,7 @@ public class Place {
     private String placeUuid = UUID.randomUUID().toString();
 
     @Setter
-    @Column(name = "type", nullable = false)
+    @Column(name = "type")
     @ColumnDefault("4")
     private Integer type; // 0 관광지 1 맛집 2 숙소 3 전통시장 4 기타
 

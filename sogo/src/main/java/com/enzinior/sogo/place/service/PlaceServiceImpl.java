@@ -40,7 +40,6 @@ public class PlaceServiceImpl implements PlaceService{
     }
 
     @Override
-    @Transactional(readOnly = true)
     public Place searchWhenCreateReview(Place place) {
         Place findplace = placeRepository.findByPlaceInfo(place.getPlaceName(), place.getLng(), place.getLat());
         if(findplace==null){
@@ -121,6 +120,7 @@ public class PlaceServiceImpl implements PlaceService{
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Heart findHeart(String placeUuid, String userUuid) {
         Optional<Heart> optionalHeart = heartRepository.findHeartByPlaceAndUser(placeUuid, userUuid);
         return optionalHeart
@@ -128,6 +128,7 @@ public class PlaceServiceImpl implements PlaceService{
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Place> getMyPlaces(String userUuid) {
         User user = userService.findUser(userUuid);
         List<Place> places = heartRepository.findPlacesByUser(userUuid);

@@ -13,7 +13,7 @@ public class ResponseApiInfo {
 	@Getter
 	public static class ResponseInfoDTO{
 		private HeaderInfoDTO header;
-		private BodyWithInfoDTO body;
+		private BodyInfoDTO body;
 
 
 	}
@@ -26,7 +26,7 @@ public class ResponseApiInfo {
 	}
 	@Getter
 	@Setter
-	public static class BodyWithInfoDTO {
+	public static class BodyInfoDTO {
 		private ItemInfo items;
 		private int numOfRows;
 		private int pageNo;

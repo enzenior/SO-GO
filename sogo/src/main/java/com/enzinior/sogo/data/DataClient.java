@@ -18,10 +18,10 @@ public interface DataClient {
 		@RequestParam("serviceKey") String serviceKey, @RequestParam("contentTypeId") String contentTypeId, @RequestParam("contentId") String contentId,
 		@RequestParam("_type") String returnType);
 
-	@GetMapping(value = "/KorWithService/detailWithTour1") // 무장애
-	ResponseApiWith findWithInfo(@RequestParam("MobileOS") String MobileOS, @RequestParam("MobileApp") String MobileApp,
-		@RequestParam("serviceKey") String serviceKey, @RequestParam("contentId") String contentId,
-		@RequestParam("_type") String returnType);
+	// @GetMapping(value = "/KorWithService1/detailWithTour1") // 무장애
+	// ResponseApiWith findWithInfo(@RequestParam("MobileOS") String MobileOS, @RequestParam("MobileApp") String MobileApp,
+	// 	@RequestParam("serviceKey") String serviceKey, @RequestParam("contentId") String contentId,
+	// 	@RequestParam("_type") String returnType);
 
 	// @GetMapping(value = "/detailCommon1") // 공통 정보 조회
 
