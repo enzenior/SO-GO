@@ -65,8 +65,15 @@ public class PlaceDto {
         private String placeImgs;
         private String number;
         private String time;
+        private String date;
         private String website;
-        private String placeComfort;
+        private Integer type;
+
+        private Boolean parking;
+        private Boolean wheelchair;
+        private Boolean elevator;
+        private Boolean pet;
+
     }
 
 
