@@ -64,8 +64,6 @@ public class SummaryService {
 
 		OpenAIResponse response = openAIClient.generateSummary("Bearer " + apiKey, request);
 
-		System.out.println(response.getChoices());
-
 		if (response != null && !response.getChoices().isEmpty()) {
 			return response.getChoices().get(0).getMessage().getContent();
 		}
