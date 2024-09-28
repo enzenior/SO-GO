@@ -75,9 +75,8 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
         Cookie cookie = new Cookie(key, value);
         cookie.setPath("/");
         cookie.setHttpOnly(true);
-        cookie.setSecure(true); // HTTPS일 경우
-        cookie.setMaxAge(3600); // 1시간
-        cookie.setAttribute("SameSite", "None");
+        cookie.setSecure(true);
+        cookie.setMaxAge(3600);
         return cookie;
     }
 }
