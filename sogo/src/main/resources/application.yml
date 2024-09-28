@@ -45,6 +45,9 @@ openai:
   api:
     key: ${OPENAI_KEY}
   model: ${OPENAI_MODEL}
+data:
+  openapi:
+    key: ${DATA_KEY}
 client:
-  url: d2gmw61nx1xl7d.cloudfront.net
+  url: so-go.kr
 
