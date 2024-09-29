@@ -33,7 +33,7 @@ spring:
     kakaoId: ${KAKAO_ID}
 logging:
   level:
-    root: INFO
+    root: DEBUG
   file:
     name: /home/ubuntu/deploy/app.log
     # 선택 사항: 최대 크기 및 백업 설정
