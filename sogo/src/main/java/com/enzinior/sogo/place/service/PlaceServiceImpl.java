@@ -75,7 +75,7 @@ public class PlaceServiceImpl implements PlaceService{
     public void update(Place place, String placeUuid){
         Place findplace = verifiedByUuid(placeUuid);
         findplace.setPlaceName(place.getPlaceName());
-        findplace.setPlaceDescription(place.getPlaceDescription());
+        findplace.setAddress(place.getAddress());
         findplace.setLng(place.getLng());
         findplace.setLat(place.getLat());
     }
