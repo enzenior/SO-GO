@@ -88,7 +88,7 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/api/login", "/login", "/logout", "/api/auth/**", "/h2/**").permitAll()
+                        .requestMatchers("/api/login", "/login", "/logout", "/api/auth/**", "/h2/**", "/api/health/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/users").permitAll()
                         .requestMatchers("/api/users/**").authenticated()
                         .requestMatchers("/api/reviews/my-reviews/*").authenticated()
