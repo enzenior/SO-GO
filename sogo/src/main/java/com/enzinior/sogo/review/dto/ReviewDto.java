@@ -59,6 +59,7 @@ public class ReviewDto {
         private String content;
         private String img;
         private String placeUuid;
+        private String placeName;
         private LocalDateTime createdAt;
     }
 

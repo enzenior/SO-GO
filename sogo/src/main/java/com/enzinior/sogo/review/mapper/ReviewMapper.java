@@ -19,7 +19,8 @@ public interface ReviewMapper {
     @Mapping(source = "user.nickname", target = "userNickname")
     @Mapping(source = "user.userUuid", target = "userUuid")
     @Mapping(source = "place.placeUuid", target = "placeUuid")
-    ReviewDto.Response reviewToReviewDto(Review review);
+    @Mapping(source = "place.placeName", target = "placeName")
+    ReviewDto.Response reviewToReviewResponseDto(Review review);
 
-    List<ReviewDto.Response> reviewsToReviewDtos(List<Review> reviews);
+    List<ReviewDto.Response> reviewsToReviewResponseDtos(List<Review> reviews);
 }
