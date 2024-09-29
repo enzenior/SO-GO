@@ -83,10 +83,10 @@ public class SecurityConfig {
                         .clientRegistrationRepository(customClientRegistrationRepo.clientRegistrationRepository())
                         .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig
                                 .userService(customOAuth2UserService))
-                        .authorizationEndpoint(endPoint -> endPoint.baseUri("/api/oauth2/authorization/kakao"))
+                        .authorizationEndpoint(endPoint -> endPoint.baseUri("/api/oauth2/authorization"))
                         .successHandler(customOAuth2SuccessHandler))
                 .oauth2Login(oauth2 -> oauth2
-                        .authorizationEndpoint(endPoint -> endPoint.baseUri("/api/oauth2/authorization/naver")) // 네이버 로그인 엔드포인트
+                        .authorizationEndpoint(endPoint -> endPoint.baseUri("/api/oauth2/authorization")) // 네이버 로그인 엔드포인트
                         .successHandler(customOAuth2SuccessHandler)
                 );
 
