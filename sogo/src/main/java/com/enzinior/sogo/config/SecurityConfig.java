@@ -84,11 +84,8 @@ public class SecurityConfig {
                         .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig
                                 .userService(customOAuth2UserService))
                         .authorizationEndpoint(endPoint -> endPoint.baseUri("/api/oauth2/authorization"))
-                        .successHandler(customOAuth2SuccessHandler))
-                .oauth2Login(oauth2 -> oauth2
-                        .authorizationEndpoint(endPoint -> endPoint.baseUri("/api/oauth2/authorization")) // 네이버 로그인 엔드포인트
-                        .successHandler(customOAuth2SuccessHandler)
-                );
+                        .redirectionEndpoint(endPoint -> endPoint.baseUri("/api/login/oauth2/code/*"))
+                        .successHandler(customOAuth2SuccessHandler));
 
         http
                 .authorizeHttpRequests((auth) -> auth
