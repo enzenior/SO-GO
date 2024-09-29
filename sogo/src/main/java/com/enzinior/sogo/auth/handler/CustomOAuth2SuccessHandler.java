@@ -65,16 +65,27 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
         refreshTokenRepository.save(refreshToken);
 
-        Cookie cookie = createCookie("refresh", refresh);
-        response.addCookie(cookie);
-        System.out.println("Created Cookie: " + cookie.toString());
+        Cookie refreshCookie = createRefreshCookie("refresh", refresh);
+        Cookie flagCookie = createIsAuthenticatedCookie("is_authenticated", "true");
+        response.addCookie(refreshCookie);
+        response.addCookie(flagCookie);
         response.sendRedirect("https://" + clientUrl + "/loading");
     }
 
-    private Cookie createCookie(String key, String value) {
+    private Cookie createRefreshCookie(String key, String value) {
         Cookie cookie = new Cookie(key, value);
         cookie.setPath("/");
+        cookie.setDomain("so-go.kr");
         cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setMaxAge(3600);
+        return cookie;
+    }
+
+    private Cookie createIsAuthenticatedCookie(String key, String value) {
+        Cookie cookie = new Cookie(key, value);
+        cookie.setPath("/");
+        cookie.setDomain("so-go.kr");
         cookie.setSecure(true);
         cookie.setMaxAge(3600);
         return cookie;
