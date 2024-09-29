@@ -50,7 +50,7 @@ public class PlaceDto {
         private String tag;
         private String summary;
         private Integer type;
-        private String placeImg; // 그냥 리스트 반환? 혹은 따로 저장?
+        private String placeImgs; // 그냥 리스트 반환? 혹은 따로 저장?
         private double lat;
         private double lng;
     }
