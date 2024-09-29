@@ -37,13 +37,20 @@ public class PlaceDto {
 
     @Getter
     @Setter
+    public static class ReviewUuidDto{
+        private String placeUuid;
+    }
+
+    @Getter
+    @Setter
     public static class SimpleResponse{
         private String placeUuid;
         private String placeName;
         private float score;
         private String tag;
         private String summary;
-        private String placeImg; // 그냥 리스트 반환? 혹은 따로 저장?
+        private Integer type;
+        private String placeImgs;
         private double lat;
         private double lng;
     }
@@ -65,8 +72,15 @@ public class PlaceDto {
         private String placeImgs;
         private String number;
         private String time;
+        private String date;
         private String website;
-        private String placeComfort;
+        private Integer type;
+
+        private Boolean parking;
+        private Boolean wheelchair;
+        private Boolean elevator;
+        private Boolean pet;
+
     }
 
 

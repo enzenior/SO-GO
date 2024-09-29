@@ -34,7 +34,7 @@ public class Place {
 
     @Setter
     @Lob
-    private String placeDescription;
+    private String placeDescription; // 삭제해야함
 
     @Setter
     private String tag;
@@ -52,18 +52,18 @@ public class Place {
 
     @Setter
     @Column(nullable = false)
-    private double lat;
+    private double lat; // 위도
 
     @Setter
     @Column(nullable = false)
-    private double lng;
+    private double lng; // 경도
 
     @Setter
     @ColumnDefault("false")
     private boolean hide;
 
     @Setter
-    private String placeImgs;
+    private String placeImgs; // 사진
 
     @Setter
     @Column(name = "place_uuid", columnDefinition = "varchar(80)", unique = true)
@@ -72,24 +72,36 @@ public class Place {
     @Setter
     @Column(name = "type")
     @ColumnDefault("4")
-    private int type;
+    private Integer type; // 0 관광지 1 맛집 2 숙소 3 전통시장 4 기타
 
     @Setter
-    private String number;
+    private String number; // 전화번호
 
     @Setter
-    private String time;
+    private String time; // 운영시간
 
     @Setter
-    private String website;
+    private String date; // 운영일
 
     @Setter
-    private String contentId;
+    private String website; // 홈페이지
 
     @Setter
-    private String contentTypeId; // 12, 14, 32, 39
+    private String contentId; // 장소 번호
 
     @Setter
-    private String placeComfort;
+    private String contentTypeId; // 12(관광지), 14(문화시설), 32(숙박), 39(음식점)
+
+    @Setter
+    private Boolean parking;
+
+    @Setter
+    private Boolean wheelchair;
+
+    @Setter
+    private Boolean elevator;
+
+    @Setter
+    private Boolean pet;
 
 }

@@ -14,6 +14,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
@@ -62,18 +65,18 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
         refreshTokenRepository.save(refreshToken);
 
-        response.addCookie(createCookie("refresh", refresh));
-        response.sendRedirect("http://" + clientUrl + "/loading");
+        Cookie cookie = createCookie("refresh", refresh);
+        response.addCookie(cookie);
+        System.out.println("Created Cookie: " + cookie.toString());
+        response.sendRedirect("https://" + clientUrl + "/loading");
     }
 
     private Cookie createCookie(String key, String value) {
         Cookie cookie = new Cookie(key, value);
-
-        cookie.setMaxAge(60 * 60 * 60);
-//        cookie.setSecure(true);
         cookie.setPath("/");
-//        cookie.setHttpOnly(true);
-
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setMaxAge(3600);
         return cookie;
     }
 }

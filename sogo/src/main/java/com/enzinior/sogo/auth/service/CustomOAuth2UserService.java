@@ -21,6 +21,7 @@ import java.util.UUID;
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
+    private final NicknameService nicknameService;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -44,13 +45,13 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String id = oAuth2Response.getProviderId();
         boolean site = "kakao".equals(oAuth2Response.getProvider()) ? true : false;
 
-        User existUser = userRepository.findById(id);
+        User existUser = userRepository.findBySocialId(id);
 
         String userUuid = UUID.randomUUID().toString();
         if(existUser == null) {
             User user = User.builder()
-                    .id(id)
-                    .nickname(oAuth2Response.getNickname())
+                    .socialId(id)
+                    .nickname(nicknameService.createNickname())
                     .email(oAuth2Response.getEmail())
                     .site(site)
                     .role("ROLE_USER")
