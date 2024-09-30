@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -77,6 +78,22 @@ public class UserServiceImpl implements UserService{
             // 예외 처리
             throw new RuntimeException("Failed to delete user", e);
         }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Map<String, Integer> getMaps(String uuid) {
+        User user = findUser(uuid);
+        return user.getMaps();
+    }
+
+    @Override
+    @Transactional
+    public void updateMaps(User user, String address) {
+        String[] split = address.split(" ");
+        String newAddress = split[0] + " " + split[1];
+        Map<String, Integer> maps = user.getMaps();
+        maps.put(newAddress, maps.getOrDefault(newAddress, 0) + 1);
     }
 
     @Override

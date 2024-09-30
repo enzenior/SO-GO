@@ -1,5 +1,6 @@
 package com.enzinior.sogo.review.service;
 
+import com.enzinior.sogo.report.entity.Report;
 import com.enzinior.sogo.review.dto.ReviewDto;
 import com.enzinior.sogo.review.entity.Review;
 import com.enzinior.sogo.user.entity.User;
@@ -7,13 +8,13 @@ import com.enzinior.sogo.user.entity.User;
 import java.util.List;
 
 public interface ReviewService {
-    Review createReview(Review review);
+    Review createReview(Review review, String address);
     Review updateReview(Review review);
     List<Review> getAllReviews();
     List<Review> getPlaceReviews(String placeUuid);
     Review getReview(String reviewUuid);
     void deleteReview(String reviewUuid);
-//    Report createReport(ReviewDto.Report requestBody);
+    Report createReport(ReviewDto.Report requestBody);
     List<Review> getUserReviews(String userUuid);
 
     List<Review> getScrapReviews(String userUuid);
