@@ -15,7 +15,7 @@ public interface PlaceRepository extends JpaRepository<Place, Long> {
     @Query("SELECT p FROM Place p WHERE p.placeName LIKE CONCAT('%',:word, '%') OR p.address LIKE CONCAT('%',:word, '%') ")
     List<Place> findByWord(String word);
 
-    @Query("SELECT p FROM Place p WHERE p.placeName = :name AND p.lng = :lng AND p.lat = :lat")
+    @Query("SELECT p FROM Place p WHERE p.placeNoEmptyName = :name AND TRUNCATE(p.lng, 3) = truncate (:lng, 3) AND TRUNCATE(p.lat, 3) = TRUNCATE(:lat, 3)")
     Place findByPlaceInfo(String name, double lng, double lat);
 
 }

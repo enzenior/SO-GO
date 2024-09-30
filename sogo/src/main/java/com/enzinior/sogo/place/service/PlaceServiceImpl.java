@@ -41,7 +41,8 @@ public class PlaceServiceImpl implements PlaceService{
 
     @Override
     public Place searchWhenCreateReview(Place place) {
-        Place findplace = placeRepository.findByPlaceInfo(place.getPlaceName(), place.getLng(), place.getLat());
+        String noEmptyName = place.getPlaceName().replace(" ", "");
+        Place findplace = placeRepository.findByPlaceInfo(noEmptyName, place.getLng(), place.getLat());
         if(findplace==null){
             findplace = createPlace(place);
         }
@@ -61,6 +62,8 @@ public class PlaceServiceImpl implements PlaceService{
             place.setTag("#x,#x");
         }
         place.setType(4);
+        String noEmptyName = place.getPlaceName().replace(" ", "");
+        place.setPlaceNoEmptyName(noEmptyName);
         return placeRepository.save(place);
     }
 
