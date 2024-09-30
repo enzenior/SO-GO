@@ -60,13 +60,12 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
         String expiredTime = new Date(System.currentTimeMillis() + Long.parseLong(expiration)).toString();
 
-        System.out.println("userUuid + " + userUuid);
         RefreshToken refreshToken = refreshTokenRepository.findByUserUserUuid(userUuid)
                 .orElse(new RefreshToken(refresh, expiredTime, user));
 
         refreshTokenRepository.save(refreshToken);
 
-        Cookie refreshCookie = createRefreshCookie("refresh", refresh);
+        Cookie refreshCookie = createRefreshCookie("refresh", refreshToken.getRefreshToken());
         Cookie flagCookie = createIsAuthenticatedCookie("is_authenticated", "true");
         response.addCookie(refreshCookie);
         response.addCookie(flagCookie);
