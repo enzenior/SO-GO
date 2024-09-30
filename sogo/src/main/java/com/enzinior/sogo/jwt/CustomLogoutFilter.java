@@ -85,9 +85,19 @@ public class CustomLogoutFilter extends GenericFilterBean {
         // RefreshToken Cookie 값 0
         Cookie cookie = new Cookie("refresh", null);
         cookie.setMaxAge(0);
+        cookie.setDomain("so-go.kr");
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
         cookie.setPath("/");
 
+        Cookie authenticatedCookie = new Cookie("authenticated", null);
+        authenticatedCookie.setMaxAge(0);
+        authenticatedCookie.setDomain("so-go.kr");
+        authenticatedCookie.setSecure(true);
+        authenticatedCookie.setPath("/");
+
         response.addCookie(cookie);
+        response.addCookie(authenticatedCookie);
         response.setStatus(HttpServletResponse.SC_OK);
 
     }
