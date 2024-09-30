@@ -37,12 +37,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (jwtUtil.isValidAccessToken(accessToken)) {
                 setAuthenticationToContext(accessToken);
             } else {
-                SecurityContextHolder.clearContext();
-                throw new BusinessLogicException(ExceptionCode.AT_EXPIRED_ERROR);
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().write("{\"error\": \"AccessToken is expired\"}");
+                return;
             }
         } catch (JwtException e) {
             SecurityContextHolder.clearContext();
-            throw new BusinessLogicException((ExceptionCode.ACCESS_TOKEN_ERROR));
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write("{\"error\": \"AccessToken Error\"}");
+            return;
         }
 
         filterChain.doFilter(request, response);
