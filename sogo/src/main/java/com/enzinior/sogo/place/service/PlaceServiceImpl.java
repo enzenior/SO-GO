@@ -51,6 +51,10 @@ public class PlaceServiceImpl implements PlaceService{
 
     @Override
     public Place createPlace(Place place) {
+        String noEmptyName = place.getPlaceName().replace(" ", "");
+        place.setPlaceNoEmptyName(noEmptyName);
+        place.setType(4);
+
         String description = "장소 이름 : "+ place.getPlaceName() + "\n" + "장소 상세 주소" + place.getAddress();
         String summary = summaryService.generateSummary(description);
         String[] summaryArray = summary.split("\n");
@@ -61,9 +65,6 @@ public class PlaceServiceImpl implements PlaceService{
             place.setSummary("요약정보없음");
             place.setTag("#x,#x");
         }
-        place.setType(4);
-        String noEmptyName = place.getPlaceName().replace(" ", "");
-        place.setPlaceNoEmptyName(noEmptyName);
         return placeRepository.save(place);
     }
 
