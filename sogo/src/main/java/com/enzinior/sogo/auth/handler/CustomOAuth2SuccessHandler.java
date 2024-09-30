@@ -60,6 +60,7 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
         String expiredTime = new Date(System.currentTimeMillis() + Long.parseLong(expiration)).toString();
 
+        System.out.println("userUuid + " + userUuid);
         RefreshToken refreshToken = refreshTokenRepository.findByUserUserUuid(userUuid)
                 .orElse(new RefreshToken(refresh, expiredTime, user));
 
