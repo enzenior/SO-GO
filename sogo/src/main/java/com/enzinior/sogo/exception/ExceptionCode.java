@@ -18,6 +18,7 @@ public enum ExceptionCode {
 
     // TOKEN 관련
     REFRESH_TOKEN_ERROR(401, "Invalid refresh token"),
+    RT_NOT_FOUND_ERROR(401, "RT Not Found"),
     SIGNATURE_ERROR(401, "Token Signature Error"),
     RT_EXPIRED_ERROR(401, "RefreshToken Expired Error"),
     RT_NULL_ERROR(401, "RefreshToken Token Null"),
