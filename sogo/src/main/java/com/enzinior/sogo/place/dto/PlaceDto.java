@@ -46,6 +46,7 @@ public class PlaceDto {
     public static class SimpleResponse{
         private String placeUuid;
         private String placeName;
+        private String address;
         private float score;
         private String tag;
         private String summary;
