@@ -50,12 +50,10 @@ public class AuthServiceImpl implements AuthService {
 
         String role = jwtUtil.getRole(refresh);
 
-        System.out.println("isExist : " + isExist);
         if(!isExist) {
             throw new BusinessLogicException(ExceptionCode.RT_NOT_FOUND_ERROR);
         }
 
-        System.out.println("category : " + category);
         if (!category.equals("refresh")) {
             throw new BusinessLogicException(ExceptionCode.REFRESH_TOKEN_ERROR);
         }
