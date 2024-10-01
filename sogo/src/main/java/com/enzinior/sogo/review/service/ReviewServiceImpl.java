@@ -40,6 +40,9 @@ public class ReviewServiceImpl implements ReviewService{
         userService.updateMaps(user, address);
         review.setUser(user);
         review.setPlace(place);
+        review.setScrap(0);
+        review.setMaxCnt(0);
+        review.setReport(0);
         return reviewRepository.save(review);
     }
 
@@ -111,7 +114,7 @@ public class ReviewServiceImpl implements ReviewService{
     @Transactional
     @Override
     public void updateMaxCnt(User user, Review review, Integer count) {
-        if (review.getMaxCnt() < count) {
+        if (review.getMaxCnt() != null && review.getMaxCnt() < count) {
             review.setMaxCnt(review.getMaxCnt() + 1);
             int maxCnt = review.getMaxCnt();
 
@@ -120,6 +123,8 @@ public class ReviewServiceImpl implements ReviewService{
                 content.append("🎉  ").append(user.getNickname()).append("님의 글이 스크랩 ").append(maxCnt).append("개를 돌파했습니다!");
                 notificationService.createNotificationByReview(user, content.toString(), review);
             }
+        } else {
+            review.setMaxCnt(count);
         }
     }
 
