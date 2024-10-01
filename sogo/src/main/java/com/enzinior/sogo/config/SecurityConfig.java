@@ -7,6 +7,7 @@ import com.enzinior.sogo.auth.service.CustomOAuth2UserService;
 import com.enzinior.sogo.jwt.CustomLogoutFilter;
 import com.enzinior.sogo.jwt.JwtAuthenticationFilter;
 import com.enzinior.sogo.jwt.JwtUtil;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -47,7 +48,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("https://www.so-go.kr", "http://localhost:3000", "https://so-go.kr"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
         configuration.setExposedHeaders(Arrays.asList("Authorization", "Set-Cookie", "Error", "Error-Description"));
@@ -94,33 +95,39 @@ public class SecurityConfig {
                         .requestMatchers("/api/users/**").authenticated()
                         .requestMatchers("/api/reviews/my-reviews/*").authenticated()
                         .requestMatchers("/api/reviews/scraps/*").authenticated()
-                        .requestMatchers(HttpMethod.GET, "/api/reviews/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/reviews", "/api/reviews/**").permitAll()
                         .requestMatchers("/api/reviews/**").authenticated()
-                        .requestMatchers(HttpMethod.GET, "/api/places/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/places", "/api/places/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/places/search").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/places/*/hearts/*").authenticated()
                         .requestMatchers("/api/places/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/api/*/comments/**").permitAll()
-                        .requestMatchers(HttpMethod.PATCH, "api/*/comments/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/*/comments","/api/*/comments/**").permitAll()
+                        .requestMatchers(HttpMethod.PATCH, "/api/*/comments/**").hasRole("ADMIN")
                         .requestMatchers("/api/*/comments/**").authenticated()
-                        .requestMatchers("/api/notifications/**").authenticated()
+                        .requestMatchers("/api/notifications/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/reports/**").authenticated()
-                        .requestMatchers("/api/reports/**").hasRole("ADMIN")
+                        .requestMatchers("/api/reports", "/api/reports/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 );
 
         http
                 .exceptionHandling(exceptions -> exceptions
                         .authenticationEntryPoint((request, response, authException) -> {
-                            response.sendRedirect("https://www.so-go.kr/login");
+                            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                            response.setContentType("application/json");
+                            response.getWriter().write("{\"error\": \"Unauthorized\", \"message\": \"Authentication required\"}");
                         })
                         .accessDeniedHandler((request, response, accessDeniedException) -> {
-                            response.sendRedirect("https://www.so-go.kr/login");
+                            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                            response.setContentType("application/json");
+                            response.getWriter().write("{\"error\": \"Forbidden\", \"message\": \"Access denied\"}");
                         })
                 );
 
         http
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
         return http.build();
     }
 
