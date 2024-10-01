@@ -46,8 +46,7 @@ public class UserController {
     @GetMapping("")
     public ResponseEntity<?> findUserByNickname(@RequestParam("nickname") String nickname) {
         userService.verifyNicknameAvailable(nickname);
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     // 회원 지도 조회
