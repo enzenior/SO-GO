@@ -39,31 +39,28 @@ public class AuthServiceImpl implements AuthService {
             throw new BusinessLogicException(ExceptionCode.RT_NULL_ERROR);
         }
 
+        String username = jwtUtil.getUserUuid(refresh);
         try {
             jwtUtil.isExpired(refresh);
         } catch (ExpiredJwtException e) {
-            refreshTokenRepository.deleteByRefreshToken(refresh);
+            refreshTokenRepository.deleteByUserUserUuid(username);
             throw new BusinessLogicException(ExceptionCode.RT_EXPIRED_ERROR);
         }
 
-        String category = jwtUtil.getCategory(refresh);
 
         // DB에 저장되어 있는지 확인
         Boolean isExist = refreshTokenRepository.existsRefreshTokenByRefreshToken(refresh);
-
-        String role = jwtUtil.getRole(refresh);
-
         if(!isExist) {
             throw new BusinessLogicException(ExceptionCode.RT_NOT_FOUND_ERROR);
         }
 
+        String category = jwtUtil.getCategory(refresh);
         if (!category.equals("refresh")) {
             throw new BusinessLogicException(ExceptionCode.REFRESH_TOKEN_ERROR);
         }
 
-        String username = jwtUtil.getUserUuid(refresh);
+        String role = jwtUtil.getRole(refresh);
         String newAccess = jwtUtil.createJwt("access", username, role, Long.parseLong(expiration));
-
         response.setHeader("Authorization", "Bearer " + newAccess);
 
     }
