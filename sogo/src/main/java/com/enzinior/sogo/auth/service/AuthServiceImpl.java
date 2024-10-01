@@ -40,13 +40,10 @@ public class AuthServiceImpl implements AuthService {
         }
 
         String username = jwtUtil.getUserUuid(refresh);
-        try {
-            jwtUtil.isExpired(refresh);
-        } catch (ExpiredJwtException e) {
+        if(jwtUtil.isExpired(refresh)) {
             refreshTokenRepository.deleteByUser_UserUuid(username);
             throw new BusinessLogicException(ExceptionCode.RT_EXPIRED_ERROR);
         }
-
 
         // DB에 저장되어 있는지 확인
         Boolean isExist = refreshTokenRepository.existsRefreshTokenByRefreshToken(refresh);
