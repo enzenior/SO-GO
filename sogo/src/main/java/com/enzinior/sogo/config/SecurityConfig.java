@@ -111,10 +111,10 @@ public class SecurityConfig {
         http
                 .exceptionHandling(exceptions -> exceptions
                         .authenticationEntryPoint((request, response, authException) -> {
-                            response.sendRedirect("https://so-go.kr/login");
+                            response.sendRedirect("https://www.so-go.kr/login");
                         })
                         .accessDeniedHandler((request, response, accessDeniedException) -> {
-                            response.sendRedirect("https://so-go.kr/login");
+                            response.sendRedirect("https://www.so-go.kr/login");
                         })
                 );
 

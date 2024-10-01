@@ -18,6 +18,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private long userId;
 
     @Column(nullable = false, unique = true)
@@ -106,8 +107,8 @@ public class User {
         this.email = email;
     }
 
-    public void changeId(String id) {
-        this.socialId = id;
+    public void changeSocialId(String SocialId) {
+        this.socialId = SocialId;
     }
 
     public void changeState(boolean state) {
