@@ -96,7 +96,7 @@ public class PlaceController{
 
     // 이 아래는 찜하기라 좀 다름
     // 장소 찜하기
-    @PatchMapping("/{place-uuid}/hearts/{user-uuid}")
+    @PostMapping("/{place-uuid}/hearts/{user-uuid}")
     @Operation(summary = "장소 찜하기")
     public ResponseEntity heartplace(@PathVariable("place-uuid") String placeUuid, @PathVariable("user-uuid") String userUuid){
         boolean heart = placeService.updateHeart(placeUuid, userUuid);
