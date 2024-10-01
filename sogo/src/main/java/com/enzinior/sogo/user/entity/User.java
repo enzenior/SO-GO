@@ -51,13 +51,6 @@ public class User {
 
     private String refreshToken;
 
-    @ElementCollection
-    @CollectionTable(name = "MAPS",
-        joinColumns = @JoinColumn(name = "user_id"))
-    @MapKeyColumn(name = "city")
-    @Column(name = "count")
-    private Map<String, Integer> maps = new HashMap<>();
-
     public User(UserDto.Patch patch) {
         this.nickname = patch.getNickname();
         this.img = patch.getImg();

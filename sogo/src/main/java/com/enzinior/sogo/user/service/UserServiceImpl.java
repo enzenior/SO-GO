@@ -81,22 +81,6 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public Map<String, Integer> getMaps(String uuid) {
-        User user = findUser(uuid);
-        return user.getMaps();
-    }
-
-    @Override
-    @Transactional
-    public void updateMaps(User user, String address) {
-        String[] split = address.split(" ");
-        String newAddress = split[0] + " " + split[1];
-        Map<String, Integer> maps = user.getMaps();
-        maps.put(newAddress, maps.getOrDefault(newAddress, 0) + 1);
-    }
-
-    @Override
     @Transactional
     public void banUser(String userUuid) {
         try {
