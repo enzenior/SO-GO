@@ -12,7 +12,7 @@ public interface PlaceRepository extends JpaRepository<Place, Long> {
 
     Optional<Place> findByPlaceUuid(String placeUuid);
 
-    @Query("SELECT p FROM Place p WHERE p.placeName LIKE CONCAT('%',:word, '%') OR p.address LIKE CONCAT('%',:word, '%') ")
+    @Query("SELECT p FROM Place p WHERE p.placeName LIKE CONCAT('%',:word, '%') OR p.address LIKE CONCAT('%',:word, '%') ORDER BY p.heartCnt DESC ")
     List<Place> findByWord(String word);
 
     @Query("SELECT p FROM Place p WHERE p.placeNoEmptyName = :name AND TRUNCATE(p.lng, 3) = truncate (:lng, 3) AND TRUNCATE(p.lat, 3) = TRUNCATE(:lat, 3)")
