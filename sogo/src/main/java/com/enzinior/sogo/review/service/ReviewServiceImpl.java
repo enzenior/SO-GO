@@ -65,7 +65,7 @@ public class ReviewServiceImpl implements ReviewService{
 
     @Override
     public List<Review> getAllReviews() {
-        return reviewRepository.findAll();
+        return reviewRepository.findAllOrderByCreatedAtDesc();
     }
 
     @Override
