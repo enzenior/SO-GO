@@ -38,7 +38,6 @@ public class UserDto {
         @NotBlank
         private String nickname;
         private String img;
-        @NotBlank
         private String sentence;
     }
 
