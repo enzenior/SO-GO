@@ -1,5 +1,6 @@
 package com.enzinior.sogo.review.service;
 
+import com.enzinior.sogo.comment.repository.CommentRepository;
 import com.enzinior.sogo.notification.service.NotificationService;
 import com.enzinior.sogo.place.entity.Place;
 import com.enzinior.sogo.place.service.PlaceService;
@@ -8,6 +9,7 @@ import com.enzinior.sogo.report.service.ReportService;
 import com.enzinior.sogo.review.dto.ReviewDto;
 import com.enzinior.sogo.review.entity.Review;
 import com.enzinior.sogo.review.repository.ReviewRepository;
+import com.enzinior.sogo.review.repository.ScrapRepository;
 import com.enzinior.sogo.user.entity.User;
 import com.enzinior.sogo.user.service.UserService;
 import com.enzinior.sogo.utils.CustomBeanUtils;
@@ -28,6 +30,8 @@ public class ReviewServiceImpl implements ReviewService{
     private final NotificationService notificationService;
     private final CustomBeanUtils<Review> beanUtils;
     private final ReportService reportService;
+    private final ScrapRepository scrapRepository;
+    private final CommentRepository commentRepository;
 
     @Transactional
     @Override
@@ -77,7 +81,10 @@ public class ReviewServiceImpl implements ReviewService{
     @Transactional
     @Override
     public void deleteReview(String reviewUuid) {
-        reviewRepository.delete(verifiedByUuid(reviewUuid));
+        Review verifiedReview = verifiedByUuid(reviewUuid);
+        scrapRepository.deleteAllByReviewReviewId(verifiedReview.getReviewId());
+        commentRepository.deleteAllByReviewReviewId(verifiedReview.getReviewId());
+        reviewRepository.delete(verifiedReview);
     }
 
     @Transactional

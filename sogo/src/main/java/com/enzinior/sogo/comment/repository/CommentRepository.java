@@ -20,4 +20,5 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
         @Query("SELECT c FROM Comment c JOIN FETCH c.review r WHERE r.reviewUuid = :reviewUuid AND c.parent IS NOT NULL ORDER BY c.createdAt")
         List<Comment> findParentByReviewUuid(String reviewUuid);
 
+        void deleteAllByReviewReviewId(Long reviewId);
 }
