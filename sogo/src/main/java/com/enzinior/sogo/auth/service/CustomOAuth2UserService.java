@@ -61,8 +61,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                     .sentence("안녕하세요")
                     .build();
 
-            notificationService.createNotification(user, user.getNickname() + "님 SOGO의 여정에 합류하신 것을 환영합니다!");
             userRepository.save(user);
+            notificationService.createNotification(user, user.getNickname() + "님 SOGO의 여정에 합류하신 것을 환영합니다!");
 
             UserDto.Auth auth = UserDto.Auth.builder()
                     .nickname(user.getNickname())
