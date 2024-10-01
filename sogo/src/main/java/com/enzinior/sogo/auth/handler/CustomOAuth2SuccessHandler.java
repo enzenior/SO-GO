@@ -3,9 +3,8 @@ package com.enzinior.sogo.auth.handler;
 import com.enzinior.sogo.auth.dto.CustomOAuth2User;
 import com.enzinior.sogo.auth.entity.RefreshToken;
 import com.enzinior.sogo.auth.repository.RefreshTokenRepository;
-import com.enzinior.sogo.exception.BusinessLogicException;
-import com.enzinior.sogo.exception.ExceptionCode;
 import com.enzinior.sogo.jwt.JwtUtil;
+import com.enzinior.sogo.notification.service.NotificationService;
 import com.enzinior.sogo.user.entity.User;
 import com.enzinior.sogo.user.service.UserService;
 import jakarta.persistence.EntityManager;
@@ -15,8 +14,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -25,7 +22,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.time.Duration;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
@@ -41,6 +37,7 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
     private final JwtUtil jwtUtil;
     private final UserService userService;
     private final EntityManager entityManager;
+    private final NotificationService notificationService;
     private final RefreshTokenRepository refreshTokenRepository;
 
     @Override
@@ -70,6 +67,7 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
         String refresh = jwtUtil.createJwt("refresh", userUuid, role, Long.parseLong(expiration));
 
         refreshTokenRepository.save(new RefreshToken(refresh, expiredTime, user));
+        notificationService.createNotification(user, user.getNickname() + "님 SOGO의 여정에 합류하신 것을 환영합니다!");
 
         Cookie refreshCookie = createRefreshCookie("refresh", refresh);
         Cookie flagCookie = createIsAuthenticatedCookie("is_authenticated", "true");
