@@ -29,6 +29,10 @@ public class Place {
     private String placeName;
 
     @Setter
+    @Column(columnDefinition = "varchar(60)", nullable = false)
+    private String placeNoEmptyName;
+
+    @Setter
     @Column(columnDefinition = "varchar(1024)", nullable = false)
     private String address;
 

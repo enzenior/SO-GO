@@ -41,7 +41,8 @@ public class PlaceServiceImpl implements PlaceService{
 
     @Override
     public Place searchWhenCreateReview(Place place) {
-        Place findplace = placeRepository.findByPlaceInfo(place.getPlaceName(), place.getLng(), place.getLat());
+        String noEmptyName = place.getPlaceName().replace(" ", "");
+        Place findplace = placeRepository.findByPlaceInfo(noEmptyName, place.getLng(), place.getLat());
         if(findplace==null){
             findplace = createPlace(place);
         }
@@ -50,6 +51,10 @@ public class PlaceServiceImpl implements PlaceService{
 
     @Override
     public Place createPlace(Place place) {
+        String noEmptyName = place.getPlaceName().replace(" ", "");
+        place.setPlaceNoEmptyName(noEmptyName);
+        place.setType(4);
+
         String description = "장소 이름 : "+ place.getPlaceName() + "\n" + "장소 상세 주소" + place.getAddress();
         String summary = summaryService.generateSummary(description);
         String[] summaryArray = summary.split("\n");
@@ -60,7 +65,6 @@ public class PlaceServiceImpl implements PlaceService{
             place.setSummary("요약정보없음");
             place.setTag("#x,#x");
         }
-        place.setType(4);
         return placeRepository.save(place);
     }
 

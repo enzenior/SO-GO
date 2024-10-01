@@ -43,7 +43,7 @@ public class ReviewController {
         requestBody.setReviewUuid(reviewUuid);
         Review review = mapper.reviewPatchToReview(requestBody);
         Review updatedReview = reviewService.updateReview(review);
-        return ResponseEntity.ok(mapper.reviewToReviewResponseDto(updatedReview));
+        return ResponseEntity.ok(mapper.reviewToReviewResponseDto(updatedReview, scrapService.checkScrap(reviewUuid)));
     }
 
     @DeleteMapping("/{review-uuid}")
@@ -72,7 +72,8 @@ public class ReviewController {
 
     @GetMapping("/{review-uuid}")
     public ResponseEntity getReviewDetail(@PathVariable("review-uuid") String reviewUuid) {
-        return ResponseEntity.ok(mapper.reviewToReviewResponseDto(reviewService.getReview(reviewUuid)));
+        return ResponseEntity.ok(mapper.reviewToReviewResponseDto(
+            reviewService.getReview(reviewUuid), scrapService.checkScrap(reviewUuid)));
     }
 
     // Report 신고

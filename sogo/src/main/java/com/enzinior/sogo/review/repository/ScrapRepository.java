@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface ScrapRepository extends JpaRepository<Scrap, Long> {
     Optional<Scrap> findByReviewReviewIdAndUserUserId(Long reviewId, Long userId);
     Integer countByReviewReviewId(Long reviewId);
+    Boolean existsByReviewReviewUuidAndUserUserUuid(String reviewUuid, String userUuid);
 }
