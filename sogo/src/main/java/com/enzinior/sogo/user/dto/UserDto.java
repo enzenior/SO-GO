@@ -37,7 +37,6 @@ public class UserDto {
         private String userUuid;
         @NotBlank
         private String nickname;
-        @NotBlank
         private String img;
         @NotBlank
         private String sentence;
