@@ -39,11 +39,11 @@ public class AuthServiceImpl implements AuthService {
             throw new BusinessLogicException(ExceptionCode.RT_NULL_ERROR);
         }
 
-        String username = jwtUtil.getUserUuid(refresh);
         try {
             jwtUtil.isExpired(refresh);
         } catch (ExpiredJwtException e) {
-            refreshTokenRepository.deleteByUserUserUuid(username);
+            System.out.println("refresh : " + refresh);
+            refreshTokenRepository.deleteByRefreshToken(refresh);
             throw new BusinessLogicException(ExceptionCode.RT_EXPIRED_ERROR);
         }
 
@@ -60,6 +60,7 @@ public class AuthServiceImpl implements AuthService {
         }
 
         String role = jwtUtil.getRole(refresh);
+        String username = jwtUtil.getUserUuid(refresh);
         String newAccess = jwtUtil.createJwt("access", username, role, Long.parseLong(expiration));
         response.setHeader("Authorization", "Bearer " + newAccess);
 
