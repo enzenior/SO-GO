@@ -21,5 +21,5 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     @EntityGraph(attributePaths = {"place", "user"})
     List<Review> findScraped(String userUuid);
     @EntityGraph(attributePaths = {"place", "user"})
-    List<Review> findAllOrderByCreatedAtDesc();
+    List<Review> findAllByOrderByCreatedAtDesc();
 }

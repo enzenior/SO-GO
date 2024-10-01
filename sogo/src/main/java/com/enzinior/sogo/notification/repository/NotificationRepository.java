@@ -21,4 +21,5 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
     @Query("SELECT COUNT(n) FROM Notification n JOIN n.user u WHERE u.userUuid = :userUuid AND n.isRead = false")
     long countByYetRead(String userUuid);
 
+    void deleteAllByReviewReviewUuid(String reviewReviewUuid);
 }
