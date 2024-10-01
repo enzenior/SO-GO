@@ -85,20 +85,19 @@ public class SecurityConfig {
                                 .userService(customOAuth2UserService))
                         .authorizationEndpoint(endPoint -> endPoint.baseUri("/api/oauth2/authorization"))
                         .redirectionEndpoint(endPoint -> endPoint.baseUri("/api/login/oauth2/code/*"))
-                        .successHandler(customOAuth2SuccessHandler)
-                        .failureUrl("https://so-go.kr/login"));
+                        .successHandler(customOAuth2SuccessHandler));
 
         http
                 .authorizeHttpRequests((auth) -> auth
-//                        .requestMatchers("/api/logout", "/api/auth/**", "/h2/**", "/api/health/**").permitAll()
-//                        .requestMatchers(HttpMethod.GET, "/api/users").permitAll()
-//                        .requestMatchers("/api/users/**").authenticated()
-//                        .requestMatchers("/api/reviews/my-reviews/*").authenticated()
-//                        .requestMatchers("/api/reviews/scraps/*").authenticated()
-//                        .requestMatchers(HttpMethod.GET, "/api/reviews/**").permitAll()
-//                        .requestMatchers("/api/reviews/**").authenticated()
-//                        .requestMatchers(HttpMethod.GET, "/api/places/**").permitAll()
-//                        .requestMatchers(HttpMethod.POST, "/api/places/search").permitAll()
+                        .requestMatchers("/api/logout", "/api/auth/**", "/h2/**", "/api/health/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/users").permitAll()
+                        .requestMatchers("/api/users/**").authenticated()
+                        .requestMatchers("/api/reviews/my-reviews/*").authenticated()
+                        .requestMatchers("/api/reviews/scraps/*").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/reviews/**").permitAll()
+                        .requestMatchers("/api/reviews/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/places/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/places/search").permitAll()
                         .requestMatchers("/api/places/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/*/comments/**").permitAll()
                         .requestMatchers(HttpMethod.PATCH, "api/*/comments/**").hasRole("ADMIN")
