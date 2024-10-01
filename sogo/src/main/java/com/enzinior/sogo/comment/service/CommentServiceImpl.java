@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+import com.enzinior.sogo.notification.entity.Notification;
+import com.enzinior.sogo.notification.service.NotificationService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +33,7 @@ public class CommentServiceImpl implements CommentService {
     private final UserService userService;
     private final ReviewService reviewService;
     private final ReportService reportService;
+    private final NotificationService notificationService;
 
    @Override
    @Transactional(readOnly = true)
@@ -61,8 +64,14 @@ public class CommentServiceImpl implements CommentService {
     public Comment createComment(Comment comment){
         User user = userService.findUser(comment.getUser().getUserUuid());
         Review review = reviewService.getReview(comment.getReview().getReviewUuid());
+
         comment.setUser(user);
         comment.setReview(review);
+
+        User toUser = userService.findUser(review.getUser().getUserUuid());
+        String sentence = user.getNickname()+"님이 댓글을 달았습니다!";
+        notificationService.createNotificationByReview(toUser, sentence, review);
+
         return commentRepository.save(comment);
     }
 
