@@ -8,6 +8,7 @@ import com.enzinior.sogo.exception.ExceptionCode;
 import com.enzinior.sogo.jwt.JwtUtil;
 import com.enzinior.sogo.user.entity.User;
 import com.enzinior.sogo.user.service.UserService;
+import jakarta.persistence.EntityManager;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -39,6 +40,7 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
     private String clientUrl;
     private final JwtUtil jwtUtil;
     private final UserService userService;
+    private final EntityManager entityManager;
     private final RefreshTokenRepository refreshTokenRepository;
 
     @Override
@@ -57,8 +59,11 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
         RefreshToken findRefresh = refreshTokenRepository.findByUser_UserUuid(userUuid).orElse(null);
         if(findRefresh != null) {
-            refreshTokenRepository.deleteByUser_UserUuid(userUuid);
+            refreshTokenRepository.delete(findRefresh);
         }
+
+        entityManager.flush();
+        entityManager.clear();
 
         User user = userService.findUser(userUuid);
         String expiredTime = new Date(System.currentTimeMillis() + Long.parseLong(expiration)).toString();
