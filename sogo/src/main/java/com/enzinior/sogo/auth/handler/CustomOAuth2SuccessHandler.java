@@ -54,18 +54,19 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
         String role = auth.getAuthority();
 
         String userUuid = customUserDetails.getName();
-        String refresh = jwtUtil.createJwt("refresh", userUuid, role, Long.parseLong(expiration));
+
+        RefreshToken findRefresh = refreshTokenRepository.findByUser_UserUuid(userUuid).orElse(null);
+        if(findRefresh != null) {
+            refreshTokenRepository.deleteByUser_UserUuid(userUuid);
+        }
 
         User user = userService.findUser(userUuid);
-
         String expiredTime = new Date(System.currentTimeMillis() + Long.parseLong(expiration)).toString();
+        String refresh = jwtUtil.createJwt("refresh", userUuid, role, Long.parseLong(expiration));
 
-        RefreshToken refreshToken = refreshTokenRepository.findByUserUserUuid(userUuid)
-                .orElse(new RefreshToken(refresh, expiredTime, user));
+        refreshTokenRepository.save(new RefreshToken(refresh, expiredTime, user));
 
-        refreshTokenRepository.save(refreshToken);
-
-        Cookie refreshCookie = createRefreshCookie("refresh", refreshToken.getRefreshToken());
+        Cookie refreshCookie = createRefreshCookie("refresh", refresh);
         Cookie flagCookie = createIsAuthenticatedCookie("is_authenticated", "true");
         response.addCookie(refreshCookie);
         response.addCookie(flagCookie);
