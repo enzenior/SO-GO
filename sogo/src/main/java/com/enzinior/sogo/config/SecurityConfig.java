@@ -85,7 +85,8 @@ public class SecurityConfig {
                                 .userService(customOAuth2UserService))
                         .authorizationEndpoint(endPoint -> endPoint.baseUri("/api/oauth2/authorization"))
                         .redirectionEndpoint(endPoint -> endPoint.baseUri("/api/login/oauth2/code/*"))
-                        .successHandler(customOAuth2SuccessHandler));
+                        .successHandler(customOAuth2SuccessHandler)
+                        .failureUrl("https://so-go.kr/login"));
 
         http
                 .authorizeHttpRequests((auth) -> auth
@@ -121,7 +122,6 @@ public class SecurityConfig {
         http
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
         return http.build();
     }
 
