@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
@@ -52,6 +53,7 @@ public class ReviewDto {
         private String userNickname;
         private String userUuid;
         private int scrap;
+        private boolean checkScrap;
         private int score;
         private int report;
         private boolean secret;
@@ -62,6 +64,4 @@ public class ReviewDto {
         private String placeName;
         private LocalDateTime createdAt;
     }
-
-
 }

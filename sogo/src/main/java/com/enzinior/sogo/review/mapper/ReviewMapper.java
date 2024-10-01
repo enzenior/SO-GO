@@ -15,12 +15,13 @@ public interface ReviewMapper {
     Review reviewPostToReview(ReviewDto.Post requestBody);
     Review reviewPatchToReview(ReviewDto.Patch requestBody);
 
-    @Mapping(source = "user.img", target = "userImg")
-    @Mapping(source = "user.nickname", target = "userNickname")
-    @Mapping(source = "user.userUuid", target = "userUuid")
-    @Mapping(source = "place.placeUuid", target = "placeUuid")
-    @Mapping(source = "place.placeName", target = "placeName")
-    ReviewDto.Response reviewToReviewResponseDto(Review review);
+    @Mapping(source = "review.user.img", target = "userImg")
+    @Mapping(source = "review.user.nickname", target = "userNickname")
+    @Mapping(source = "review.user.userUuid", target = "userUuid")
+    @Mapping(source = "review.place.placeUuid", target = "placeUuid")
+    @Mapping(source = "review.place.placeName", target = "placeName")
+    @Mapping(source = "checkScrap", target = "checkScrap")
+    ReviewDto.Response reviewToReviewResponseDto(Review review, boolean checkScrap);
 
     List<ReviewDto.Response> reviewsToReviewResponseDtos(List<Review> reviews);
 }
