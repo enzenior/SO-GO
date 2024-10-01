@@ -7,6 +7,7 @@ import com.enzinior.sogo.auth.service.CustomOAuth2UserService;
 import com.enzinior.sogo.jwt.CustomLogoutFilter;
 import com.enzinior.sogo.jwt.JwtAuthenticationFilter;
 import com.enzinior.sogo.jwt.JwtUtil;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -98,6 +99,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/reviews/**").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/places", "/api/places/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/places/search").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/places/*/hearts/*").authenticated()
                         .requestMatchers("/api/places/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/*/comments","/api/*/comments/**").permitAll()
                         .requestMatchers(HttpMethod.PATCH, "/api/*/comments/**").hasRole("ADMIN")
@@ -111,16 +113,21 @@ public class SecurityConfig {
         http
                 .exceptionHandling(exceptions -> exceptions
                         .authenticationEntryPoint((request, response, authException) -> {
-                            response.sendRedirect("https://www.so-go.kr/login");
+                            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                            response.setContentType("application/json");
+                            response.getWriter().write("{\"error\": \"Unauthorized\", \"message\": \"Authentication required\"}");
                         })
                         .accessDeniedHandler((request, response, accessDeniedException) -> {
-                            response.sendRedirect("https://www.so-go.kr/login");
+                            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                            response.setContentType("application/json");
+                            response.getWriter().write("{\"error\": \"Forbidden\", \"message\": \"Access denied\"}");
                         })
                 );
 
         http
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
         return http.build();
     }
 

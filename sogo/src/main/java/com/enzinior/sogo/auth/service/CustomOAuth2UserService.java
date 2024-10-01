@@ -4,6 +4,7 @@ import com.enzinior.sogo.auth.dto.CustomOAuth2User;
 import com.enzinior.sogo.auth.dto.KakaoResponse;
 import com.enzinior.sogo.auth.dto.NaverResponse;
 import com.enzinior.sogo.auth.dto.OAuth2Response;
+import com.enzinior.sogo.notification.service.NotificationService;
 import com.enzinior.sogo.user.dto.UserDto;
 import com.enzinior.sogo.user.entity.User;
 import com.enzinior.sogo.user.repository.UserRepository;
@@ -22,6 +23,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
     private final NicknameService nicknameService;
+    private final NotificationService notificationService;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -59,6 +61,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                     .sentence("안녕하세요")
                     .build();
 
+            notificationService.createNotification(user, user.getNickname() + "님 SOGO의 여정에 합류하신 것을 환영합니다!");
             userRepository.save(user);
 
             UserDto.Auth auth = UserDto.Auth.builder()
