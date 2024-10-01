@@ -68,8 +68,7 @@ public class PlaceController{
     // 장소 상세 페이지
     @GetMapping("/{place-uuid}")
     @Operation(summary = "장소 상세페이지")
-    public ResponseEntity getPlaceDetail(@PathVariable("place-uuid") String placeUuid, @Valid @RequestBody PlaceDto.DetailDto requestBody){
-        String userUuid = requestBody.getUserUuid(); // 여기는 바꿀 예정
+    public ResponseEntity getPlaceDetail(@PathVariable("place-uuid") String placeUuid, @RequestParam("userUuid") String userUuid){
         PlaceDto.Response placeRes = placeMapper.placeToPlaceDtoResponse(placeService.getPlace(placeUuid));
         Heart heart = placeService.findHeart(placeUuid, userUuid);
         if(heart != null){
