@@ -6,6 +6,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
@@ -23,5 +24,13 @@ public interface ReviewMapper {
     @Mapping(source = "checkScrap", target = "checkScrap")
     ReviewDto.Response reviewToReviewResponseDto(Review review, boolean checkScrap);
 
-    List<ReviewDto.Response> reviewsToReviewResponseDtos(List<Review> reviews);
+    default List<ReviewDto.Response> reviewsToReviewResponseDtos(List<Review> reviews) {
+        List<ReviewDto.Response> responses = new ArrayList<>(reviews.size());
+        for (Review review : reviews) {
+            if (review != null) {
+                responses.add(reviewToReviewResponseDto(review, false));
+            }
+        }
+        return responses;
+    }
 }
