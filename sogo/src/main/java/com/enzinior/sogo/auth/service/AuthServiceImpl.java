@@ -40,6 +40,7 @@ public class AuthServiceImpl implements AuthService {
         try {
             jwtUtil.isExpired(refresh);
         } catch (ExpiredJwtException e) {
+            refreshTokenRepository.deleteByRefreshToken(refresh);
             throw new BusinessLogicException(ExceptionCode.RT_EXPIRED_ERROR);
         }
 
