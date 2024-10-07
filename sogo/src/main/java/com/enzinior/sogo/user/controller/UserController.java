@@ -3,6 +3,7 @@ package com.enzinior.sogo.user.controller;
 import com.enzinior.sogo.user.dto.UserDto;
 import com.enzinior.sogo.user.entity.User;
 import com.enzinior.sogo.user.mapper.UserMapper;
+import com.enzinior.sogo.user.service.MapsService;
 import com.enzinior.sogo.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ public class UserController {
 
     private final UserService userService;
     private final UserMapper userMapper;
+    private final MapsService mapsService;
 
 //    @PostMapping
 //    public ResponseEntity<?> logout () {
@@ -52,7 +54,7 @@ public class UserController {
     // 회원 지도 조회
     @GetMapping("/{user-uuid}/maps")
     public ResponseEntity<?> findUserMaps(@PathVariable("user-uuid") String uuid) {
-        return ResponseEntity.ok(userService.getMaps(uuid));
+        return ResponseEntity.ok(mapsService.getMaps(uuid));
     }
 
     // 회원 정보 수정

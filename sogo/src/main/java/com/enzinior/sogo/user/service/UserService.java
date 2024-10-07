@@ -22,8 +22,4 @@ public interface UserService {
     void banUser(String uuid);
 
     void verifyNicknameAvailable(String nickname);
-
-    Map<String, Integer> getMaps(String uuid);
-
-    void updateMaps(User user, String address);
 }

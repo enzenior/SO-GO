@@ -1,5 +1,7 @@
 package com.enzinior.sogo.review.service;
 
+import com.enzinior.sogo.comment.repository.CommentRepository;
+import com.enzinior.sogo.notification.repository.NotificationRepository;
 import com.enzinior.sogo.notification.service.NotificationService;
 import com.enzinior.sogo.place.entity.Place;
 import com.enzinior.sogo.place.service.PlaceService;
@@ -8,7 +10,9 @@ import com.enzinior.sogo.report.service.ReportService;
 import com.enzinior.sogo.review.dto.ReviewDto;
 import com.enzinior.sogo.review.entity.Review;
 import com.enzinior.sogo.review.repository.ReviewRepository;
+import com.enzinior.sogo.review.repository.ScrapRepository;
 import com.enzinior.sogo.user.entity.User;
+import com.enzinior.sogo.user.service.MapsService;
 import com.enzinior.sogo.user.service.UserService;
 import com.enzinior.sogo.utils.CustomBeanUtils;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +32,10 @@ public class ReviewServiceImpl implements ReviewService{
     private final NotificationService notificationService;
     private final CustomBeanUtils<Review> beanUtils;
     private final ReportService reportService;
+    private final ScrapRepository scrapRepository;
+    private final CommentRepository commentRepository;
+    private final NotificationRepository notificationRepository;
+    private final MapsService mapsService;
 
     @Transactional
     @Override
@@ -37,13 +45,15 @@ public class ReviewServiceImpl implements ReviewService{
         updatePlaceScore(review.getScore(), placeUuid, place);
 
         User user = userService.findUser(review.getUser().getUserUuid());
-        userService.updateMaps(user, address);
         review.setUser(user);
         review.setPlace(place);
         review.setScrap(0);
         review.setMaxCnt(0);
         review.setReport(0);
-        return reviewRepository.save(review);
+
+        Review saved = reviewRepository.save(review);
+        mapsService.updateMaps(user, saved, address);
+        return saved;
     }
 
     private void updatePlaceScore(int reviewScore, String placeUuid, Place place) {
@@ -61,7 +71,7 @@ public class ReviewServiceImpl implements ReviewService{
 
     @Override
     public List<Review> getAllReviews() {
-        return reviewRepository.findAll();
+        return reviewRepository.findAllByOrderByCreatedAtDesc();
     }
 
     @Override
@@ -77,7 +87,12 @@ public class ReviewServiceImpl implements ReviewService{
     @Transactional
     @Override
     public void deleteReview(String reviewUuid) {
-        reviewRepository.delete(verifiedByUuid(reviewUuid));
+        Review verifiedReview = verifiedByUuid(reviewUuid);
+        scrapRepository.deleteAllByReviewReviewId(verifiedReview.getReviewId());
+        commentRepository.deleteAllByReviewReviewId(verifiedReview.getReviewId());
+        notificationRepository.deleteAllByReviewReviewUuid(reviewUuid);
+        mapsService.deleteMapsByReviewUuid(reviewUuid);
+        reviewRepository.delete(verifiedReview);
     }
 
     @Transactional
